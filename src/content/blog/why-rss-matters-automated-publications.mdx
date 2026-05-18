@@ -1,0 +1,39 @@
+---
+title: "Why RSS Still Matters for Automated Tech Publications"
+description: "How to use boring infrastructure like RSS to build reliable, high-signal automation inputs."
+pubDate: "2026-05-18"
+heroImage: "../../assets/images/placeholder-social.jpg"
+category: "Automation"
+tags: ["Automation", "RSS", "Infrastructure", "Systems"]
+draft: false
+---
+
+## The Illusion of Social Feeds
+
+Modern internet consumption is dominated by algorithmic social feeds. While these feeds are optimized for engagement, they are terrible inputs for an automated technical publication. They are noisy, context-free, and prone to sudden API restrictions. If your automation system relies on scraping Twitter or parsing algorithmically sorted news aggregators, it will inevitably break or ingest garbage data.
+
+For operators building serious publication pipelines, the best data input layer is one of the oldest: RSS (Really Simple Syndication).
+
+## Boring Infrastructure is Reliable Infrastructure
+
+RSS is stable, lightweight, and inherently automation-friendly. It provides structured XML data containing exactly what you need—headlines, publication dates, author names, and cleanly formatted content or summaries—without pop-ups, tracking scripts, or CAPTCHAs.
+
+Because RSS is a standardized protocol rather than a proprietary API, it rarely changes. A well-built RSS ingestion pipeline will run smoothly for years without requiring maintenance or API key rotations.
+
+## Integrating RSS with n8n
+
+In a modern workflow, RSS serves as the clean input layer feeding into an orchestration tool like n8n. 
+
+1. **Curated Polling:** You can configure n8n to poll a carefully curated list of high-signal technical blogs, cybersecurity threat feeds, or software release notes every hour.
+2. **Clustering and Filtering:** Because RSS data is structured, you can easily use n8n to filter out noise. You can configure rules to only pass along articles containing specific keywords (e.g., "WireGuard", "LLM", "Vulnerability") or group similar headlines together to avoid redundant processing.
+3. **Draft Queuing:** The filtered RSS items are then sent to an AI layer for summarization, creating a steady, high-quality queue of article drafts waiting for human editorial approval.
+
+## Editorial Monitoring, Not Just Autopublishing
+
+It is crucial to understand that RSS should support editorial monitoring, not full autopublishing. Using RSS to automatically copy and paste articles directly onto your site is just content scraping. 
+
+Instead, use RSS to build an "operator's dashboard." Let the RSS feed alert you to what is happening in your niche, let the AI summarize why it matters, and let the human operator write the final analysis. 
+
+## Practical Takeaway
+
+RSS is boring infrastructure, which is exactly why it is useful. By using structured, stable feeds rather than volatile social APIs, you build an ingestion layer for your automation system that prioritizes high signal and low maintenance.
