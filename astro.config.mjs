@@ -1,6 +1,7 @@
 import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import tailwind from '@astrojs/tailwind'
+import sitemap from '@astrojs/sitemap'
 import { remarkReadingTime } from './src/utils/readTime.ts'
 import { siteConfig } from './src/data/site.config'
 
@@ -27,7 +28,7 @@ export default defineConfig({
 			},
 			drafts: true
 		}),
-		
-		tailwind()
+		tailwind(),
+		sitemap()
 	]
 })
