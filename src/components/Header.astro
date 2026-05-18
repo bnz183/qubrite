@@ -2,70 +2,78 @@
 import HeaderLink from '@/components/HeaderLink'
 import MenuIcon from './icons/MenuIcon.astro'
 import Search from '@/components/Search'
-import TagIcon from './icons/TagIcon.astro'
 import ToggleTheme from './ToggleTheme.astro'
-import { SOCIALNETWORKS } from '@/data/links'
+import { CATEGORIES } from '@/data/categories'
+import { sluglify } from '@/utils'
 ---
 
-<header class='relative flex items-center h-12 font-semibold'>
-	<a class='text-lg mr-auto' href='/'>Home</a>
+<header class='relative flex items-center justify-between h-16 md:h-[68px] border-b border-gray-200/80 dark:border-gray-800/80 bg-white dark:bg-[#0a0910] z-50 transition-colors duration-300'>
+	<div class='flex-shrink-0 z-20'>
+		<a class='flex items-center gap-2 rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 dark:focus-visible:ring-white' href='/' aria-label='QuBrite'>
+			<img src="/brand/header-logo.svg" alt="QuBrite" class="h-[24px] md:h-[32px] w-auto object-contain" />
+		</a>
+	</div>
 
+	<nav class='hidden lg:flex flex-1 items-center justify-center gap-4 xl:gap-8 px-4 min-w-0'>
+		{
+			CATEGORIES.map((category) => (
+				<HeaderLink 
+					href={`/category/${sluglify(category.toLowerCase())}/1`} 
+					class='text-[14px] xl:text-[15px] leading-none whitespace-nowrap'
+				>
+					{category}
+				</HeaderLink>
+			))
+		}
+	</nav>
+
+	<div class='flex items-center justify-end gap-5 lg:gap-6 flex-shrink-0 z-20' transition:persist='navbar'>
+		<Search />
+		<ToggleTheme />
+		<button id='astro-header-drawer-button' type='button' class='lg:hidden p-1.5 -mr-1.5 rounded-sm text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 dark:focus-visible:ring-white' aria-label='Toggle Mobile Menu'>
+			<MenuIcon />
+		</button>
+	</div>
+
+	<!-- Mobile Menu Panel -->
 	<div
 		id='astro-header-drawer'
-		class='shadow rounded-l-lg md:bg-transparent dark:md:bg-transparent bg-white dark:bg-[#0a0910] md:shadow-none md:rounded-none md:border-none md:h-auto md:static absolute transition-transform duration-300 ease-in translate-x-96 md:translate-x-0 top-12 -right-5 pl-4 pt-6 pb-4 md:p-0 h-[200px] w-[200px] z-50'
+		class='absolute top-16 md:top-[68px] left-0 w-full bg-white dark:bg-[#0a0910] border-b border-gray-200 dark:border-gray-800 shadow-2xl z-40 hidden lg:hidden overflow-hidden'
 	>
-		<nav
-			class='flex h-full flex-col justify-between gap-12 text-left md:flex-row md:w-full md:gap-5'
-		>
-			<div
-				class='flex flex-col gap-4 md:flex-row md:border-r-2 border-black pr-4 dark:border-white'
-			>
-				<HeaderLink href='/tags' class='flex items-center gap-1 text-2xl md:text-base'>
-					<TagIcon /> Tags
-				</HeaderLink>
-				<HeaderLink href='/about' class='flex items-center gap-1 text-2xl md:text-base'>
-					About
-				</HeaderLink>
-				<HeaderLink href='/contact' class='flex items-center gap-1 text-2xl md:text-base'>
-					Contact
-				</HeaderLink>
-			</div>
-
-			<div class='flex justify-center items-center md:justify-end gap-3 md:p-0'>
+		<div class='flex flex-col px-6 py-8 max-h-[calc(100vh-64px)] md:max-h-[calc(100vh-68px)] overflow-y-auto'>
+			<nav class='flex flex-col gap-6 text-left'>
 				{
-					SOCIALNETWORKS.map((network) => (
-						<HeaderLink class='' href={network.url} target='_blank' aria-label={network.name}>
-							<span>{<network.icon />} </span>
+					CATEGORIES.map((category) => (
+						<HeaderLink href={`/category/${sluglify(category.toLowerCase())}/1`} class='text-[1.15rem] tracking-wide'>
+							{category}
 						</HeaderLink>
 					))
 				}
-			</div>
-		</nav>
-	</div>
-
-	<div class='flex items-center gap-3 md:pl-3' transition:persist='navbar'>
-		<div>
-			<Search />
+				<div class='my-2 border-t border-gray-200/80 dark:border-gray-800/80'></div>
+				<div class='flex flex-col gap-5'>
+					<HeaderLink href='/about' class='text-[15px]'>
+						About
+					</HeaderLink>
+					<HeaderLink href='/contact' class='text-[15px]'>
+						Contact
+					</HeaderLink>
+					<HeaderLink href='/editorial-policy' class='text-[15px]'>
+						Editorial Policy
+					</HeaderLink>
+				</div>
+			</nav>
 		</div>
-		<ToggleTheme />
-		<button id='astro-header-drawer-button' type='button' class='md:ml-6 md:hidden'>
-			<MenuIcon />
-			<span class='sr-only'>Show Menu</span>
-		</button>
 	</div>
 </header>
 <script>
 	document.addEventListener('click', (event) => {
 		const menu = document.getElementById('astro-header-drawer')
 		const menuButton = document.getElementById('astro-header-drawer-button')
-		const isClickInside =
-			menu?.contains(event.target as HTMLDivElement) ||
-			menuButton?.contains(event.target as HTMLButtonElement)
 
-		if (isClickInside) {
-			menu?.classList.toggle('translate-x-96')
-		} else {
-			menu?.classList.add('translate-x-96')
+		if (menuButton?.contains(event.target as Node)) {
+			menu?.classList.toggle('hidden')
+		} else if (menu && !menu.contains(event.target as Node)) {
+			menu?.classList.add('hidden')
 		}
 	})
 </script>

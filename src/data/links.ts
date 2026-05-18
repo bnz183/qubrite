@@ -1,17 +1,1 @@
-import TwitterIcon from '@/components/icons/TwitterIcon'
-import GithubIcon from '@/components/icons/GithubIcon'
-
-// ADD YOUR SOCIAL NETWORKS HERE
-export const SOCIALNETWORKS = [
-	{
-		name: 'Github',
-		url: 'https://github.com/qubrite',
-		icon: GithubIcon
-	},
-
-	{
-		name: 'Twitter',
-		url: 'https://twitter.com/qubrite',
-		icon: TwitterIcon
-	}
-] as const
+// No links are used currently in the header

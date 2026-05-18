@@ -5,6 +5,7 @@ import BaseLayout from '@/layouts/BaseLayout'
 import Tag from '@/components/Tag'
 import type { MarkdownHeading } from 'astro'
 import { Image } from 'astro:assets'
+import { siteConfig } from '@/site-config'
 
 type Props = {
 	id: CollectionEntry<'blog'>['id']
@@ -26,22 +27,21 @@ const articleDate = pubDate.toISOString()
 	articleDate={articleDate}
 >
 	<article class='min-w-full md:py-4 sm:max-w-none md:max-w-none'>
-		<header class='mb-3 flex flex-col justify-center items-center gap-6'>
-			<div class='flex flex-col gap-2'>
-				<div class='flex items-center justify-center gap-x-1'>
-					<p class='text-center text-sm text-opacity-50'>
-						Published <FormattedDate date={pubDate} />
-					</p>
-					<p class='text-center text-sm text-opacity-50 font-bold'>
-						- {readTime}
-					</p>
-				</div>
-				<h1 class='text-center text-4xl md:text-6xl md:pb-2.5 font-semibold'>
+		<header class='mb-8 flex flex-col justify-center items-center gap-6 text-center mt-4'>
+			<div class='flex flex-col gap-4'>
+				<h1 class='text-4xl md:text-5xl font-bold leading-tight -tracking-wide max-w-4xl mx-auto'>
 					{title}
 				</h1>
+				<div class='flex flex-wrap items-center justify-center gap-x-3 text-[13px] font-medium text-stone-500 dark:text-stone-400'>
+					<span class='uppercase tracking-widest font-bold text-stone-800 dark:text-stone-200'>{siteConfig.author}</span>
+					<span class='opacity-50'>&bull;</span>
+					<FormattedDate date={pubDate} />
+					<span class='opacity-50'>&bull;</span>
+					<span>{readTime}</span>
+				</div>
 			</div>
 
-			<div class='flex flex-wrap justify-center items-center gap-2 gap-y-4 md:gap-5'>
+			<div class='flex flex-wrap justify-center items-center gap-2'>
 				{tags.map((tag) => <Tag tag={tag} />)}
 			</div>
 		</header>

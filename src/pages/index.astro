@@ -6,13 +6,20 @@ import { getPosts, sluglify } from '@/utils'
 import { CATEGORIES } from '@/data/categories'
 import FormattedDate from '@/components/FormattedDate'
 import { Image } from 'astro:assets'
+import { EDITORS_PICKS } from '@/data/editors-picks'
 
 const MAX_POSTS = 16 // max number of posts to show on the home page
 const posts = await getPosts(MAX_POSTS)
 
 const featuredPost = posts[0]
+const isFeaturedGeneric = featuredPost && (
+	featuredPost.data.heroImage.src.includes('placeholder') || 
+	featuredPost.data.heroImage.src.includes('default') || 
+	featuredPost.data.heroImage.src.includes('bg.jpg')
+)
 const latestBriefs = posts.slice(1, 5)
 const remainingPosts = posts.slice(5)
+const editorsPicksPosts = posts.filter(p => EDITORS_PICKS.includes(p.slug)).slice(0, 3)
 ---
 
 <BaseLayout title='Home'>
@@ -21,18 +28,18 @@ const remainingPosts = posts.slice(5)
 		
 		<!-- Left Column: Latest Briefs -->
 		<div class="lg:col-span-3 flex flex-col gap-6 order-2 lg:order-1">
-			<h2 class="text-sm font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-800 pb-2">Latest Briefs</h2>
+			<h2 class="text-[13px] font-bold uppercase tracking-wider text-stone-800 dark:text-stone-200 border-b border-gray-200 dark:border-gray-800 pb-2">Latest Briefs</h2>
 			<div class="flex flex-col gap-6">
 				{latestBriefs.length > 0 ? latestBriefs.map((post) => (
 					<article>
 						<a href={`/post/${post.slug}/`} class="group flex flex-col gap-1">
-							<h3 class="text-md font-semibold leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+							<h3 class="text-[15px] font-semibold leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
 								{post.data.title}
 							</h3>
-							<div class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
+							<div class="text-[12px] text-stone-500 dark:text-stone-400 flex items-center gap-2 mt-1 font-medium">
 								<FormattedDate date={post.data.pubDate} />
-								<span>&bull;</span>
-								<span>{post.data.category}</span>
+								<span class="opacity-50">&bull;</span>
+								<span class="uppercase tracking-wider text-[10px] font-bold">{post.data.category}</span>
 							</div>
 						</a>
 					</article>
@@ -42,32 +49,45 @@ const remainingPosts = posts.slice(5)
 
 		<!-- Center Column: Featured Article -->
 		<div class="lg:col-span-6 order-1 lg:order-2">
-			<h2 class="text-sm font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-800 pb-2 mb-6">Featured Analysis</h2>
+			<h2 class="text-[13px] font-bold uppercase tracking-wider text-stone-800 dark:text-stone-200 border-b border-gray-200 dark:border-gray-800 pb-2 mb-6">Featured Analysis</h2>
 			{featuredPost ? (
 				<article class="group flex flex-col gap-4">
-					<a href={`/post/${featuredPost.slug}/`} class="block overflow-hidden relative rounded-sm">
-						<Image
-							src={featuredPost.data.heroImage}
-							width={800}
-							height={400}
-							format='webp'
-							class='w-full object-cover aspect-[16/9] hover:scale-105 transition-transform duration-500 bg-gray-100 dark:bg-gray-800'
-							alt={`img of ${featuredPost.data.title}`}
-						/>
-						<div class="absolute top-3 left-3 bg-black/90 dark:bg-white/90 text-white dark:text-black px-2 py-1 text-xs font-bold uppercase tracking-wider rounded-sm backdrop-blur-sm shadow-sm">
-							{featuredPost.data.category}
-						</div>
+					<a href={`/post/${featuredPost.slug}/`} class="block overflow-hidden relative rounded-sm aspect-[16/9] bg-stone-50 dark:bg-[#0c0b10] border border-gray-100 dark:border-gray-800 group/feat">
+						{isFeaturedGeneric ? (
+							<>
+								<div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:32px_32px] transition-transform duration-500 group-hover/feat:scale-105"></div>
+								<div class='absolute inset-0 flex items-center justify-center pointer-events-none z-10'>
+									<span class="text-3xl md:text-5xl font-bold uppercase tracking-[0.15em] text-stone-800/80 dark:text-stone-200/80 drop-shadow-md">
+										{featuredPost.data.category}
+									</span>
+								</div>
+							</>
+						) : (
+							<>
+								<Image
+									src={featuredPost.data.heroImage}
+									width={800}
+									height={400}
+									format='webp'
+									class='w-full h-full object-cover hover:scale-105 transition-transform duration-500 bg-gray-100 dark:bg-gray-800'
+									alt={`Cover image for ${featuredPost.data.title}`}
+								/>
+								<div class="absolute top-3 left-3 bg-black/90 dark:bg-white/90 text-white dark:text-black px-2 py-1 text-[11px] font-bold uppercase tracking-wider rounded-sm backdrop-blur-sm shadow-sm z-10">
+									{featuredPost.data.category}
+								</div>
+							</>
+						)}
 					</a>
 					<div class="flex flex-col gap-2">
-						<div class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
+						<div class="text-[13px] text-stone-500 dark:text-stone-400 flex items-center gap-2 font-semibold uppercase tracking-wider mb-1">
 							<FormattedDate date={featuredPost.data.pubDate} />
 						</div>
 						<a href={`/post/${featuredPost.slug}/`} class="group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-							<h3 class="text-3xl md:text-4xl font-bold leading-tight -tracking-wide">
+							<h3 class="text-3xl md:text-4xl font-bold leading-tight -tracking-wide line-clamp-3">
 								{featuredPost.data.title}
 							</h3>
 						</a>
-						<p class="text-gray-700 dark:text-gray-300 line-clamp-3 mt-2 font-medium">
+						<p class="text-[15px] text-stone-600 dark:text-stone-300 line-clamp-3 mt-3 leading-relaxed font-medium">
 							{featuredPost.data.description}
 						</p>
 						<a href={`/post/${featuredPost.slug}/`} class="mt-2 inline-flex items-center text-sm font-bold uppercase tracking-wide hover:text-blue-600 dark:hover:text-blue-400 transition-colors group-hover:underline decoration-2 underline-offset-4">
@@ -80,20 +100,24 @@ const remainingPosts = posts.slice(5)
 			)}
 		</div>
 
-		<!-- Right Column: Start Here / Newsletter -->
+		<!-- Right Column: Editor's Picks / Newsletter -->
 		<div class="lg:col-span-3 flex flex-col gap-8 order-3 lg:order-3">
-			<div class="flex flex-col gap-4">
-				<h2 class="text-sm font-bold uppercase tracking-widest text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-800 pb-2">Start Here</h2>
-				<ul class="flex flex-col gap-3">
-					{CATEGORIES.map(cat => (
-						<li>
-							<a href={`/category/${sluglify(cat)}/1`} class="text-md font-medium hover:text-blue-600 dark:hover:text-blue-400 transition-colors flex items-center justify-between group">
-								{cat}
-								<span class="text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400">&rarr;</span>
+			<div class="flex flex-col gap-6">
+				<h2 class="text-[13px] font-bold uppercase tracking-wider text-stone-800 dark:text-stone-200 border-b border-gray-200 dark:border-gray-800 pb-2">Editor's Picks</h2>
+				<div class="flex flex-col gap-5">
+					{editorsPicksPosts.map(post => (
+						<article>
+							<a href={`/post/${post.slug}/`} class="group flex flex-col gap-1">
+								<h3 class="text-[15px] font-semibold leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
+									{post.data.title}
+								</h3>
+								<div class="text-[12px] text-stone-500 dark:text-stone-400 flex items-center gap-2 mt-1 font-medium">
+									<FormattedDate date={post.data.pubDate} />
+								</div>
 							</a>
-						</li>
+						</article>
 					))}
-				</ul>
+				</div>
 			</div>
 
 			<div class="bg-gray-50 dark:bg-[#111] border border-gray-200 dark:border-gray-800 p-5 rounded-sm">
@@ -115,17 +139,17 @@ const remainingPosts = posts.slice(5)
 			if (catPosts.length === 0) return null;
 			return (
 				<div class="flex flex-col gap-4">
-					<h2 class="text-md font-bold uppercase tracking-widest text-gray-900 dark:text-gray-100 border-b border-gray-200 dark:border-gray-800 pb-2 flex justify-between items-center">
+					<h2 class="text-[13px] font-bold uppercase tracking-wider text-stone-800 dark:text-stone-200 border-b border-gray-200 dark:border-gray-800 pb-2 flex justify-between items-center">
 						{cat}
-						<a href={`/category/${sluglify(cat)}/1`} class="text-xs text-gray-500 hover:text-blue-600 transition-colors uppercase tracking-normal">View all</a>
+						<a href={`/category/${sluglify(cat)}/1`} class="text-[11px] text-stone-500 hover:text-stone-900 dark:hover:text-white transition-colors uppercase tracking-widest">View All</a>
 					</h2>
 					<div class="flex flex-col gap-5">
 						{catPosts.map(p => (
 							<a href={`/post/${p.slug}/`} class="group flex flex-col gap-1">
-								<h3 class="text-md font-semibold leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+								<h3 class="text-[15px] font-semibold leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2">
 									{p.data.title}
 								</h3>
-								<div class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-2">
+								<div class="text-[12px] text-stone-500 dark:text-stone-400 flex items-center gap-2 mt-1 font-medium">
 									<FormattedDate date={p.data.pubDate} />
 								</div>
 							</a>
@@ -138,7 +162,7 @@ const remainingPosts = posts.slice(5)
 
 	<!-- Latest Posts Grid -->
 	<div class="mt-16 border-t border-gray-200 dark:border-gray-800 pt-8">
-		<h2 class='text-xl font-bold uppercase tracking-widest text-gray-900 dark:text-white mb-8 border-b border-gray-200 dark:border-gray-800 pb-2'>Latest from the Desk</h2>
+		<h2 class='text-[15px] font-bold uppercase tracking-wider text-stone-800 dark:text-stone-200 mb-8 border-b border-gray-200 dark:border-gray-800 pb-2'>Latest from the Desk</h2>
 		{remainingPosts.length > 0 ? (
 			<ListPosts FirstBig={false} posts={remainingPosts} />
 		) : (

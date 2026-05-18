@@ -32,13 +32,13 @@ import MoonIcon from '@/components/icons/MoonIcon'
 	}
 </script>
 
-<theme-toggle class='relative h-6 w-6'>
-	<button id='toggle-theme' class='group' aria-label='Toggle Theme'>
-		<span class='absolute left-0 right-0 top-0 opacity-0 group-aria-pressed:opacity-100'>
+<theme-toggle class='inline-flex'>
+	<button id='toggle-theme' class='group relative flex items-center justify-center p-1.5 -m-1.5 rounded-sm text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 dark:focus-visible:ring-white' aria-label='Toggle Theme'>
+		<span class='opacity-0 group-aria-pressed:opacity-100 transition-opacity duration-200'>
 			<SunIcon />
 		</span>
 
-		<span class='absolute left-0 right-0 top-0 opacity-0 group-aria-[pressed=false]:opacity-100'>
+		<span class='absolute opacity-0 group-aria-[pressed=false]:opacity-100 transition-opacity duration-200'>
 			<MoonIcon />
 		</span>
 	</button>
