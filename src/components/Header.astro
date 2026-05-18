@@ -8,9 +8,11 @@ import { sluglify } from '@/utils'
 ---
 
 <header class='relative flex items-center justify-between h-16 md:h-[68px] border-b border-gray-200/80 dark:border-gray-800/80 bg-white dark:bg-[#0a0910] z-50 transition-colors duration-300'>
-	<div class='flex-shrink-0 z-20'>
+	<div class='flex-shrink-0 z-20 flex items-center h-full'>
 		<a class='flex items-center gap-2 rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 dark:focus-visible:ring-white' href='/' aria-label='QuBrite'>
-			<img src="/brand/header-logo.svg" alt="QuBrite" class="h-[24px] md:h-[32px] w-auto object-contain" />
+			<img src="/brand/icon.svg" alt="QuBrite Icon" class="h-8 md:h-10 w-auto hidden sm:block" />
+			<img src="/brand/header-logo.svg" alt="QuBrite" class="hidden dark:block h-[38px] md:h-[56px] w-auto object-contain" />
+			<img src="/brand/header-logo-light.svg" alt="QuBrite" class="block dark:hidden h-[38px] md:h-[56px] w-auto object-contain" />
 		</a>
 	</div>
 
