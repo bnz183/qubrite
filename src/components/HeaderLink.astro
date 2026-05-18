@@ -8,15 +8,18 @@ const { href, class: className, ...props } = Astro.props
 const { pathname } = Astro.url
 const hrefString = href ? href.toString() : ''
 const basePath = hrefString.match(/\/category\/[^\/]+/)?.[0] || hrefString
-const isActive = hrefString === pathname || hrefString === pathname.replace(/\/$/, '') || (basePath !== '/' && pathname.startsWith(basePath))
+const isActive =
+	hrefString === pathname ||
+	hrefString === pathname.replace(/\/$/, '') ||
+	(basePath !== '/' && pathname.startsWith(basePath))
 ---
 
 <a
 	href={href}
 	class={cn(
 		'transition-all duration-200 ease-in-out font-medium focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 dark:focus-visible:ring-white rounded-sm',
-		isActive 
-			? 'text-stone-950 dark:text-white underline decoration-2 underline-offset-[6px] decoration-stone-950/30 dark:decoration-white/30' 
+		isActive
+			? 'text-stone-950 dark:text-white underline decoration-2 underline-offset-[6px] decoration-stone-950/30 dark:decoration-white/30'
 			: 'text-stone-500 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-100',
 		className
 	)}

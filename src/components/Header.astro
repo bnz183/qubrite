@@ -7,20 +7,33 @@ import { CATEGORIES } from '@/data/categories'
 import { sluglify } from '@/utils'
 ---
 
-<header class='relative flex items-center justify-between h-16 md:h-[68px] border-b border-gray-200/80 dark:border-gray-800/80 bg-white dark:bg-[#0a0910] z-50 transition-colors duration-300'>
+<header
+	class='relative flex items-center justify-between h-16 md:h-[68px] border-b border-gray-200/80 dark:border-gray-800/80 bg-white dark:bg-[#0a0910] z-50 transition-colors duration-300'
+>
 	<div class='flex-shrink-0 z-20 flex items-center h-full'>
-		<a class='flex items-center gap-2 rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 dark:focus-visible:ring-white' href='/' aria-label='QuBrite'>
-			<img src="/brand/icon.svg" alt="QuBrite Icon" class="h-8 md:h-10 w-auto hidden sm:block" />
-			<img src="/brand/header-logo.svg" alt="QuBrite" class="hidden dark:block h-[38px] md:h-[56px] w-auto object-contain" />
-			<img src="/brand/header-logo-light.svg" alt="QuBrite" class="block dark:hidden h-[38px] md:h-[56px] w-auto object-contain" />
+		<a
+			class='flex items-center gap-2 rounded-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 dark:focus-visible:ring-white'
+			href='/'
+			aria-label='QuBrite'
+		>
+			<img
+				src='/brand/header-logo.svg'
+				alt='QuBrite'
+				class='hidden dark:block h-[26px] md:h-[32px] w-auto object-contain'
+			/>
+			<img
+				src='/brand/header-logo-light.svg'
+				alt='QuBrite'
+				class='block dark:hidden h-[26px] md:h-[32px] w-auto object-contain'
+			/>
 		</a>
 	</div>
 
 	<nav class='hidden lg:flex flex-1 items-center justify-center gap-4 xl:gap-8 px-4 min-w-0'>
 		{
 			CATEGORIES.map((category) => (
-				<HeaderLink 
-					href={`/category/${sluglify(category.toLowerCase())}/1`} 
+				<HeaderLink
+					href={`/category/${sluglify(category.toLowerCase())}/1`}
 					class='text-[14px] xl:text-[15px] leading-none whitespace-nowrap'
 				>
 					{category}
@@ -29,10 +42,18 @@ import { sluglify } from '@/utils'
 		}
 	</nav>
 
-	<div class='flex items-center justify-end gap-5 lg:gap-6 flex-shrink-0 z-20' transition:persist='navbar'>
+	<div
+		class='flex items-center justify-end gap-5 lg:gap-6 flex-shrink-0 z-20'
+		transition:persist='navbar'
+	>
 		<Search />
 		<ToggleTheme />
-		<button id='astro-header-drawer-button' type='button' class='lg:hidden p-1.5 -mr-1.5 rounded-sm text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 dark:focus-visible:ring-white' aria-label='Toggle Mobile Menu'>
+		<button
+			id='astro-header-drawer-button'
+			type='button'
+			class='lg:hidden p-1.5 -mr-1.5 rounded-sm text-stone-600 dark:text-stone-300 hover:text-stone-900 dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 dark:focus-visible:ring-white'
+			aria-label='Toggle Mobile Menu'
+		>
 			<MenuIcon />
 		</button>
 	</div>
@@ -42,26 +63,25 @@ import { sluglify } from '@/utils'
 		id='astro-header-drawer'
 		class='absolute top-16 md:top-[68px] left-0 w-full bg-white dark:bg-[#0a0910] border-b border-gray-200 dark:border-gray-800 shadow-2xl z-40 hidden lg:hidden overflow-hidden'
 	>
-		<div class='flex flex-col px-6 py-8 max-h-[calc(100vh-64px)] md:max-h-[calc(100vh-68px)] overflow-y-auto'>
+		<div
+			class='flex flex-col px-6 py-8 max-h-[calc(100vh-64px)] md:max-h-[calc(100vh-68px)] overflow-y-auto'
+		>
 			<nav class='flex flex-col gap-6 text-left'>
 				{
 					CATEGORIES.map((category) => (
-						<HeaderLink href={`/category/${sluglify(category.toLowerCase())}/1`} class='text-[1.15rem] tracking-wide'>
+						<HeaderLink
+							href={`/category/${sluglify(category.toLowerCase())}/1`}
+							class='text-[1.15rem] tracking-wide'
+						>
 							{category}
 						</HeaderLink>
 					))
 				}
 				<div class='my-2 border-t border-gray-200/80 dark:border-gray-800/80'></div>
 				<div class='flex flex-col gap-5'>
-					<HeaderLink href='/about' class='text-[15px]'>
-						About
-					</HeaderLink>
-					<HeaderLink href='/contact' class='text-[15px]'>
-						Contact
-					</HeaderLink>
-					<HeaderLink href='/editorial-policy' class='text-[15px]'>
-						Editorial Policy
-					</HeaderLink>
+					<HeaderLink href='/about' class='text-[15px]'>About</HeaderLink>
+					<HeaderLink href='/contact' class='text-[15px]'>Contact</HeaderLink>
+					<HeaderLink href='/editorial-policy' class='text-[15px]'>Editorial Policy</HeaderLink>
 				</div>
 			</nav>
 		</div>

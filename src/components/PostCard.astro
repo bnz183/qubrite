@@ -10,66 +10,79 @@ const {
 	slug
 } = Astro.props
 
-const isGeneric = heroImage.src.includes('placeholder') || 
-                  heroImage.src.includes('default') || 
-                  heroImage.src.includes('bg.jpg')
+const isGeneric =
+	heroImage.src.includes('placeholder') ||
+	heroImage.src.includes('default') ||
+	heroImage.src.includes('/bg.')
 ---
 
-<article class='grid grid-rows-[220px_auto] min-h-full group border border-gray-100 dark:border-gray-800 rounded-sm overflow-hidden bg-white dark:bg-[#0f0e13]'>
-	<a class='relative overflow-hidden group/image border-b border-gray-100 dark:border-gray-800' href={`/post/${slug}/`}>
-		{isGeneric ? (
-			<div class='h-[220px] w-full flex flex-col justify-between p-4 bg-stone-50 dark:bg-[#0c0b10] group-hover/image:bg-stone-100 dark:group-hover/image:bg-[#111016] transition-colors relative'>
-				<div class="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] transition-transform duration-500 group-hover/image:scale-105"></div>
-				
-				<div class='relative z-10 flex justify-end'>
-					<span class='bg-white/80 dark:bg-[#0a0910]/80 text-stone-600 dark:text-stone-400 text-[10px] font-bold px-2 py-1 rounded-sm backdrop-blur-md border border-gray-200/50 dark:border-gray-800/50'>
-						{readTime}
-					</span>
-				</div>
+<article
+	class='grid grid-rows-[220px_auto] min-h-full group border border-gray-100 dark:border-gray-800 rounded-sm overflow-hidden bg-white dark:bg-[#0f0e13]'
+>
+	<a
+		class='relative overflow-hidden group/image border-b border-gray-100 dark:border-gray-800'
+		href={`/post/${slug}/`}
+	>
+		{
+			isGeneric ? (
+				<div class='h-[220px] w-full flex flex-col justify-between p-4 bg-stone-50 dark:bg-[#0c0b10] group-hover/image:bg-stone-100 dark:group-hover/image:bg-[#111016] transition-colors relative'>
+					<div class='absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] transition-transform duration-500 group-hover/image:scale-105' />
 
-				<div class='relative z-10 flex-1 flex items-center justify-center pointer-events-none'>
-					<span class="text-2xl md:text-3xl font-bold uppercase tracking-[0.15em] text-stone-800/80 dark:text-stone-200/80 group-hover/image:text-stone-900 dark:group-hover/image:text-white transition-colors drop-shadow-sm">
-						{category}
-					</span>
-				</div>
-			</div>
-		) : (
-			<>
-				<Image
-					src={heroImage}
-					width={600}
-					height={200}
-					format='webp'
-					class='h-[220px] min-w-full object-cover group-hover/image:scale-[101%] transition-all duration-200'
-					alt={`Cover image for ${title}`}
-				/>
+					<div class='relative z-10 flex justify-end'>
+						<span class='bg-white/80 dark:bg-[#0a0910]/80 text-stone-600 dark:text-stone-400 text-[10px] font-bold px-2 py-1 rounded-sm backdrop-blur-md border border-gray-200/50 dark:border-gray-800/50'>
+							{readTime}
+						</span>
+					</div>
 
-				<div class='z-30 absolute bottom-0 w-full h-16 pointer-events-none'>
-					<div class='-z-10 absolute bottom-0 bg-gradient-to-t from-black/80 to-transparent w-full min-h-full'></div>
-					<div class='flex items-end justify-between gap-x-1 text-white px-4 py-3 h-full'>
-						<div class='flex flex-col gap-1'>
-							<span class='text-[10px] uppercase font-bold tracking-wider'>{category}</span>
-						</div>
-						<span class='text-[11px] font-medium'>{readTime}</span>
+					<div class='relative z-10 flex-1 flex items-center justify-center pointer-events-none'>
+						<span class='text-2xl md:text-3xl font-bold uppercase tracking-[0.15em] text-stone-800/80 dark:text-stone-200/80 group-hover/image:text-stone-900 dark:group-hover/image:text-white transition-colors drop-shadow-sm'>
+							{category}
+						</span>
 					</div>
 				</div>
-			</>
-		)}
+			) : (
+				<>
+					<Image
+						src={heroImage}
+						width={600}
+						height={200}
+						format='webp'
+						class='h-[220px] min-w-full object-cover group-hover/image:scale-[101%] transition-all duration-200 text-transparent'
+						alt={`Cover image for ${title}`}
+					/>
+
+					<div class='z-30 absolute bottom-0 w-full h-16 pointer-events-none'>
+						<div class='-z-10 absolute bottom-0 bg-gradient-to-t from-black/80 to-transparent w-full min-h-full' />
+						<div class='flex items-end justify-between gap-x-1 text-white px-4 py-3 h-full'>
+							<div class='flex flex-col gap-1'>
+								<span class='text-[10px] uppercase font-bold tracking-wider'>{category}</span>
+							</div>
+							<span class='text-[11px] font-medium'>{readTime}</span>
+						</div>
+					</div>
+				</>
+			)
+		}
 	</a>
 
 	<div class='flex justify-between flex-col gap-4 p-5'>
 		<div class='flex flex-col gap-3'>
-			<div class='text-[12px] font-medium text-stone-500 dark:text-stone-400'>
+			<div class='text-[12px] font-medium text-stone-600 dark:text-stone-300'>
 				<FormattedDate date={pubDate} />
 			</div>
-			
+
 			<div class='flex flex-col gap-2'>
-				<a class='text-[22px] font-bold leading-tight -tracking-wide group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-3' href={`/post/${slug}/`}>
+				<a
+					class='text-[22px] font-bold leading-tight -tracking-wide group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-3'
+					href={`/post/${slug}/`}
+				>
 					{title}
 				</a>
 			</div>
 
-			<p class='overflow-hidden line-clamp-3 text-[15px] leading-relaxed text-stone-600 dark:text-stone-300 mb-2 font-medium'>
+			<p
+				class='overflow-hidden line-clamp-3 text-[15px] leading-relaxed text-stone-700 dark:text-stone-200 mb-2 font-medium'
+			>
 				{description}
 			</p>
 		</div>
@@ -80,7 +93,9 @@ const isGeneric = heroImage.src.includes('placeholder') ||
 				class='flex justify-center items-center dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors text-[13px] font-bold uppercase tracking-wide gap-1 group/btn'
 				aria-label={`Read ${title}`}
 			>
-				Read Post <span class='group-hover/btn:translate-x-1 transition-transform'><ArrowUp width='14' height='14' /></span>
+				Read Post <span class='group-hover/btn:translate-x-1 transition-transform'
+					><ArrowUp width='14' height='14' /></span
+				>
 			</a>
 		</footer>
 	</div>

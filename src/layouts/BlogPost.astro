@@ -32,8 +32,12 @@ const articleDate = pubDate.toISOString()
 				<h1 class='text-4xl md:text-5xl font-bold leading-tight -tracking-wide max-w-4xl mx-auto'>
 					{title}
 				</h1>
-				<div class='flex flex-wrap items-center justify-center gap-x-3 text-[13px] font-medium text-stone-500 dark:text-stone-400'>
-					<span class='uppercase tracking-widest font-bold text-stone-800 dark:text-stone-200'>{siteConfig.author}</span>
+				<div
+					class='flex flex-wrap items-center justify-center gap-x-3 text-[13px] font-medium text-stone-500 dark:text-stone-400'
+				>
+					<span class='uppercase tracking-widest font-bold text-stone-800 dark:text-stone-200'
+						>{siteConfig.author}</span
+					>
 					<span class='opacity-50'>&bull;</span>
 					<FormattedDate date={pubDate} />
 					<span class='opacity-50'>&bull;</span>
