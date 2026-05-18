@@ -11,9 +11,9 @@ interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   site: 'https://qubrite.com/',
-  author: 'Qubrite Editorial',
-  title: 'Qubrite',
-  description: 'Technical reviews, guides, and analysis across AI, automation, security, privacy, software, hardware, and digital business.',
+  author: 'QuBrite Editorial',
+  title: 'QuBrite',
+  description: 'QuBrite is a premium technical publication covering AI web building, automation systems, cyber labs, privacy tech, hardware, and business systems.',
   lang: 'en-GB',
   ogLocale: 'en_GB',
   shareMessage: 'Share this post',
