@@ -30,5 +30,10 @@ export default defineConfig({
 		}),
 		tailwind(),
 		sitemap()
-	]
+	],
+	vite: {
+		build: {
+			sourcemap: false
+		}
+	}
 })
