@@ -30,10 +30,16 @@ import { sluglify } from '@/utils'
 	</div>
 
 	<nav class='hidden lg:flex flex-1 items-center justify-center gap-4 xl:gap-8 px-4 min-w-0'>
+		<HeaderLink
+			href='/'
+			class='text-[14px] xl:text-[15px] leading-none whitespace-nowrap'
+		>
+			Latest
+		</HeaderLink>
 		{
 			CATEGORIES.map((category) => (
 				<HeaderLink
-					href={`/category/${sluglify(category.toLowerCase())}/1`}
+					href={`/category/${sluglify(category)}/1`}
 					class='text-[14px] xl:text-[15px] leading-none whitespace-nowrap'
 				>
 					{category}
@@ -67,10 +73,16 @@ import { sluglify } from '@/utils'
 			class='flex flex-col px-6 py-8 max-h-[calc(100vh-64px)] md:max-h-[calc(100vh-68px)] overflow-y-auto'
 		>
 			<nav class='flex flex-col gap-6 text-left'>
+				<HeaderLink
+					href='/'
+					class='text-[1.15rem] tracking-wide'
+				>
+					Latest
+				</HeaderLink>
 				{
 					CATEGORIES.map((category) => (
 						<HeaderLink
-							href={`/category/${sluglify(category.toLowerCase())}/1`}
+							href={`/category/${sluglify(category)}/1`}
 							class='text-[1.15rem] tracking-wide'
 						>
 							{category}

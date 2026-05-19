@@ -1,8 +1,8 @@
 export const CATEGORIES = [
-	'AI Building',
+	'AI Web Development',
 	'Automation',
 	'Cyber Labs',
 	'Privacy Tech',
 	'Hardware',
-	'Business Systems'
+	'Business & Finance'
 ] as const
