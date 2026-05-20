@@ -2,7 +2,7 @@
 title: "n8n for Beginners: Build One AI Automation Workflow You Can Reuse Everywhere"
 description: "Learn how to build a reusable n8n AI workflow for research, content, leads, and support using human approval, logging, and beginner-safe automation design."
 pubDate: "2026-05-20T21:55:00Z"
-heroImage: "../../assets/images/n8n-ai-automation-workflow.png"
+heroImage: "../../assets/images/n8n-hero-workflow.png"
 category: "Automation"
 tags:
   - n8n
@@ -16,6 +16,8 @@ draft: false
 ---
 
 import DisclosureBox from '../../components/DisclosureBox.astro'
+import { Image } from 'astro:assets'
+import workflowScreenshot from '../../assets/images/n8n-ai-automation-workflow.png'
 
 Most people do not have an AI problem. They have a workflow problem.
 
@@ -125,6 +127,21 @@ A clean beginner version looks like this:
 | 8 | Log | Records the final state | Save approved/rejected status |
 
 This is boring in the best possible way. Boring workflows are easier to debug, easier to trust, and easier to monetize because people can actually follow what is happening.
+
+<figure class='not-prose my-8'>
+  <Image
+    src={workflowScreenshot}
+    alt='n8n editor canvas showing RSS Feed Trigger → Code in JavaScript → HTTP Request nodes'
+    widths={[640, 960, 1280]}
+    sizes='(max-width: 768px) 100vw, 960px'
+    quality={88}
+    class='w-full h-auto rounded-md border border-gray-200 dark:border-gray-800'
+    style='object-fit: contain;'
+  />
+  <figcaption class='mt-2 text-center text-[12px] text-stone-500 dark:text-stone-400'>
+    A real n8n canvas: RSS trigger feeds into JavaScript processing nodes and an HTTP request to an external API.
+  </figcaption>
+</figure>
 
 ## Step 1: Choose the Trigger
 

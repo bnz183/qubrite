@@ -56,12 +56,11 @@ const articleDate = pubDate.toISOString()
 				heroImage && (
 					<Image
 						src={heroImage}
-						width={1000}
-						height={500}
-						quality={100}
-						format='jpg'
+						widths={[640, 960, 1280, 1600, 2200]}
+						sizes='(max-width: 640px) 640px, (max-width: 1024px) 960px, (max-width: 1440px) 1280px, 1600px'
+						quality={88}
 						loading='eager'
-						class='rounded-md w-full max-h-[300px]  md:max-h-[500px] my-8 object-cover'
+						class='rounded-md w-full my-8 object-cover max-h-[420px] md:max-h-[540px]'
 						alt={`img of ${title}`}
 					/>
 				)
