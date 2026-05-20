@@ -1,8 +1,8 @@
 ---
 import type { CollectionEntry } from 'astro:content'
-
-import { cn } from '@/utils'
 import { Image } from 'astro:assets'
+import FormattedDate from '@/components/FormattedDate'
+import { getPostSlug } from '@/utils'
 
 type Props = {
 	posts: CollectionEntry<'blog'>[]
@@ -11,32 +11,41 @@ type Props = {
 const { posts } = Astro.props
 ---
 
-<section class={cn(`flex flex-col md:flex-row sm:justify-between gap-8`)}>
+<section class='flex flex-col gap-4'>
 	{
 		posts.length > 0 ? (
-			posts.map((post) => {
-				return (
-					<div class='flex flex-wrap gap-2'>
-						<div class='min-h-full'>
-							<Image
-								src={post.data.heroImage}
-								width={200}
-								height={200}
-								format='webp'
-								class='w-16 h-16 object-cover rounded-full  '
-								alt={`img of ${post.data.title}`}
-							/>
-						</div>
-						<header class='flex justify-center items-center'>
-							<a class='font-medium  hover:underline' href={`/post/${post.id}/`}>
-								{post.data.title}
-							</a>
-						</header>
+			posts.map((post) => (
+				<a
+					href={`/post/${getPostSlug(post)}/`}
+					class='group flex gap-4 items-start border border-gray-100 dark:border-gray-800 rounded-sm overflow-hidden bg-white dark:bg-[#0f0e13] hover:border-stone-300 dark:hover:border-stone-600 transition-colors'
+				>
+					<div class='shrink-0 w-24 sm:w-28 aspect-[16/9] overflow-hidden bg-stone-50 dark:bg-[#0c0b10]'>
+						<Image
+							src={post.data.heroImage}
+							width={160}
+							height={90}
+							format='webp'
+							class='w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-200'
+							alt={`Cover image for ${post.data.title}`}
+						/>
 					</div>
-				)
-			})
+					<div class='flex flex-col gap-1 py-3 pr-4 min-w-0'>
+						<span class='text-[10px] font-bold uppercase tracking-wider text-stone-600 dark:text-stone-400'>
+							{post.data.category}
+						</span>
+						<span class='text-[12px] text-stone-500 dark:text-stone-500 font-medium'>
+							<FormattedDate date={post.data.pubDate} />
+						</span>
+						<h3 class='text-[15px] font-semibold leading-snug text-stone-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2'>
+							{post.data.title}
+						</h3>
+					</div>
+				</a>
+			))
 		) : (
-			<span class='text-gray-500'>There are no related posts yet. 😢</span>
+			<span class='text-stone-500 dark:text-stone-400 text-sm'>
+				There are no related posts yet.
+			</span>
 		)
 	}
 </section>

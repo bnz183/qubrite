@@ -3,6 +3,7 @@ import type { CollectionEntry } from 'astro:content'
 import FormattedDate from '@/components/FormattedDate'
 import BaseLayout from '@/layouts/BaseLayout'
 import Tag from '@/components/Tag'
+import AuthorBox from '@/components/AuthorBox'
 import type { MarkdownHeading } from 'astro'
 import { Image } from 'astro:assets'
 import { siteConfig } from '@/site-config'
@@ -71,6 +72,7 @@ const articleDate = pubDate.toISOString()
 
 		<div>
 			<slot />
+			<AuthorBox pubDate={pubDate} readTime={readTime} />
 		</div>
 	</article>
 </BaseLayout>
@@ -82,27 +84,35 @@ const articleDate = pubDate.toISOString()
 			observer: IntersectionObserver
 		) {
 			entries.forEach((entry) => {
-				const index = document.querySelector(`aside a[href="#${entry.target.id}"]`)
+				const index = document.querySelector(`aside a[data-toc-link][href="#${entry.target.id}"]`)
 
 				if (entry.isIntersecting) {
-					index?.classList.remove('bg-slate-200', 'dark:bg-slate-800') // remove bg
+					index?.classList.remove(
+						'border-transparent',
+						'text-stone-500',
+						'dark:text-stone-400',
+						'font-normal'
+					)
 					index?.classList.add(
-						'bg-indigo-600',
-						'dark:bg-indigo-700',
-						'text-white',
-						'font-bold',
-						'transition-colors',
-						'duration-200'
+						'border-stone-900',
+						'dark:border-white',
+						'text-stone-900',
+						'dark:text-white',
+						'font-semibold'
 					)
 				} else {
-					index?.classList.add('bg-slate-200', 'dark:bg-slate-800') // add bg
+					index?.classList.add(
+						'border-transparent',
+						'text-stone-500',
+						'dark:text-stone-400',
+						'font-normal'
+					)
 					index?.classList.remove(
-						'bg-indigo-600',
-						'dark:bg-indigo-700',
-						'text-white',
-						'font-bold',
-						'transition-colors',
-						'duration-200'
+						'border-stone-900',
+						'dark:border-white',
+						'text-stone-900',
+						'dark:text-white',
+						'font-semibold'
 					)
 				}
 			})

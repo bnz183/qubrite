@@ -3,29 +3,23 @@ import ArrowLeft from './icons/ArrowLeft.astro'
 import ArrowRight from './icons/ArrowRight.astro'
 
 const { page } = Astro.props
+
+const linkClass =
+	'inline-flex items-center justify-center px-4 h-10 text-sm font-medium rounded-sm border border-gray-200 dark:border-gray-800 text-stone-700 dark:text-stone-300 bg-white dark:bg-[#0a0910] hover:border-stone-400 dark:hover:border-stone-600 hover:text-stone-950 dark:hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-stone-900 dark:focus-visible:ring-white'
 ---
 
-<div class='flex gap-5 md:gap-1 justify-around md:justify-end'>
-	<!-- Previous Button -->
+<div class='flex gap-4 justify-around md:justify-end'>
 	{
 		page.start > 0 && (
-			<a
-				href={page.url.prev}
-				class='flex items-center justify-center px-8 md:px-4 h-10 text-base font-medium text-black bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-transparent dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-			>
+			<a href={page.url.prev} class={linkClass} aria-label='Previous page'>
 				<ArrowLeft />
 			</a>
 		)
 	}
 
-	<!-- Next Button -->
-
 	{
 		page.currentPage < page.lastPage && (
-			<a
-				href={page.url.next}
-				class='flex items-center justify-center px-8 md:px-4 h-10 ml-3 text-base font-medium text-black bg-white border border-gray-300 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-transparent dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'
-			>
+			<a href={page.url.next} class={linkClass} aria-label='Next page'>
 				<ArrowRight />
 			</a>
 		)

@@ -1,0 +1,85 @@
+backend:
+  name: git-gateway
+  branch: main
+
+local_backend: true
+
+site_url: https://qubrite.com
+display_url: https://qubrite.com
+logo_url: /brand/icon.svg
+
+media_folder: src/assets/images
+public_folder: ../../assets/images
+
+publish_mode: simple
+
+collections:
+  - name: blog
+    label: Blog Posts
+    label_singular: Blog Post
+    folder: src/content/blog
+    create: true
+    slug: '{{slug}}'
+    extension: mdx
+    format: frontmatter
+    fields:
+      - label: URL Slug
+        name: slug
+        widget: string
+        required: true
+        hint: Lowercase with hyphens, e.g. my-new-article
+        pattern:
+          - '^[a-z0-9]+(?:-[a-z0-9]+)*$'
+          - Must use lowercase letters, numbers, and hyphens only
+      - label: Title
+        name: title
+        widget: string
+        required: true
+      - label: Description
+        name: description
+        widget: text
+        required: true
+      - label: Publish Date
+        name: pubDate
+        widget: datetime
+        required: true
+        format: YYYY-MM-DDTHH:mm:ss[Z]
+        date_format: false
+        time_format: false
+        picker_utc: true
+        hint: ISO timestamp in UTC, e.g. 2026-05-20T10:00:00Z
+      - label: Hero Image
+        name: heroImage
+        widget: string
+        required: true
+        default: ../../assets/images/default-cover.png
+        hint: Use ../../assets/images/… unless you add another Astro-compatible path
+      - label: Category
+        name: category
+        widget: select
+        required: true
+        options:
+          - AI Web Development
+          - Automation
+          - Cyber Labs
+          - Privacy Tech
+          - Hardware
+          - Business & Finance
+      - label: Tags
+        name: tags
+        widget: list
+        summary: '{{fields}}'
+        allow_add: true
+        field:
+          label: Tag
+          widget: string
+        default: []
+      - label: Draft
+        name: draft
+        widget: boolean
+        default: true
+        hint: Keep true while editing; set false to publish on the live site
+      - label: Body
+        name: body
+        widget: markdown
+        required: true
