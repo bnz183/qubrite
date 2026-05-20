@@ -51,25 +51,25 @@ const articleDate = pubDate.toISOString()
 			</div>
 		</header>
 
-		<>
-			{
-				heroImage && (
+		{
+			heroImage && (
+				<figure class='qb-watermark my-8'>
 					<Image
 						src={heroImage}
 						widths={[640, 960, 1280, 1600, 2200]}
 						sizes='(max-width: 640px) 640px, (max-width: 1024px) 960px, (max-width: 1440px) 1280px, 1600px'
 						quality={88}
 						loading='eager'
-						class='rounded-md w-full my-8 object-cover max-h-[420px] md:max-h-[540px]'
+						class='rounded-md w-full object-cover max-h-[420px] md:max-h-[540px]'
 						alt={`img of ${title}`}
 					/>
-				)
-			}
-		</>
+				</figure>
+			)
+		}
 
 		<hr />
 
-		<div>
+		<div class='article-content'>
 			<slot />
 			<AuthorBox pubDate={pubDate} readTime={readTime} />
 		</div>

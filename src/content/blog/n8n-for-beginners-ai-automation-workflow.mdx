@@ -129,15 +129,16 @@ A clean beginner version looks like this:
 This is boring in the best possible way. Boring workflows are easier to debug, easier to trust, and easier to monetize because people can actually follow what is happening.
 
 <figure class='not-prose my-8'>
-  <Image
-    src={workflowScreenshot}
-    alt='n8n editor canvas showing RSS Feed Trigger → Code in JavaScript → HTTP Request nodes'
-    widths={[640, 960, 1280]}
-    sizes='(max-width: 768px) 100vw, 960px'
-    quality={88}
-    class='w-full h-auto rounded-md border border-gray-200 dark:border-gray-800'
-    style='object-fit: contain;'
-  />
+  <span class='qb-watermark block rounded-md overflow-hidden border border-gray-200 dark:border-gray-800'>
+    <Image
+      src={workflowScreenshot}
+      alt='n8n editor canvas showing RSS Feed Trigger → Code in JavaScript → HTTP Request nodes'
+      widths={[640, 960, 1280]}
+      sizes='(max-width: 768px) 100vw, 960px'
+      quality={88}
+      class='screenshot w-full h-auto'
+    />
+  </span>
   <figcaption class='mt-2 text-center text-[12px] text-stone-500 dark:text-stone-400'>
     A real n8n canvas: RSS trigger feeds into JavaScript processing nodes and an HTTP request to an external API.
   </figcaption>

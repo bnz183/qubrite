@@ -28,6 +28,60 @@
 	}
 }
 
+.article-content img {
+	max-width: 100%;
+	height: auto;
+}
+
+.article-content .screenshot {
+	object-fit: contain;
+	border-radius: 16px;
+}
+
+/* Image credit watermark.
+   - Hero images are auto-wrapped in <figure class='qb-watermark'> by BlogPost.astro.
+   - For inline article images, wrap the <Image> in a <span class='qb-watermark'>
+     or <div class='qb-watermark'> sibling of the <figcaption>, not the <figure>
+     itself, so the watermark stays inside the image and not over the caption.
+   - All bare <img> inside .article-content are also wrapped visually via the
+     .qb-watermark-auto rule below (applied by adding the class to a wrapper). */
+.qb-watermark {
+	position: relative;
+	display: block;
+	line-height: 0;
+}
+
+.qb-watermark > img,
+.qb-watermark > picture,
+.qb-watermark > picture > img {
+	display: block;
+	width: 100%;
+	height: auto;
+}
+
+.qb-watermark::after {
+	content: 'qubrite.com';
+	position: absolute;
+	right: 0.75rem;
+	bottom: 0.75rem;
+	padding: 2px 8px;
+	font-size: 11px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	color: rgba(255, 255, 255, 0.85);
+	background: rgba(0, 0, 0, 0.45);
+	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
+	border-radius: 4px;
+	pointer-events: none;
+	line-height: 1.4;
+	z-index: 1;
+}
+
+.qb-watermark-off::after {
+	content: none;
+}
+
 .glass {
 	background: rgba(57, 56, 56, 0.52);
 	backdrop-filter: blur(13px) saturate(150%);
