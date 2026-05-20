@@ -2,7 +2,7 @@
 import type { CollectionEntry } from 'astro:content'
 import { render } from 'astro:content'
 import PostCard from '@/components/PostCard'
-import { cn } from '@/utils'
+import { cn, getPostSlug } from '@/utils'
 
 type Props = {
 	posts: CollectionEntry<'blog'>[]
@@ -26,7 +26,7 @@ const { posts, FirstBig = false } = Astro.props
 				<PostCard
 					id={post.id}
 					data={post.data}
-					slug={post.slug}
+					slug={getPostSlug(post)}
 					readTime={remarkPluginFrontmatter.minutesRead}
 				/>
 			)

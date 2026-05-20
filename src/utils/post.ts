@@ -1,5 +1,8 @@
-import { getCollection } from 'astro:content'
+import { getCollection, type CollectionEntry } from 'astro:content'
 import { CATEGORIES } from '@/data/categories'
+
+/** URL segment for `/post/[slug]/` (glob loader entries use `id`, not `slug`). */
+export const getPostSlug = (post: Pick<CollectionEntry<'blog'>, 'id'>) => post.id
 
 export const getCategories = async () => {
 	const posts = await getCollection('blog')

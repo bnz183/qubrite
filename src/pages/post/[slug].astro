@@ -15,7 +15,7 @@ export async function getStaticPaths() {
 	const posts = await getPosts()
 
 	return posts.map((post) => ({
-		params: { slug: post.slug },
+		params: { slug: post.id },
 		props: post
 	}))
 }
@@ -26,7 +26,7 @@ const MAX_POSTS = 3
 const getRelatedPosts = (post: Props) => {
 	const lowercaseTags = post.data.tags.map((tag) => tag.toLowerCase())
 	const relatedPosts = posts.filter(
-		(p) => p.slug !== post.slug && p.data.tags.some((t) => lowercaseTags.includes(t.toLowerCase()))
+		(p) => p.id !== post.id && p.data.tags.some((t) => lowercaseTags.includes(t.toLowerCase()))
 	)
 	return relatedPosts.slice(0, MAX_POSTS)
 }
@@ -55,7 +55,10 @@ const disqusEnabled = disqusConfig.enabled
 
 		<!-- post -->
 		<article class='max-w-full w-full'>
-			<div class='prose prose-lg md:prose-xl dark:prose-invert mb-12 min-w-full'>
+			<div
+				class='prose prose-lg md:prose-xl dark:prose-invert mb-12 min-w-full'
+				data-pagefind-body
+			>
 				<Content components={{ pre: Code, SButton }} />
 			</div>
 

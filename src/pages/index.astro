@@ -19,7 +19,7 @@ const isFeaturedGeneric =
 		featuredPost.data.heroImage.src.includes('/bg.'))
 const latestBriefs = posts.slice(1, 5)
 const remainingPosts = posts.slice(5)
-const editorsPicksPosts = posts.filter((p) => EDITORS_PICKS.includes(p.slug)).slice(0, 3)
+const editorsPicksPosts = posts.filter((p) => EDITORS_PICKS.includes(p.id)).slice(0, 3)
 ---
 
 <BaseLayout title='AI Web Development, Automation & Tech Systems'>
@@ -39,7 +39,7 @@ const editorsPicksPosts = posts.filter((p) => EDITORS_PICKS.includes(p.slug)).sl
 					latestBriefs.length > 0 ? (
 						latestBriefs.map((post) => (
 							<article>
-								<a href={`/post/${post.slug}/`} class='group flex flex-col gap-1'>
+								<a href={`/post/${post.id}/`} class='group flex flex-col gap-1'>
 									<h3 class='text-[15px] font-semibold leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2'>
 										{post.data.title}
 									</h3>
@@ -71,7 +71,7 @@ const editorsPicksPosts = posts.filter((p) => EDITORS_PICKS.includes(p.slug)).sl
 				featuredPost ? (
 					<article class='group flex flex-col gap-4'>
 						<a
-							href={`/post/${featuredPost.slug}/`}
+							href={`/post/${featuredPost.id}/`}
 							class='block overflow-hidden relative rounded-sm aspect-[16/9] bg-stone-50 dark:bg-[#0c0b10] border border-gray-100 dark:border-gray-800 group/feat'
 						>
 							{isFeaturedGeneric ? (
@@ -104,7 +104,7 @@ const editorsPicksPosts = posts.filter((p) => EDITORS_PICKS.includes(p.slug)).sl
 								<FormattedDate date={featuredPost.data.pubDate} />
 							</div>
 							<a
-								href={`/post/${featuredPost.slug}/`}
+								href={`/post/${featuredPost.id}/`}
 								class='group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors'
 							>
 								<h3 class='text-3xl md:text-4xl font-bold leading-tight -tracking-wide line-clamp-3'>
@@ -115,7 +115,7 @@ const editorsPicksPosts = posts.filter((p) => EDITORS_PICKS.includes(p.slug)).sl
 								{featuredPost.data.description}
 							</p>
 							<a
-								href={`/post/${featuredPost.slug}/`}
+								href={`/post/${featuredPost.id}/`}
 								class='mt-2 inline-flex items-center text-sm font-bold uppercase tracking-wide hover:text-blue-600 dark:hover:text-blue-400 transition-colors group-hover:underline decoration-2 underline-offset-4'
 							>
 								Read Analysis &rarr;
@@ -140,7 +140,7 @@ const editorsPicksPosts = posts.filter((p) => EDITORS_PICKS.includes(p.slug)).sl
 					{
 						editorsPicksPosts.map((post) => (
 							<article>
-								<a href={`/post/${post.slug}/`} class='group flex flex-col gap-1'>
+								<a href={`/post/${post.id}/`} class='group flex flex-col gap-1'>
 									<h3 class='text-[15px] font-semibold leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2'>
 										{post.data.title}
 									</h3>
@@ -199,7 +199,7 @@ const editorsPicksPosts = posts.filter((p) => EDITORS_PICKS.includes(p.slug)).sl
 						</h2>
 						<div class='flex flex-col gap-5'>
 							{catPosts.map((p) => (
-								<a href={`/post/${p.slug}/`} class='group flex flex-col gap-1'>
+								<a href={`/post/${p.id}/`} class='group flex flex-col gap-1'>
 									<h3 class='text-[15px] font-semibold leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors line-clamp-2'>
 										{p.data.title}
 									</h3>
