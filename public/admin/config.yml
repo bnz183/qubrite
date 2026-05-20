@@ -1,6 +1,11 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: bnz183/qubrite
   branch: main
+  # Production auth requires an OAuth proxy. Set base_url to your proxy URL.
+  # Until a proxy is running, production login will fail (local_backend still works).
+  # See automation/cms-admin.md for proxy options.
+  # base_url: https://your-oauth-proxy.example.com
 
 local_backend: true
 
@@ -23,14 +28,6 @@ collections:
     extension: mdx
     format: frontmatter
     fields:
-      - label: URL Slug
-        name: slug
-        widget: string
-        required: true
-        hint: Lowercase with hyphens, e.g. my-new-article
-        pattern:
-          - '^[a-z0-9]+(?:-[a-z0-9]+)*$'
-          - Must use lowercase letters, numbers, and hyphens only
       - label: Title
         name: title
         widget: string
@@ -53,7 +50,7 @@ collections:
         widget: string
         required: true
         default: ../../assets/images/default-cover.png
-        hint: Use ../../assets/images/… unless you add another Astro-compatible path
+        hint: "Relative path from the MDX file: ../../assets/images/filename.jpg"
       - label: Category
         name: category
         widget: select
@@ -68,10 +65,10 @@ collections:
       - label: Tags
         name: tags
         widget: list
-        summary: '{{fields}}'
         allow_add: true
         field:
           label: Tag
+          name: tag
           widget: string
         default: []
       - label: Draft
