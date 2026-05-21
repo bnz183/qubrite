@@ -4,6 +4,7 @@ import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ProviderTheme from '@/components/ProviderTheme'
 import ProviderAnimations from '@/components/ProviderAnimations'
+import ConsentBanner from '@/components/ConsentBanner'
 const { title, description, image, articleDate } = Astro.props
 
 const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID
@@ -14,15 +15,27 @@ const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID
 		{
 			gaId && (
 				<>
-					<!-- Google tag (gtag.js) -->
-					<script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
-					<script is:inline define:vars={{ gaId }}>
+					{/* Google Consent Mode v2 — default denied until user opts in. */}
+					<script is:inline>
 						window.dataLayer = window.dataLayer || []
 						function gtag() {
 							dataLayer.push(arguments)
 						}
+						gtag('consent', 'default', {
+							ad_storage: 'denied',
+							ad_user_data: 'denied',
+							ad_personalization: 'denied',
+							analytics_storage: 'denied',
+							functionality_storage: 'granted',
+							security_storage: 'granted',
+							wait_for_update: 500,
+						})
+					</script>
+					{/* Google tag (gtag.js) */}
+					<script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+					<script is:inline define:vars={{ gaId }}>
 						gtag('js', new Date())
-						gtag('config', gaId)
+						gtag('config', gaId, { anonymize_ip: true })
 					</script>
 				</>
 			)
@@ -40,6 +53,7 @@ const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID
 			<slot />
 			<Footer />
 		</main>
+		{gaId && <ConsentBanner />}
 		<style>
 			body {
 				margin-left: calc(100vw - 100%); /* prevent layout shift */

@@ -1,0 +1,272 @@
+---
+// Cookie consent banner — Google Consent Mode v2.
+// Default state ("denied" for ads + analytics) is set in BaseLayout BEFORE gtag loads.
+// This component renders the visible UI and updates consent on user choice.
+---
+
+<div
+	id='qb-consent'
+	role='dialog'
+	aria-modal='false'
+	aria-labelledby='qb-consent-title'
+	aria-describedby='qb-consent-body'
+	class='fixed inset-x-0 bottom-0 z-50 hidden p-3 sm:p-5 pointer-events-none'
+	data-state='closed'
+>
+	<div
+		class='qb-consent-panel pointer-events-auto mx-auto max-w-3xl rounded-sm border border-gray-200 dark:border-gray-800 bg-white dark:bg-[#0a0910] shadow-[0_8px_30px_rgba(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgba(0,0,0,0.6)] backdrop-blur-md'
+	>
+		<div class='flex flex-col gap-4 p-5 sm:p-6'>
+			<div class='flex items-center gap-2'>
+				<span
+					class='inline-flex h-1.5 w-1.5 rounded-full bg-amber-500 dark:bg-amber-400'
+					aria-hidden='true'></span>
+				<span
+					id='qb-consent-title'
+					class='text-[11px] font-bold uppercase tracking-[0.18em] text-stone-700 dark:text-stone-300'
+				>
+					Cookie Notice
+				</span>
+			</div>
+
+			<p
+				id='qb-consent-body'
+				class='text-[13px] leading-relaxed text-stone-700 dark:text-stone-300'
+			>
+				QuBrite uses cookies to measure audience trends and improve editorial work.
+				With your consent, we may also use cookies for ads personalization and
+				measurement. You can change this anytime from the footer link
+				<span class='font-semibold text-stone-900 dark:text-white'>Cookie preferences</span>.
+				Read our <a
+					href='/privacy-policy'
+					class='underline underline-offset-2 hover:text-stone-900 dark:hover:text-white'
+					>privacy policy</a
+				>.
+			</p>
+
+			<div
+				id='qb-consent-prefs'
+				class='hidden flex flex-col gap-3 pt-2 border-t border-gray-200 dark:border-gray-800'
+			>
+				<label class='flex items-start gap-3 cursor-pointer'>
+					<input
+						type='checkbox'
+						checked
+						disabled
+						class='mt-1 accent-stone-700 dark:accent-stone-300'
+					/>
+					<span class='flex flex-col gap-0.5'>
+						<span class='text-[12px] font-bold uppercase tracking-wider text-stone-900 dark:text-white'
+							>Essential</span
+						>
+						<span class='text-[12px] text-stone-600 dark:text-stone-400'
+							>Required for the site to function. Always on.</span
+						>
+					</span>
+				</label>
+
+				<label class='flex items-start gap-3 cursor-pointer'>
+					<input
+						type='checkbox'
+						id='qb-consent-analytics'
+						class='mt-1 accent-stone-700 dark:accent-stone-300'
+					/>
+					<span class='flex flex-col gap-0.5'>
+						<span
+							class='text-[12px] font-bold uppercase tracking-wider text-stone-900 dark:text-white'
+							>Analytics</span
+						>
+						<span class='text-[12px] text-stone-600 dark:text-stone-400'
+							>Anonymous traffic measurement (Google Analytics).</span
+						>
+					</span>
+				</label>
+
+				<label class='flex items-start gap-3 cursor-pointer'>
+					<input
+						type='checkbox'
+						id='qb-consent-ads'
+						class='mt-1 accent-stone-700 dark:accent-stone-300'
+					/>
+					<span class='flex flex-col gap-0.5'>
+						<span
+							class='text-[12px] font-bold uppercase tracking-wider text-stone-900 dark:text-white'
+							>Ads &amp; Personalization</span
+						>
+						<span class='text-[12px] text-stone-600 dark:text-stone-400'
+							>Ads personalization and conversion measurement.</span
+						>
+					</span>
+				</label>
+			</div>
+
+			<div class='flex flex-col sm:flex-row gap-2 sm:gap-3 sm:items-center sm:justify-between pt-1'>
+				<button
+					type='button'
+					id='qb-consent-customize'
+					class='order-3 sm:order-1 text-[12px] font-semibold uppercase tracking-wider text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-white transition-colors text-left'
+				>
+					Customize
+				</button>
+
+				<div class='order-1 sm:order-2 flex flex-col sm:flex-row gap-2 sm:gap-2 sm:ml-auto'>
+					<button
+						type='button'
+						id='qb-consent-reject'
+						class='qb-btn-secondary inline-flex items-center justify-center px-4 h-10 text-[12px] font-semibold uppercase tracking-wider rounded-sm border border-gray-200 dark:border-gray-800 text-stone-700 dark:text-stone-300 bg-white dark:bg-[#0a0910] hover:border-stone-400 dark:hover:border-stone-600 hover:text-stone-950 dark:hover:text-white transition-colors'
+					>
+						Reject all
+					</button>
+					<button
+						type='button'
+						id='qb-consent-save'
+						class='hidden inline-flex items-center justify-center px-4 h-10 text-[12px] font-semibold uppercase tracking-wider rounded-sm border border-gray-200 dark:border-gray-800 text-stone-700 dark:text-stone-300 bg-white dark:bg-[#0a0910] hover:border-stone-400 dark:hover:border-stone-600 hover:text-stone-950 dark:hover:text-white transition-colors'
+					>
+						Save preferences
+					</button>
+					<button
+						type='button'
+						id='qb-consent-accept'
+						class='qb-btn-primary inline-flex items-center justify-center px-4 h-10 text-[12px] font-semibold uppercase tracking-wider rounded-sm bg-stone-900 dark:bg-white text-white dark:text-stone-950 hover:bg-stone-800 dark:hover:bg-stone-100 transition-colors'
+					>
+						Accept all
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<style>
+	#qb-consent[data-state='open'] {
+		display: block;
+		animation: qb-consent-in 320ms cubic-bezier(0.16, 1, 0.3, 1);
+	}
+	@keyframes qb-consent-in {
+		from {
+			opacity: 0;
+			transform: translateY(16px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+	@media (prefers-reduced-motion: reduce) {
+		#qb-consent[data-state='open'] {
+			animation: none;
+		}
+	}
+</style>
+
+<script is:inline>
+	;(function () {
+		var STORAGE_KEY = 'qb-consent-v1'
+		var dialog = document.getElementById('qb-consent')
+		if (!dialog) return
+
+		var prefs = document.getElementById('qb-consent-prefs')
+		var customizeBtn = document.getElementById('qb-consent-customize')
+		var saveBtn = document.getElementById('qb-consent-save')
+		var acceptBtn = document.getElementById('qb-consent-accept')
+		var rejectBtn = document.getElementById('qb-consent-reject')
+		var analyticsCb = document.getElementById('qb-consent-analytics')
+		var adsCb = document.getElementById('qb-consent-ads')
+
+		function gtag() {
+			window.dataLayer = window.dataLayer || []
+			window.dataLayer.push(arguments)
+		}
+
+		function readStored() {
+			try {
+				var raw = localStorage.getItem(STORAGE_KEY)
+				return raw ? JSON.parse(raw) : null
+			} catch (e) {
+				return null
+			}
+		}
+
+		function persist(consent) {
+			try {
+				localStorage.setItem(
+					STORAGE_KEY,
+					JSON.stringify({ ...consent, ts: Date.now(), v: 1 })
+				)
+			} catch (e) {}
+		}
+
+		function applyConsent(consent) {
+			gtag('consent', 'update', {
+				ad_storage: consent.ads ? 'granted' : 'denied',
+				ad_user_data: consent.ads ? 'granted' : 'denied',
+				ad_personalization: consent.ads ? 'granted' : 'denied',
+				analytics_storage: consent.analytics ? 'granted' : 'denied',
+			})
+		}
+
+		function openDialog() {
+			dialog.setAttribute('data-state', 'open')
+		}
+		function closeDialog() {
+			dialog.setAttribute('data-state', 'closed')
+		}
+
+		function showPrefs() {
+			if (!prefs) return
+			prefs.classList.remove('hidden')
+			prefs.classList.add('flex')
+			if (saveBtn) saveBtn.classList.remove('hidden')
+			if (customizeBtn) customizeBtn.style.visibility = 'hidden'
+		}
+
+		var stored = readStored()
+		if (stored) {
+			applyConsent(stored)
+		} else {
+			openDialog()
+		}
+
+		if (acceptBtn)
+			acceptBtn.addEventListener('click', function () {
+				var c = { analytics: true, ads: true }
+				applyConsent(c)
+				persist(c)
+				closeDialog()
+			})
+		if (rejectBtn)
+			rejectBtn.addEventListener('click', function () {
+				var c = { analytics: false, ads: false }
+				applyConsent(c)
+				persist(c)
+				closeDialog()
+			})
+		if (customizeBtn)
+			customizeBtn.addEventListener('click', function () {
+				if (stored) {
+					if (analyticsCb) analyticsCb.checked = !!stored.analytics
+					if (adsCb) adsCb.checked = !!stored.ads
+				}
+				showPrefs()
+			})
+		if (saveBtn)
+			saveBtn.addEventListener('click', function () {
+				var c = {
+					analytics: !!(analyticsCb && analyticsCb.checked),
+					ads: !!(adsCb && adsCb.checked),
+				}
+				applyConsent(c)
+				persist(c)
+				closeDialog()
+			})
+
+		// Public hook: footer link can call window.qbOpenConsent() to reopen.
+		window.qbOpenConsent = function () {
+			var current = readStored()
+			if (analyticsCb) analyticsCb.checked = !!(current && current.analytics)
+			if (adsCb) adsCb.checked = !!(current && current.ads)
+			showPrefs()
+			openDialog()
+		}
+	})()
+</script>
