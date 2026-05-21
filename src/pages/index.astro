@@ -7,9 +7,12 @@ import { CATEGORIES } from '@/data/categories'
 import FormattedDate from '@/components/FormattedDate'
 import { Image } from 'astro:assets'
 import { EDITORS_PICKS } from '@/data/editors-picks'
-import { siteConfig } from '@/data/site.config'
 
 const MAX_POSTS = 16 // max number of posts to show on the home page
+const HOME_HEADING = 'AI & Web Development, Automation & Tech Systems'
+const HOME_LEDE =
+	'Independent field notes for builders — cyber labs, privacy phones, automation stacks, and hardware that survives production.'
+
 const posts = await getPosts(MAX_POSTS)
 
 const featuredPost = posts[0]
@@ -18,21 +21,45 @@ const isFeaturedGeneric =
 	(featuredPost.data.heroImage.src.includes('placeholder') ||
 		featuredPost.data.heroImage.src.includes('default') ||
 		featuredPost.data.heroImage.src.includes('/bg.'))
-const latestBriefs = posts.slice(1, 5)
-const remainingPosts = posts.slice(5)
-const editorsPicksPosts = posts.filter((p) => EDITORS_PICKS.includes(p.id)).slice(0, 3)
+
+/** One article title per homepage zone — avoids duplicate h3 text in SEO audits. */
+const usedPostIds = new Set<string>()
+if (featuredPost) usedPostIds.add(featuredPost.id)
+
+const latestBriefs = posts.filter((p) => !usedPostIds.has(p.id)).slice(0, 4)
+latestBriefs.forEach((p) => usedPostIds.add(p.id))
+
+const editorsPicksPosts = posts
+	.filter((p) => EDITORS_PICKS.includes(p.id) && !usedPostIds.has(p.id))
+	.slice(0, 3)
+editorsPicksPosts.forEach((p) => usedPostIds.add(p.id))
+
+const categoryPostsByCat: Record<string, typeof posts> = {}
+for (const cat of CATEGORIES) {
+	const catPosts = posts
+		.filter((p) => p.data.category === cat && !usedPostIds.has(p.id))
+		.slice(0, 3)
+	catPosts.forEach((p) => usedPostIds.add(p.id))
+	categoryPostsByCat[cat] = catPosts
+}
+
+const remainingPosts = posts.filter((p) => !usedPostIds.has(p.id))
 ---
 
-<BaseLayout title='AI & Web Development, Automation & Tech Systems'>
+<BaseLayout title={HOME_HEADING}>
 	<header class='pt-8 pb-10 border-t border-gray-200 dark:border-gray-800'>
+		<p
+			class='text-[11px] font-bold uppercase tracking-[0.18em] text-stone-600 dark:text-stone-400 mb-3'
+		>
+			QuBrite
+		</p>
 		<h1
 			class='text-3xl md:text-4xl font-bold leading-tight -tracking-wide text-stone-900 dark:text-white'
 		>
-			{siteConfig.title}
+			{HOME_HEADING}
 		</h1>
 		<p class='mt-3 max-w-2xl text-[15px] leading-relaxed text-stone-600 dark:text-stone-400'>
-			Technical publication for builders — AI web development, automation, cyber labs,
-			privacy tech, hardware, and business systems.
+			{HOME_LEDE}
 		</p>
 	</header>
 
@@ -168,7 +195,7 @@ const editorsPicksPosts = posts.filter((p) => EDITORS_PICKS.includes(p.id)).slic
 			<div
 				class='bg-gray-50 dark:bg-[#111] border border-gray-200 dark:border-gray-800 p-5 rounded-sm'
 			>
-				<h3 class='text-md font-bold mb-2'>QuBrite Dispatch</h3>
+				<h3 class='text-md font-bold mb-2'>Weekly Dispatch</h3>
 				<p class='text-sm text-gray-700 dark:text-gray-300 mb-4'>
 					Operator-focused playbooks, system teardowns, and tech reviews delivered to your inbox.
 				</p>
@@ -195,7 +222,7 @@ const editorsPicksPosts = posts.filter((p) => EDITORS_PICKS.includes(p.id)).slic
 	>
 		{
 			CATEGORIES.map((cat) => {
-				const catPosts = posts.filter((p) => p.data.category === cat).slice(0, 3)
+				const catPosts = categoryPostsByCat[cat] ?? []
 				if (catPosts.length === 0) return null
 				return (
 					<div class='flex flex-col gap-4'>
