@@ -1,5 +1,5 @@
 export const EDITORS_PICKS = [
 	'low-maintenance-blog-stack',
-	'privacy-tools-worth-understanding',
+	'grapheneos-daily-driver-setup-pixel-guide',
 	'why-rss-matters-automated-publications'
 ]
