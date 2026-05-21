@@ -2,6 +2,8 @@
  * Decap CMS GitHub OAuth — exchange code for token and postMessage to /admin popup.
  * Deployed as a Cloudflare Pages Function at /api/callback
  */
+import { cmsOAuthSetupError } from '../lib/cms-oauth-error.js'
+
 function renderBody(status, content) {
 	const html = `
 <script>
@@ -24,9 +26,10 @@ export async function onRequest(context) {
 	const clientSecret = env.GITHUB_CLIENT_SECRET
 
 	if (!clientId || !clientSecret) {
-		return new Response('Missing GITHUB_CLIENT_ID or GITHUB_CLIENT_SECRET.', {
-			status: 500,
-		})
+		const missing = []
+		if (!clientId) missing.push('GITHUB_CLIENT_ID')
+		if (!clientSecret) missing.push('GITHUB_CLIENT_SECRET')
+		return cmsOAuthSetupError(missing)
 	}
 
 	try {

@@ -4,14 +4,14 @@
  * @see https://decapcms.org/docs/backends-overview/
  * @see https://github.com/SubhenduX/decap-cms-cloudflare-pages
  */
+import { cmsOAuthSetupError } from '../lib/cms-oauth-error.js'
+
 export async function onRequest(context) {
 	const { request, env } = context
 	const clientId = env.GITHUB_CLIENT_ID
 
 	if (!clientId) {
-		return new Response('Missing GITHUB_CLIENT_ID in Cloudflare Pages environment.', {
-			status: 500,
-		})
+		return cmsOAuthSetupError(['GITHUB_CLIENT_ID'])
 	}
 
 	try {

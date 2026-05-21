@@ -49,16 +49,25 @@ Copy **Client ID** and generate a **Client secret**.
 
 The OAuth app must have access to commit to `bnz183/qubrite` (your GitHub user needs push access; collaborators need push too).
 
-### 2. Cloudflare Pages secrets
+### 2. Cloudflare Pages secrets (fixes “Missing GITHUB_CLIENT_ID”)
 
-Cloudflare dashboard → **Workers & Pages** → **qubrite** project → **Settings** → **Environment variables**:
+The OAuth functions read **`context.env`** — variables must live on the **Pages project**, not a random Worker.
 
-| Variable | Value | Environments |
-|----------|--------|----------------|
-| `GITHUB_CLIENT_ID` | Client ID from step 1 | Production (and Preview if you edit there) |
-| `GITHUB_CLIENT_SECRET` | Client secret from step 1 | Production (and Preview) |
+1. https://dash.cloudflare.com/ → **Workers & Pages**
+2. Open the **Pages** project that builds `bnz183/qubrite` (production domain `qubrite.com`)
+3. **Settings** → **Environment variables** → **Add variable**
 
-Mark the secret as **encrypted**. Redeploy after saving (or trigger a new deploy from `main`).
+| Variable name | Value | Type | Environments |
+|---------------|--------|------|----------------|
+| `GITHUB_CLIENT_ID` | Paste Client ID from GitHub OAuth App | Plain text | **Production** ✓ and **Preview** ✓ |
+| `GITHUB_CLIENT_SECRET` | Paste Client secret | **Encrypt** (secret) | **Production** ✓ and **Preview** ✓ |
+
+Names must match **exactly** (case-sensitive): `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`.
+
+4. **Save**
+5. **Redeploy** — new variables are not applied to old deployments. Use **Deployments** → **Retry deployment** on latest, or push any commit to `main`.
+
+Until both are set and redeployed, `/api/auth` returns **503** with setup instructions (not a code bug).
 
 ### 3. Verify after deploy
 
