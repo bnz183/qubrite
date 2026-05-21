@@ -4,6 +4,9 @@ import FormattedDate from '@/components/FormattedDate'
 import BaseLayout from '@/layouts/BaseLayout'
 import Tag from '@/components/Tag'
 import AuthorBox from '@/components/AuthorBox'
+import Breadcrumbs from '@/components/Breadcrumbs'
+import ReadingProgress from '@/components/ReadingProgress'
+
 import type { MarkdownHeading } from 'astro'
 import { Image } from 'astro:assets'
 import { siteConfig } from '@/site-config'
@@ -16,9 +19,40 @@ type Props = {
 }
 
 const { data, readTime, headings, id } = Astro.props
-const { title, description, pubDate, heroImage, tags } = data
+const { title, description, pubDate, heroImage, tags, category } = data
 
 const articleDate = pubDate.toISOString()
+const canonical = new URL(`/post/${id}/`, Astro.site).href
+const heroAbsoluteUrl = heroImage?.src
+	? new URL(heroImage.src, Astro.site).href
+	: undefined
+
+const blogPostingJsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'BlogPosting',
+	headline: title,
+	description,
+	datePublished: articleDate,
+	dateModified: articleDate,
+	author: {
+		'@type': 'Organization',
+		name: siteConfig.author,
+		url: siteConfig.site,
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: siteConfig.title,
+		url: siteConfig.site,
+		logo: {
+			'@type': 'ImageObject',
+			url: new URL('/brand/icon.svg', Astro.site).href,
+		},
+	},
+	mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+	...(heroAbsoluteUrl ? { image: heroAbsoluteUrl } : {}),
+	keywords: tags.join(', '),
+	articleSection: category,
+}
 ---
 
 <BaseLayout
@@ -27,14 +61,33 @@ const articleDate = pubDate.toISOString()
 	image={heroImage?.src}
 	articleDate={articleDate}
 >
+	<ReadingProgress />
+	<script type='application/ld+json' set:html={JSON.stringify(blogPostingJsonLd)} />
+
 	<article class='min-w-full md:py-4 sm:max-w-none md:max-w-none'>
+		<div class='mb-6'>
+			<Breadcrumbs category={category} items={[{ label: title }]} />
+		</div>
+
 		<header class='mb-8 flex flex-col justify-center items-center gap-6 text-center mt-4'>
 			<div class='flex flex-col gap-4'>
-				<h1 class='text-4xl md:text-5xl font-bold leading-tight -tracking-wide max-w-4xl mx-auto'>
+				<span
+					class='inline-block mx-auto text-[11px] font-bold uppercase tracking-[0.18em] text-sky-700 dark:text-sky-300'
+				>
+					{category}
+				</span>
+				<h1
+					class='text-4xl md:text-5xl lg:text-[3.4rem] font-bold leading-[1.05] -tracking-wide max-w-4xl mx-auto'
+				>
 					{title}
 				</h1>
+				<p
+					class='max-w-3xl mx-auto text-[15px] sm:text-[17px] leading-relaxed text-stone-600 dark:text-stone-400'
+				>
+					{description}
+				</p>
 				<div
-					class='flex flex-wrap items-center justify-center gap-x-3 text-[13px] font-medium text-stone-500 dark:text-stone-400'
+					class='flex flex-wrap items-center justify-center gap-x-3 text-[13px] font-medium text-stone-500 dark:text-stone-400 mt-2'
 				>
 					<span class='uppercase tracking-widest font-bold text-stone-800 dark:text-stone-200'
 						>{siteConfig.author}</span

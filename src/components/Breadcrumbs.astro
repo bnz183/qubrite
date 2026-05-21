@@ -1,0 +1,56 @@
+---
+import { sluglify } from '@/utils'
+
+type Crumb = { label: string; href?: string }
+
+type Props = {
+	items: Crumb[]
+	category?: string
+}
+
+const { items: rawItems, category } = Astro.props
+
+const items: Crumb[] = [{ label: 'Home', href: '/' }]
+if (category) {
+	items.push({ label: category, href: `/category/${sluglify(category)}/1` })
+}
+items.push(...rawItems)
+
+const jsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'BreadcrumbList',
+	itemListElement: items.map((c, i) => ({
+		'@type': 'ListItem',
+		position: i + 1,
+		name: c.label,
+		...(c.href ? { item: new URL(c.href, Astro.site).href } : {}),
+	})),
+}
+---
+
+<nav
+	aria-label='Breadcrumb'
+	class='text-[11px] font-semibold uppercase tracking-[0.16em] text-stone-500 dark:text-stone-400'
+>
+	<ol class='flex flex-wrap items-center gap-x-2 gap-y-1'>
+		{
+			items.map((c, i) => (
+				<li class='flex items-center gap-2'>
+					{i > 0 && <span class='opacity-40'>/</span>}
+					{c.href && i < items.length - 1 ? (
+						<a
+							href={c.href}
+							class='hover:text-stone-900 dark:hover:text-white transition-colors'
+						>
+							{c.label}
+						</a>
+					) : (
+						<span class='text-stone-700 dark:text-stone-300'>{c.label}</span>
+					)}
+				</li>
+			))
+		}
+	</ol>
+</nav>
+
+<script type='application/ld+json' set:html={JSON.stringify(jsonLd)} />

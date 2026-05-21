@@ -1,0 +1,52 @@
+---
+type Props = {
+	title?: string
+}
+
+const { title = 'Key Takeaways' } = Astro.props
+---
+
+<aside
+	class='not-prose my-8 rounded-sm border border-stone-200 dark:border-stone-800 bg-stone-50/60 dark:bg-[#0e0d13] p-5 sm:p-6'
+	aria-label={title}
+>
+	<div class='flex items-center gap-2 mb-3'>
+		<span
+			class='inline-flex h-1.5 w-1.5 rounded-full bg-amber-500 dark:bg-amber-400'
+			aria-hidden='true'></span>
+		<span
+			class='text-[11px] font-bold uppercase tracking-[0.18em] text-stone-700 dark:text-stone-300'
+			style='font-family: "Space Grotesk", "Inter", sans-serif;'
+		>
+			{title}
+		</span>
+	</div>
+	<div
+		class='qb-takeaways text-[14px] sm:text-[15px] leading-relaxed text-stone-800 dark:text-stone-200'
+	>
+		<slot />
+	</div>
+</aside>
+
+<style is:global>
+	.qb-takeaways ul {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
+	}
+	.qb-takeaways li {
+		position: relative;
+		padding-left: 1.25rem;
+	}
+	.qb-takeaways li::before {
+		content: '→';
+		position: absolute;
+		left: 0;
+		top: 0;
+		color: rgb(245 158 11);
+		font-weight: 700;
+	}
+</style>

@@ -1,0 +1,40 @@
+---
+type Props = {
+	title?: string
+	rating?: string
+}
+
+const { title = 'Editorial Verdict', rating } = Astro.props
+---
+
+<aside
+	class='not-prose my-10 rounded-sm border border-stone-300 dark:border-stone-700 bg-gradient-to-br from-stone-50 to-white dark:from-[#0f0e14] dark:to-[#0a0910] p-6 sm:p-8 shadow-sm'
+	aria-label={title}
+>
+	<div class='flex flex-wrap items-center justify-between gap-3 mb-4 pb-3 border-b border-stone-200 dark:border-stone-800'>
+		<div class='flex items-center gap-2'>
+			<span
+				class='inline-flex h-1.5 w-1.5 rounded-full bg-violet-500 dark:bg-violet-400'
+				aria-hidden='true'></span>
+			<span
+				class='text-[11px] font-bold uppercase tracking-[0.2em] text-stone-800 dark:text-stone-200'
+				style='font-family: "Space Grotesk", "Inter", sans-serif;'
+			>
+				{title}
+			</span>
+		</div>
+		{
+			rating && (
+				<span
+					class='text-[11px] font-bold uppercase tracking-wider px-2 py-1 rounded-sm bg-stone-900 dark:bg-white text-white dark:text-stone-900'
+					style='font-family: "JetBrains Mono", ui-monospace, monospace;'
+				>
+					{rating}
+				</span>
+			)
+		}
+	</div>
+	<div class='text-[15px] sm:text-base leading-relaxed text-stone-800 dark:text-stone-200'>
+		<slot />
+	</div>
+</aside>

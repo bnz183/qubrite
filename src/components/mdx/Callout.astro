@@ -1,0 +1,59 @@
+---
+type Variant = 'note' | 'warning' | 'tip' | 'danger'
+
+type Props = {
+	variant?: Variant
+	title?: string
+}
+
+const { variant = 'note', title } = Astro.props
+
+const styles: Record<Variant, { dot: string; label: string; border: string; defaultTitle: string }> =
+	{
+		note: {
+			dot: 'bg-sky-500 dark:bg-sky-400',
+			label: 'text-sky-700 dark:text-sky-300',
+			border: 'border-sky-200 dark:border-sky-900/60',
+			defaultTitle: 'Note',
+		},
+		tip: {
+			dot: 'bg-emerald-500 dark:bg-emerald-400',
+			label: 'text-emerald-700 dark:text-emerald-300',
+			border: 'border-emerald-200 dark:border-emerald-900/60',
+			defaultTitle: 'Field Note',
+		},
+		warning: {
+			dot: 'bg-amber-500 dark:bg-amber-400',
+			label: 'text-amber-700 dark:text-amber-300',
+			border: 'border-amber-200 dark:border-amber-900/60',
+			defaultTitle: 'Warning',
+		},
+		danger: {
+			dot: 'bg-rose-500 dark:bg-rose-400',
+			label: 'text-rose-700 dark:text-rose-300',
+			border: 'border-rose-200 dark:border-rose-900/60',
+			defaultTitle: 'Critical',
+		},
+	}
+
+const v = styles[variant]
+const t = title ?? v.defaultTitle
+---
+
+<aside
+	class={`not-prose my-6 rounded-sm border ${v.border} bg-white dark:bg-[#0c0b10] p-5`}
+	role='note'
+>
+	<div class='flex items-center gap-2 mb-2'>
+		<span class={`inline-flex h-1.5 w-1.5 rounded-full ${v.dot}`} aria-hidden='true'></span>
+		<span
+			class={`text-[11px] font-bold uppercase tracking-[0.18em] ${v.label}`}
+			style='font-family: "Space Grotesk", "Inter", sans-serif;'
+		>
+			{t}
+		</span>
+	</div>
+	<div class='text-[14px] sm:text-[15px] leading-relaxed text-stone-700 dark:text-stone-300'>
+		<slot />
+	</div>
+</aside>

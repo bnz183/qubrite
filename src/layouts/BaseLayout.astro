@@ -43,6 +43,45 @@ const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID
 		<BaseHead title={title} description={description} ogImage={image} articleDate={articleDate} />
 		<ProviderTheme />
 		<ProviderAnimations />
+		<script is:inline>
+			// Relative date upgrade (single global pass, no per-component scripts).
+			;(function () {
+				function format(iso, fallback) {
+					try {
+						var d = new Date(iso)
+						if (isNaN(d.getTime())) return fallback
+						var diff = d.getTime() - Date.now()
+						if (diff / 86400000 < -7) {
+							return d.toLocaleDateString('en-US', {
+								year: 'numeric',
+								month: 'short',
+								day: 'numeric',
+								timeZone: 'UTC',
+							})
+						}
+						var rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' })
+						var abs = Math.abs(diff)
+						if (abs < 60000) return rtf.format(Math.round(diff / 1000), 'second')
+						if (abs < 3600000) return rtf.format(Math.round(diff / 60000), 'minute')
+						if (abs < 86400000) return rtf.format(Math.round(diff / 3600000), 'hour')
+						return rtf.format(Math.round(diff / 86400000), 'day')
+					} catch (e) {
+						return fallback
+					}
+				}
+				function run() {
+					document.querySelectorAll('time[data-pubdate]').forEach(function (el) {
+						var iso = el.getAttribute('data-pubdate')
+						if (iso) el.textContent = format(iso, el.textContent || '')
+					})
+				}
+				if (document.readyState === 'loading') {
+					document.addEventListener('DOMContentLoaded', run)
+				} else {
+					run()
+				}
+			})()
+		</script>
 	</head>
 
 	<body class='bg-white text-stone-950 dark:bg-[#0a0910] dark:text-white'>

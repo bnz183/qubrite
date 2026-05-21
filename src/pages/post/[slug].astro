@@ -6,11 +6,19 @@ import ListRelatedPosts from '@/components/ListRelatedPosts'
 import Share from '@/components/Share'
 import TableOfContents from '@/components/TableOfContents'
 import { getPosts } from '@/utils'
+import { EDITORS_PICKS } from '@/data/editors-picks'
 import SButton from '@/components/mdx/SButton'
+import KeyTakeaways from '@/components/mdx/KeyTakeaways'
+import Callout from '@/components/mdx/Callout'
+import VerdictBox from '@/components/mdx/VerdictBox'
+import NewsletterInline from '@/components/NewsletterInline'
 import Disqus from '@/components/Disqus'
 import { disqusConfig } from '@/data/disqus.config'
 
-const posts = await getCollection('blog')
+const allPosts = (await getCollection('blog'))
+	.filter((p) => !p.data.draft)
+	.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+
 export async function getStaticPaths() {
 	const posts = await getPosts()
 
@@ -23,12 +31,48 @@ type Props = CollectionEntry<'blog'>
 
 const post = Astro.props
 const MAX_POSTS = 3
-const getRelatedPosts = (post: Props) => {
-	const lowercaseTags = post.data.tags.map((tag) => tag.toLowerCase())
-	const relatedPosts = posts.filter(
-		(p) => p.id !== post.id && p.data.tags.some((t) => lowercaseTags.includes(t.toLowerCase()))
+
+/**
+ * Related-posts fallback chain (never empty when there is more than one post):
+ *   1. shared tags
+ *   2. same category
+ *   3. Editor's Picks
+ *   4. latest posts
+ */
+const getRelatedPosts = (current: Props) => {
+	const others = allPosts.filter((p) => p.id !== current.id)
+	const used = new Set<string>()
+	const result: typeof others = []
+
+	const take = (candidates: typeof others) => {
+		for (const p of candidates) {
+			if (result.length >= MAX_POSTS) break
+			if (used.has(p.id)) continue
+			used.add(p.id)
+			result.push(p)
+		}
+	}
+
+	const lowercaseTags = current.data.tags.map((t) => t.toLowerCase())
+	take(
+		others.filter((p) =>
+			p.data.tags.some((t) => lowercaseTags.includes(t.toLowerCase())),
+		),
 	)
-	return relatedPosts.slice(0, MAX_POSTS)
+
+	if (result.length < MAX_POSTS) {
+		take(others.filter((p) => p.data.category === current.data.category))
+	}
+
+	if (result.length < MAX_POSTS) {
+		take(others.filter((p) => EDITORS_PICKS.includes(p.id)))
+	}
+
+	if (result.length < MAX_POSTS) {
+		take(others)
+	}
+
+	return result.slice(0, MAX_POSTS)
 }
 
 const relatedPosts = getRelatedPosts(post)
@@ -59,14 +103,36 @@ const disqusEnabled = disqusConfig.enabled
 				class='prose prose-lg md:prose-xl dark:prose-invert mb-12 min-w-full'
 				data-pagefind-body
 			>
-				<Content components={{ pre: Code, SButton }} />
+				<Content
+					components={{
+						pre: Code,
+						SButton,
+						KeyTakeaways,
+						Callout,
+						VerdictBox,
+						Newsletter: NewsletterInline,
+					}}
+				/>
 			</div>
 
-			<!-- related posts -->
-			<footer>
-				<h2 class='font-bold text-lg dark:text-white mb-6'>Related Posts</h2>
-				<ListRelatedPosts posts={relatedPosts} />
-			</footer>
+			<NewsletterInline />
+
+			{
+				relatedPosts.length > 0 && (
+					<footer class='mt-12 pt-8 border-t border-stone-200 dark:border-stone-800'>
+						<div class='flex items-center gap-2 mb-6'>
+							<span
+								class='inline-flex h-1.5 w-1.5 rounded-full bg-violet-500 dark:bg-violet-400'
+								aria-hidden='true'
+							/>
+							<h2 class='text-[11px] font-bold uppercase tracking-[0.18em] text-stone-700 dark:text-stone-300 m-0'>
+								Read next
+							</h2>
+						</div>
+						<ListRelatedPosts posts={relatedPosts} />
+					</footer>
+				)
+			}
 		</article>
 	</div>
 

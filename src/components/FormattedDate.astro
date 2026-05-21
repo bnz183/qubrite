@@ -1,9 +1,10 @@
 ---
 export interface Props {
 	date: Date
+	class?: string
 }
 
-const { date } = Astro.props
+const { date, class: className = 'text-sm font-bold text-opacity-60' } = Astro.props
 
 const absolute = date.toLocaleDateString('en-us', {
 	year: 'numeric',
@@ -14,47 +15,11 @@ const absolute = date.toLocaleDateString('en-us', {
 ---
 
 <time
-	class='text-sm font-bold text-opacity-60'
+	class={className}
 	datetime={date.toISOString()}
 	data-pubdate={date.toISOString()}
 	title={absolute}
 >
 	{absolute}
 </time>
-
-<script>
-	function formatDate(iso: string, fallback: string): string {
-		try {
-			const date = new Date(iso)
-			if (isNaN(date.getTime())) return fallback
-
-			const diffMs = date.getTime() - Date.now()
-			const diffDays = diffMs / 86_400_000
-
-			// Older than 7 days: show absolute date
-			if (diffDays < -7) {
-				return date.toLocaleDateString('en-US', {
-					year: 'numeric',
-					month: 'short',
-					day: 'numeric',
-					timeZone: 'UTC',
-				})
-			}
-
-			// Within the last 7 days: show relative time
-			const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' })
-			const abs = Math.abs(diffMs)
-			if (abs < 60_000)        return rtf.format(Math.round(diffMs / 1_000),       'second')
-			if (abs < 3_600_000)     return rtf.format(Math.round(diffMs / 60_000),      'minute')
-			if (abs < 86_400_000)    return rtf.format(Math.round(diffMs / 3_600_000),   'hour')
-			return                          rtf.format(Math.round(diffMs / 86_400_000),   'day')
-		} catch {
-			return fallback
-		}
-	}
-
-	document.querySelectorAll<HTMLElement>('time[data-pubdate]').forEach((el) => {
-		const iso = el.dataset.pubdate
-		if (iso) el.textContent = formatDate(iso, el.textContent ?? '')
-	})
-</script>
+{/* Relative-date upgrade script lives in BaseLayout — kept out of flow content to avoid duplicated bundled scripts. */}
