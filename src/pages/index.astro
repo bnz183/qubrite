@@ -7,6 +7,7 @@ import { CATEGORIES } from '@/data/categories'
 import FormattedDate from '@/components/FormattedDate'
 import { Image } from 'astro:assets'
 import { EDITORS_PICKS } from '@/data/editors-picks'
+import { siteConfig } from '@/data/site.config'
 
 const MAX_POSTS = 16 // max number of posts to show on the home page
 const posts = await getPosts(MAX_POSTS)
@@ -23,10 +24,20 @@ const editorsPicksPosts = posts.filter((p) => EDITORS_PICKS.includes(p.id)).slic
 ---
 
 <BaseLayout title='AI & Web Development, Automation & Tech Systems'>
+	<header class='pt-8 pb-10 border-t border-gray-200 dark:border-gray-800'>
+		<h1
+			class='text-3xl md:text-4xl font-bold leading-tight -tracking-wide text-stone-900 dark:text-white'
+		>
+			{siteConfig.title}
+		</h1>
+		<p class='mt-3 max-w-2xl text-[15px] leading-relaxed text-stone-600 dark:text-stone-400'>
+			Technical publication for builders — AI web development, automation, cyber labs,
+			privacy tech, hardware, and business systems.
+		</p>
+	</header>
+
 	<!-- Top Editorial Grid -->
-	<div
-		class='grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12 pt-8 border-t border-gray-200 dark:border-gray-800'
-	>
+	<div class='grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12'>
 		<!-- Left Column: Latest Briefs -->
 		<div class='lg:col-span-3 flex flex-col gap-6 order-2 lg:order-1'>
 			<h2

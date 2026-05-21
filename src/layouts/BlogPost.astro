@@ -19,6 +19,8 @@ type Props = {
 }
 
 const { data, readTime, headings, id } = Astro.props
+/** Portrait hero assets (e.g. phone photos) must use contain, not cover. */
+const heroImageContain = id === 'grapheneos-daily-driver-setup-pixel-guide'
 const { title, description, pubDate, heroImage, tags, category } = data
 
 const articleDate = pubDate.toISOString()
@@ -106,16 +108,30 @@ const blogPostingJsonLd = {
 
 		{
 			heroImage && (
-				<figure class='qb-watermark my-8'>
-					<Image
-						src={heroImage}
-						widths={[640, 960, 1280, 1600, 2200]}
-						sizes='(max-width: 640px) 640px, (max-width: 1024px) 960px, (max-width: 1440px) 1280px, 1600px'
-						quality={88}
-						loading='eager'
-						class='rounded-md w-full object-cover max-h-[420px] md:max-h-[540px]'
-						alt={`img of ${title}`}
-					/>
+				<figure
+					class:list={['my-8', heroImageContain && 'flex justify-center']}
+				>
+					<span
+						class:list={[
+							'qb-watermark',
+							heroImageContain && 'inline-block max-w-[min(100%,28rem)]',
+						]}
+					>
+						<Image
+							src={heroImage}
+							widths={[640, 960, 1280, 1600, 2200]}
+							sizes='(max-width: 640px) 640px, (max-width: 1024px) 960px, (max-width: 1440px) 1280px, 1600px'
+							quality={88}
+							loading='eager'
+							class:list={[
+								'rounded-md bg-black',
+								heroImageContain
+									? 'w-full h-auto max-h-[min(70vh,560px)] object-contain'
+									: 'w-full object-cover max-h-[420px] md:max-h-[540px]',
+							]}
+							alt={`img of ${title}`}
+						/>
+					</span>
 				</figure>
 			)
 		}

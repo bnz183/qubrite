@@ -69,6 +69,7 @@
 					<input
 						type='checkbox'
 						id='qb-consent-analytics'
+						checked
 						class='mt-1 accent-stone-700 dark:accent-stone-300'
 					/>
 					<span class='flex flex-col gap-0.5'>
@@ -246,6 +247,9 @@
 				if (stored) {
 					if (analyticsCb) analyticsCb.checked = !!stored.analytics
 					if (adsCb) adsCb.checked = !!stored.ads
+				} else {
+					if (analyticsCb) analyticsCb.checked = true
+					if (adsCb) adsCb.checked = false
 				}
 				showPrefs()
 			})
@@ -263,8 +267,8 @@
 		// Public hook: footer link can call window.qbOpenConsent() to reopen.
 		window.qbOpenConsent = function () {
 			var current = readStored()
-			if (analyticsCb) analyticsCb.checked = !!(current && current.analytics)
-			if (adsCb) adsCb.checked = !!(current && current.ads)
+			if (analyticsCb) analyticsCb.checked = current ? !!current.analytics : true
+			if (adsCb) adsCb.checked = current ? !!current.ads : false
 			showPrefs()
 			openDialog()
 		}

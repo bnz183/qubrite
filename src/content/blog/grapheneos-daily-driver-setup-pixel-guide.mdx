@@ -2,7 +2,7 @@
 title: "GrapheneOS Daily Driver Setup: The Control Panel Your Phone Was Missing"
 description: "A practical GrapheneOS Pixel setup guide for beginners covering supported devices, installation, sandboxed Google Play, profiles, and privacy limits."
 pubDate: "2026-05-21T09:00:00Z"
-heroImage: "../../assets/images/default-cover.png"
+heroImage: "../../assets/images/grapheneos-boot-screen.png"
 category: "Privacy Tech"
 tags:
   - GrapheneOS
@@ -13,6 +13,8 @@ draft: false
 ---
 
 import DisclosureBox from '../../components/DisclosureBox.astro'
+import { Image } from 'astro:assets'
+import grapheneosBoot from '../../assets/images/grapheneos-boot-screen.png'
 
 Most privacy tools ask you to trust a new middleman.
 
@@ -30,8 +32,6 @@ I have been interested in GrapheneOS from the practical side: setting up support
 
 {/* TODO: INTERNAL LINK: Best Privacy Tools for Technical Beginners */}
 
-{/* TODO: SCREENSHOT PLACEHOLDER: Hero image — Pixel phone with GrapheneOS-style privacy/control visual */}
-
 <DisclosureBox />
 
 ## Quick Verdict
@@ -39,7 +39,7 @@ I have been interested in GrapheneOS from the practical side: setting up support
 If you want the short version:
 
 - **GrapheneOS is one of the most serious privacy/security phone setups available for regular users.**
-- **The best beginner choice in 2026 is a Pixel 8 or newer**, because GrapheneOS recommends 8th-generation and later Pixels for stronger security and longer support, while Google gives Pixel 8 and later phones seven years of OS and security updates. https://grapheneos.org/faq https://support.google.com/pixelphone/answer/4457705
+- **The best new purchase in 2026 is a [Google Pixel 10a](https://amzn.to/3PQN4iZ)** — current-gen hardware, seven-year updates, and the lowest sensible entry price in the supported Pixel 10 family. Pixel 8 or newer still works if you already own one. https://grapheneos.org/faq https://support.google.com/pixelphone/answer/4457705
 - **Do not buy a carrier-locked Pixel** unless you know it can be unlocked. Carrier variants may disable bootloader unlocking, which can block GrapheneOS installation. https://grapheneos.org/install/web
 - **Use the official WebUSB installer** unless you are comfortable with command-line flashing. https://grapheneos.org/install/web
 - **Relock the bootloader after installation.** This is not optional if you care about verified boot. https://grapheneos.org/install/web
@@ -98,16 +98,34 @@ Google's own update policy says Pixel 8 and later phones receive seven years of 
 
 | Device family | GrapheneOS status | Beginner recommendation | Notes |
 |---|---|---|---|
-| Pixel 10 / 10 Pro / 10 Pro XL / 10 Pro Fold / 10a | Officially listed by GrapheneOS | Strongest future-facing option | Best support window, likely higher price |
+| Pixel 10 / 10 Pro / 10 Pro XL / 10 Pro Fold / 10a | Officially listed by GrapheneOS | **10a = best new buy** | 10a: longest runway at the lowest price in the Pixel 10 line |
 | Pixel 9 / 9 Pro / 9 Pro XL / 9 Pro Fold / 9a | Officially listed by GrapheneOS | Excellent | Strong choice if pricing is reasonable |
 | Pixel 8 / 8 Pro / 8a | Officially listed by GrapheneOS | Best value zone | Best recommendation for most beginners |
 | Pixel 7 / 7 Pro / 7a | Officially listed by GrapheneOS | Acceptable if cheap | Shorter remaining support |
 | Pixel 6 / 6 Pro / 6a | Officially listed by GrapheneOS | Budget only | Be careful with age, battery health, and remaining support |
 | Pixel 5a and earlier | Not a good new purchase | Avoid | Google no longer provides Android/security updates |
 
-My practical recommendation: get a Pixel 8, Pixel 8a, Pixel 9, or Pixel 9a if the price makes sense.
+If you are **buying hardware today** for GrapheneOS, default to the **[Google Pixel 10a](https://amzn.to/3PQN4iZ)**. It is the sweet spot between price, support length, and install compatibility — not the flashiest Pixel, but the one that makes the most sense as a privacy daily driver you will actually keep for years.
 
-A cheap old Pixel can look attractive, but a privacy phone with weak remaining support is a false economy. The whole point is to build a more secure foundation. Do not start with hardware that is already aging out.
+### Why the Pixel 10a is the best option (not just “a supported Pixel”)
+
+GrapheneOS needs three things from hardware: **official support**, **bootloader unlock on an unlocked unit**, and **enough years left on security updates** that the project is worth the install effort. The 10a checks all three without the tax of Pro-tier hardware you do not need for privacy.
+
+| Factor | Pixel 10a | Why it matters for GrapheneOS |
+|---|---|---|
+| **Support window** | Part of the Pixel 10 family (seven-year OS/security updates from Google) | You are not rebuilding your phone stack again in two years |
+| **Security hardware** | 8th-generation Pixel class (memory tagging, modern Titan path) | GrapheneOS can use the stronger mitigations it expects on current Pixels |
+| **Price** | Lowest entry in the Pixel 10 line | Privacy is already a project — overpaying for telephoto lenses does not improve sandboxed Play or Network permission |
+| **Size** | Compact “a” form factor | Easier one-handed daily use than Pro XL phones people regret carrying |
+| **GrapheneOS fit** | Listed on the official device matrix with the rest of Pixel 10 | Same install path as other supported Pixels: WebUSB installer, unlock, flash, relock |
+
+What you are **not** buying: a status phone. You are buying a **maintained, unlockable, officially supported** platform for an OS you control. The 10 Pro adds cameras and screen size most privacy setups never use; the 10a gives you the same OS foundation and update contract at a saner price.
+
+**Buy unlocked.** Order the carrier-unlocked / Google Store variant so OEM unlocking stays available. A carrier-locked deal that blocks the bootloader turns a GrapheneOS guide into an expensive paperweight.
+
+If a [Pixel 10a](https://amzn.to/3PQN4iZ) is out of budget, a used **Pixel 8a or 9a** is still a valid fallback — but for a new purchase in 2026, the 10a is the hardware I would hand to a beginner and say: install once, then tighten permissions for the next seven years.
+
+Already own a Pixel 8, 8a, 9, or 9a? **Do not upgrade for sport.** Flash GrapheneOS on what you have if it is unlockable and healthy. The 10a recommendation is for people starting from zero.
 
 {/* TODO: SCREENSHOT PLACEHOLDER: Table/graphic — Best Pixel models for GrapheneOS in 2026 */}
 
@@ -153,7 +171,7 @@ But the beginner-level flow looks like this:
 
 | Step | What you do | Why it matters |
 |---|---|---|
-| 1 | Buy a supported, unlockable Pixel | Carrier-locked devices can block installation |
+| 1 | Buy a supported, unlockable Pixel ([10a](https://amzn.to/3PQN4iZ) if buying new) | Carrier-locked devices can block installation |
 | 2 | Update stock Android first | GrapheneOS recommends updating the device before installing |
 | 3 | Back up anything important | Unlocking and flashing wipes the phone |
 | 4 | Use a proper USB data cable | Bad cables are a common failure point |
@@ -173,7 +191,23 @@ Do not skip that step because some random tutorial made it look optional.
 
 The install is not finished when the OS boots. The install is finished when the phone is flashed, the bootloader is locked again, OEM unlocking is disabled, and you understand what you just changed.
 
-{/* TODO: SCREENSHOT PLACEHOLDER: Screenshot — GrapheneOS Web Installer page or install-step visual */}
+When setup completes and the phone reboots, you should see the GrapheneOS boot screen — the hexagonal logo on a black display. That is your first confirmation the flash worked before you move on to daily-driver configuration.
+
+<figure class="my-8 flex flex-col items-center">
+	<span class="qb-watermark inline-block max-w-[min(100%,28rem)] overflow-hidden rounded-md">
+		<Image
+			src={grapheneosBoot}
+			widths={[384, 512, 768]}
+			sizes="(max-width: 640px) 88vw, 28rem"
+			quality={88}
+			alt="Google Pixel displaying the GrapheneOS boot logo while connected by USB to a laptop keyboard"
+			class="rounded-md w-full h-auto object-contain bg-black"
+		/>
+	</span>
+	<figcaption class="text-center text-[13px] text-stone-600 dark:text-stone-400 mt-3">
+		First boot after a successful flash — GrapheneOS logo on a Pixel connected over USB during setup.
+	</figcaption>
+</figure>
 
 ## Post-Install Setup: Make It Usable Before You Make It Extreme
 
@@ -488,7 +522,7 @@ That is the real appeal.
 
 GrapheneOS makes your phone feel less like a sealed consumer product and more like a system you are allowed to manage.
 
-If I were setting one up for a beginner in 2026, I would not start with the most extreme configuration. I would start with a supported Pixel 8 or newer, install GrapheneOS properly, relock the bootloader, use Vanadium, install Signal, use a password manager, set up sandboxed Google Play only where needed, and separate the messy apps into another profile.
+If I were setting one up for a beginner in 2026, I would not start with the most extreme configuration. I would start with a **[Pixel 10a](https://amzn.to/3PQN4iZ)** (or an existing unlockable Pixel 8+), install GrapheneOS properly, relock the bootloader, use Vanadium, install Signal, use a password manager, set up sandboxed Google Play only where needed, and separate the messy apps into another profile.
 
 Then I would tighten permissions over time.
 
@@ -504,7 +538,7 @@ Yes, if the beginner is willing to follow instructions carefully. The official W
 
 ### Which Pixel should I buy for GrapheneOS in 2026?
 
-For most beginners, the best choice is a Pixel 8 or newer. GrapheneOS recommends 8th-generation and later Pixels because of longer support and stronger hardware security features, while Google provides Pixel 8 and later phones with seven years of OS and security updates. https://grapheneos.org/faq https://support.google.com/pixelphone/answer/4457705
+For a **new purchase**, the best choice is a **[Google Pixel 10a](https://amzn.to/3PQN4iZ)**: current Pixel 10 hardware, seven-year updates, and the lowest price in the supported line. Any unlockable **Pixel 8 or newer** still works if you already own one. GrapheneOS recommends 8th-generation and later Pixels because of longer support and stronger hardware security features. https://grapheneos.org/faq https://support.google.com/pixelphone/answer/4457705
 
 ### Can I use Google Play apps on GrapheneOS?
 
@@ -554,7 +588,7 @@ Just harder to abuse by default.
 
 For most beginners in 2026, the best path is straightforward:
 
-1. Buy a supported unlockable Pixel 8 or newer.
+1. Buy a supported unlockable Pixel — **[Pixel 10a](https://amzn.to/3PQN4iZ)** for a new 2026 purchase, or use an existing Pixel 8+.
 2. Use the official GrapheneOS WebUSB installer.
 3. Relock the bootloader.
 4. Disable OEM unlocking after setup.
