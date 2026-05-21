@@ -2,10 +2,11 @@ backend:
   name: github
   repo: bnz183/qubrite
   branch: main
-  # Production auth requires an OAuth proxy. Set base_url to your proxy URL.
-  # Until a proxy is running, production login will fail (local_backend still works).
-  # See automation/cms-admin.md for proxy options.
-  # base_url: https://your-oauth-proxy.example.com
+  # Cloudflare Pages Functions OAuth (functions/api/auth.js + callback.js).
+  # Requires GITHUB_CLIENT_ID + GITHUB_CLIENT_SECRET in Cloudflare Pages env.
+  base_url: https://qubrite.com
+  auth_endpoint: api/auth
+  site_domain: qubrite.com
 
 local_backend: true
 

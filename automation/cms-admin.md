@@ -2,141 +2,169 @@
 
 Lightweight staff editing portal for blog posts. Decap CMS commits changes directly to GitHub; Cloudflare Pages rebuilds the static site on each push.
 
+**Stack:** Astro + MDX + Decap CMS 3.8 (CDN) + GitHub backend + Cloudflare Pages Functions for OAuth.
+
 ---
 
 ## Open the admin
 
-**Production:** [https://qubrite.com/admin/](https://qubrite.com/admin/)
+| Environment | URL |
+|-------------|-----|
+| Production | https://qubrite.com/admin/ |
+| Local | http://localhost:4321/admin/ |
 
-**Local dev** (requires local backend — see below): [http://localhost:4321/admin/](http://localhost:4321/admin/)
-
-The UI loads from `public/admin/index.html` and reads `public/admin/config.yml`.
+Files: `public/admin/index.html`, `public/admin/config.yml`.  
+`/admin/` is `noindex` in `robots.txt` and in the admin HTML meta tag.
 
 ---
 
-## Auth: what actually works
+## Why production login failed before
 
-### Local dev — works today, no setup required
+Decap CMS 3.8 **`github` backend does not support browser-only PKCE**. That flow exists only for the **GitLab** backend. The GitHub login button always uses an OAuth **server** — by default Netlify’s broker at `api.netlify.com`.
+
+On **Cloudflare Pages**, Netlify rejects auth unless `qubrite.com` is registered as a Netlify site. Earlier configs that used:
+
+- `git-gateway` — requires **Netlify Identity** (wrong host)
+- `auth_type: pkce` + `app_id` — **silently ignored** by the GitHub backend in 3.8.0
+
+**What works on Cloudflare:** OAuth handlers on **your own domain** via Cloudflare Pages Functions (`functions/api/`), with `base_url` + `auth_endpoint` in `config.yml`. This repo includes those handlers.
+
+Official reference: [Decap — Using GitHub with an OAuth Proxy](https://decapcms.org/docs/backends-overview/).
+
+---
+
+## Production setup (one-time)
+
+### 1. GitHub OAuth App
+
+Create at https://github.com/settings/developers → **OAuth Apps** → **New OAuth App**:
+
+| Field | Value |
+|-------|--------|
+| Application name | QuBrite CMS (or similar) |
+| Homepage URL | `https://qubrite.com` |
+| Authorization callback URL | `https://qubrite.com/api/callback` |
+
+Copy **Client ID** and generate a **Client secret**.
+
+The OAuth app must have access to commit to `bnz183/qubrite` (your GitHub user needs push access; collaborators need push too).
+
+### 2. Cloudflare Pages secrets
+
+Cloudflare dashboard → **Workers & Pages** → **qubrite** project → **Settings** → **Environment variables**:
+
+| Variable | Value | Environments |
+|----------|--------|----------------|
+| `GITHUB_CLIENT_ID` | Client ID from step 1 | Production (and Preview if you edit there) |
+| `GITHUB_CLIENT_SECRET` | Client secret from step 1 | Production (and Preview) |
+
+Mark the secret as **encrypted**. Redeploy after saving (or trigger a new deploy from `main`).
+
+### 3. Verify after deploy
+
+1. Open https://qubrite.com/admin/
+2. Click **Login with GitHub** — popup should go to GitHub, then return via `/api/callback`
+3. Create a test post with **Draft: true**, publish, confirm a commit on `main` and a Cloudflare build
+
+If login fails:
+
+- Callback URL in GitHub must match **exactly** `https://qubrite.com/api/callback`
+- Secrets must be set on the **same** Cloudflare project that serves `qubrite.com`
+- Check **Functions** logs in Cloudflare for `/api/auth` and `/api/callback`
+
+---
+
+## Local dev (no GitHub OAuth needed)
+
+`local_backend: true` makes Decap use a **local proxy** on port 8081 when you open `/admin/` on localhost.
+
+**Terminal 1:**
 
 ```bash
-# Terminal 1 — Astro dev server
 pnpm dev
-
-# Terminal 2 — Decap local backend
-npx decap-server
 ```
 
-Open [http://localhost:4321/admin/](http://localhost:4321/admin/). Changes are written to local files only; no GitHub commit is created. `local_backend: true` in `config.yml` activates this automatically on localhost.
+**Terminal 2:**
+
+```bash
+pnpm cms:local
+# same as: npx decap-server
+```
+
+Open http://localhost:4321/admin/. Edits write to `src/content/blog/` on disk — **no GitHub commit**. Use git yourself when ready.
+
+Do not point local `base_url` at production OAuth; localhost uses the local backend automatically.
 
 ---
 
-### Production — requires an OAuth proxy
+## Alternative: Netlify OAuth broker (no Functions)
 
-**Why:** Decap CMS 3.x uses the `github` backend to authenticate via Netlify's OAuth service (`api.netlify.com`) by default. For a non-Netlify host like Cloudflare Pages, Netlify will reject the auth request because `qubrite.com` is not a registered Netlify site.
+If you prefer not to use Pages Functions:
 
-> **Note on `auth_type: pkce`:** This option exists in Decap's codebase but is only implemented for the **GitLab** backend. The GitHub backend silently ignores `auth_type` and `app_id` — browser-only PKCE for GitHub is not supported in Decap CMS 3.8.0.
-
-You need one of the following to enable production login:
-
----
-
-#### Option A — Netlify OAuth service (simplest, free)
-
-Register the site with Netlify without hosting it there. Netlify's OAuth service becomes the intermediary.
-
-1. Create a free Netlify account at [netlify.com](https://netlify.com).
-2. **New site → Deploy manually** (upload any placeholder `index.html`).
-3. In Netlify site settings → **Domain management** → set custom domain to `qubrite.com`.
-4. Copy the **Site ID** from **Site settings → General** (looks like `abc123de-...`).
-5. Create a **GitHub OAuth App** at [github.com/settings/developers](https://github.com/settings/developers):
-   - **Homepage URL:** `https://qubrite.com`
-   - **Authorization callback URL:** `https://api.netlify.com/auth/done`
-6. In Netlify site settings → **Access control → OAuth** → add a **GitHub provider** using the OAuth App's Client ID and Client Secret.
-7. In `public/admin/config.yml`, set `site_domain`:
+1. Create a free Netlify site and attach custom domain `qubrite.com` (DNS can still point to Cloudflare for the main site — this is only for OAuth registration; see Netlify docs).
+2. Configure GitHub provider in Netlify **Access control → OAuth**.
+3. In `config.yml`, remove `base_url` / `auth_endpoint` and set only:
 
 ```yaml
 backend:
   name: github
   repo: bnz183/qubrite
   branch: main
-  site_domain: qubrite.com   # must match the domain registered in Netlify
+  site_domain: qubrite.com
 ```
 
-Commit and push. Cloudflare Pages redeploys. Login from `qubrite.com/admin` will now work via Netlify's OAuth broker.
+GitHub OAuth callback for Netlify: `https://api.netlify.com/auth/done`
 
----
-
-#### Option B — self-hosted OAuth proxy (full control)
-
-Deploy a small OAuth proxy. A ready-made Cloudflare Worker is available:
-
-- [vencax/netlify-cms-github-oauth-provider](https://github.com/vencax/netlify-cms-github-oauth-provider) (Node, deployable to Cloudflare Workers, Heroku, Railway, etc.)
-
-Steps:
-1. Fork and deploy the proxy (e.g. `https://qubrite-oauth.workers.dev`).
-2. Create a **GitHub OAuth App**:
-   - **Authorization callback URL:** `https://qubrite-oauth.workers.dev/callback`
-3. Set the proxy's `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` env vars.
-4. In `public/admin/config.yml`:
-
-```yaml
-backend:
-  name: github
-  repo: bnz183/qubrite
-  branch: main
-  base_url: https://qubrite-oauth.workers.dev
-```
+This repo’s **default** is Cloudflare Functions (same domain, no Netlify site required).
 
 ---
 
 ## Create a post
 
-1. Open `/admin` and log in with GitHub.
-2. Click **Blog Posts** → **New Blog Post**.
-3. Fill in all required fields:
-   - **Title** — article headline
-   - **Description** — short summary for cards, SEO, and RSS
-   - **Publish Date** — UTC ISO timestamp (e.g. `2026-05-20T10:00:00Z`)
-   - **Hero Image** — relative path: `../../assets/images/filename.jpg`
-   - **Category** — select from the list
-   - **Tags** — add one per entry
-4. Leave **Draft** checked (`true`) while editing.
-5. Write content in **Body** (Markdown).
-6. Click **Publish** — Decap commits `src/content/blog/<slug>.mdx` to `main`.
+1. Open `/admin` and log in with GitHub (production) or use local backend (dev).
+2. **Blog Posts** → **New Blog Post**.
+3. Required fields (must match `src/content.config.ts`):
+
+| Field | Notes |
+|-------|--------|
+| Title | Max 80 characters |
+| Description | SEO / card summary |
+| Publish Date | UTC ISO, e.g. `2026-05-21T13:30:00Z` |
+| Hero Image | e.g. `../../assets/images/default-cover.png` |
+| Category | One of the six enum values (see below) |
+| Tags | One tag per list entry |
+| Draft | `true` while editing; `false` to publish |
+| Body | Markdown (MDX body) |
+
+**Categories (exact strings):**
+
+- AI & Web Development
+- Automation
+- Cyber Labs
+- Privacy Tech
+- Hardware
+- Business & Finance
+
+4. **Publish** (production) commits `src/content/blog/<slug>.mdx` to `main`.
 
 ---
 
 ## Draft vs publish
 
-| `draft` | Behavior |
-|---------|----------|
-| `true` (default) | Hidden from homepage, categories, RSS, and all routes. |
-| `false` | Visible and indexed like any published article. |
-
-**Workflow:** keep Draft on while writing → set Draft off when ready → publish.
-
----
-
-## How changes reach the live site
-
-1. You save/publish from `/admin`.
-2. Decap authenticates via GitHub (through the OAuth proxy) and commits the `.mdx` file to `bnz183/qubrite` on `main`.
-3. Cloudflare Pages detects the push and runs `pnpm build`.
-4. The live site is updated after the deploy finishes (usually under 1 minute).
+| `draft` | Site behavior |
+|---------|----------------|
+| `true` | Hidden from routes, RSS, homepage, categories |
+| `false` | Live after Cloudflare build completes |
 
 ---
 
 ## Hero images
 
-**Store hero images in `src/assets/images/`.** Do not use `public/uploads/`.
+Use **`src/assets/images/`** — not `public/uploads/`.
 
-- Existing posts use relative paths: `../../assets/images/filename.jpg`
-- Astro's `content.config.ts` uses `heroImage: image()`, which resolves those relative paths
-- Decap is configured with:
-  - `media_folder: src/assets/images` — images uploaded via CMS are committed here
-  - `public_folder: ../../assets/images` — path prefix written into frontmatter
-
-The Hero Image field is a `string` widget. Type or paste the path manually. Upload support via the image widget would require changing to `public/uploads`, which would break the Astro image pipeline for existing posts.
+- Frontmatter: `../../assets/images/your-file.jpg`
+- Astro `image()` in `content.config.ts` resolves these paths
+- CMS: `media_folder: src/assets/images`, `public_folder: ../../assets/images`
 
 ---
 
@@ -144,16 +172,17 @@ The Hero Image field is a `string` widget. Type or paste the path manually. Uplo
 
 | Path | Role |
 |------|------|
-| `public/admin/index.html` | Loads Decap CMS from CDN |
-| `public/admin/config.yml` | Collection schema, backend, media paths |
-| `src/content/blog/*.mdx` | Blog posts edited by the CMS |
-| `src/assets/images/` | Hero and body images |
-| `automation/cms-admin.md` | This document |
+| `public/admin/index.html` | Loads Decap CMS 3.8 from unpkg |
+| `public/admin/config.yml` | Backend, collections, media |
+| `functions/api/auth.js` | Starts GitHub OAuth (production) |
+| `functions/api/callback.js` | Completes OAuth, returns token to Decap |
+| `src/content/blog/*.mdx` | Posts |
+| `automation/cms-admin.md` | This guide |
 
 ---
 
-## What Decap does NOT change
+## What Decap does not change
 
-- No database, no WordPress, no custom backend
-- Existing MDX frontmatter fields and Astro routes are unchanged
-- RSS, sitemap, Pagefind, category routing, and dark mode are unaffected
+- No database, no WordPress
+- RSS, sitemap, Pagefind, categories, and static deploy unchanged
+- No Astro or pnpm dependency updates required for CMS

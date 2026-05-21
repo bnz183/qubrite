@@ -25,6 +25,7 @@
 		"build": "astro build",
 		"sync": "astro sync",
 		"preview": "astro preview",
+		"cms:local": "npx decap-server",
 		"postbuild": "pagefind --site dist",
 		"format:check": "prettier --check .",
 		"format": "prettier --write .",
