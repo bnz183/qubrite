@@ -5,10 +5,28 @@ import Footer from '@/components/Footer'
 import ProviderTheme from '@/components/ProviderTheme'
 import ProviderAnimations from '@/components/ProviderAnimations'
 const { title, description, image, articleDate } = Astro.props
+
+const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID
 ---
 
 <html lang='en' class='scroll-smooth'>
 	<head>
+		{
+			gaId && (
+				<>
+					<!-- Google tag (gtag.js) -->
+					<script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+					<script is:inline define:vars={{ gaId }}>
+						window.dataLayer = window.dataLayer || []
+						function gtag() {
+							dataLayer.push(arguments)
+						}
+						gtag('js', new Date())
+						gtag('config', gaId)
+					</script>
+				</>
+			)
+		}
 		<BaseHead title={title} description={description} ogImage={image} articleDate={articleDate} />
 		<ProviderTheme />
 		<ProviderAnimations />
