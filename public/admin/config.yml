@@ -56,7 +56,7 @@ collections:
         widget: select
         required: true
         options:
-          - AI Web Development
+          - AI & Web Development
           - Automation
           - Cyber Labs
           - Privacy Tech

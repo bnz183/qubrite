@@ -1,5 +1,5 @@
 export const CATEGORIES = [
-	'AI Web Development',
+	'AI & Web Development',
 	'Automation',
 	'Cyber Labs',
 	'Privacy Tech',
