@@ -30,6 +30,18 @@
 /tags/workflow%20automation/   /tags/automation/          301
 /tags/workflow%20automation    /tags/automation/          301
 
+# --- Bare category index paths ---
+# Pagination output emits `/category/{slug}/{n}/` only — there is no
+# `/category/{slug}/index.html`. Send the bare path to page 1 so any
+# crawler that discovered the parent path lands on canonical content
+# instead of 404. These are also useful for human-typed URLs.
+/category/ai-web-development/   /category/ai-web-development/1/  301
+/category/automation/           /category/automation/1/          301
+/category/business-finance/     /category/business-finance/1/    301
+/category/cyber-labs/           /category/cyber-labs/1/          301
+/category/hardware/             /category/hardware/1/            301
+/category/privacy-tech/         /category/privacy-tech/1/        301
+
 # --- Single-word legacy tags ---
 /tags/ai/                      /tags/generative-ai/       301
 /tags/ai                       /tags/generative-ai/       301

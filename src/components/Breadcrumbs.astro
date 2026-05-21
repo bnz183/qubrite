@@ -12,7 +12,7 @@ const { items: rawItems, category } = Astro.props
 
 const items: Crumb[] = [{ label: 'Home', href: '/' }]
 if (category) {
-	items.push({ label: category, href: `/category/${sluglify(category)}/1` })
+	items.push({ label: category, href: `/category/${sluglify(category)}/1/` })
 }
 items.push(...rawItems)
 

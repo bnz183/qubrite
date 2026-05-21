@@ -39,7 +39,7 @@ import { sluglify } from '@/utils'
 		{
 			CATEGORIES.map((category) => (
 				<HeaderLink
-					href={`/category/${sluglify(category)}/1`}
+					href={`/category/${sluglify(category)}/1/`}
 					class='text-[14px] xl:text-[15px] leading-none whitespace-nowrap'
 				>
 					{category}
@@ -82,7 +82,7 @@ import { sluglify } from '@/utils'
 				{
 					CATEGORIES.map((category) => (
 						<HeaderLink
-							href={`/category/${sluglify(category)}/1`}
+							href={`/category/${sluglify(category)}/1/`}
 							class='text-[1.15rem] tracking-wide'
 						>
 							{category}
@@ -91,11 +91,11 @@ import { sluglify } from '@/utils'
 				}
 				<div class='my-2 border-t border-gray-200/80 dark:border-gray-800/80'></div>
 				<div class='flex flex-col gap-5'>
-					<HeaderLink href='/about' class='text-[15px]'>About</HeaderLink>
-					<HeaderLink href='/contact' class='text-[15px]'>Contact</HeaderLink>
-					<HeaderLink href='/editorial-policy' class='text-[15px]'>Editorial Policy</HeaderLink>
-					<HeaderLink href='/privacy-policy' class='text-[15px]'>Privacy</HeaderLink>
-					<HeaderLink href='/affiliate-disclosure' class='text-[15px]'>Affiliate Disclosure</HeaderLink>
+					<HeaderLink href='/about/' class='text-[15px]'>About</HeaderLink>
+					<HeaderLink href='/contact/' class='text-[15px]'>Contact</HeaderLink>
+					<HeaderLink href='/editorial-policy/' class='text-[15px]'>Editorial Policy</HeaderLink>
+					<HeaderLink href='/privacy-policy/' class='text-[15px]'>Privacy</HeaderLink>
+					<HeaderLink href='/affiliate-disclosure/' class='text-[15px]'>Affiliate Disclosure</HeaderLink>
 					<HeaderLink href='/rss.xml' class='text-[15px]'>RSS</HeaderLink>
 				</div>
 			</nav>
