@@ -1,0 +1,374 @@
+---
+title: "AI Website Builder Stack: Cursor, Lovable, GitHub, and CMS Workflows Explained"
+description: "A practical guide to choosing the right AI website tools for each stage of a real web project, from prototype to codebase, CMS, deployment, and iteration."
+pubDate: "2026-05-21T09:00:00Z"
+heroImage: "../../assets/images/default-cover.png"
+category: "AI & Web Development"
+tags:
+  - Cursor
+  - Lovable
+  - GitHub
+  - Generative AI
+  - Web Development
+  - Self-Hosting
+draft: false
+---
+
+import DisclosureBox from '../../components/DisclosureBox.astro'
+
+# AI Website Builder Stack: Cursor, Lovable, GitHub, and CMS Workflows Explained
+
+Most people searching for the "best AI website builder" are asking the wrong question. They want a single tool that takes them from an idea in their head to a live, maintainable, search-friendly website. That tool does not exist. What exists is a stack of specialized tools, and the people who ship good sites with AI are the ones who understand which tool belongs at which stage.
+
+The honest answer is closer to this: a visual builder like [Lovable](https://docs.lovable.dev/introduction) is good at producing a working prototype from a paragraph of natural language. An IDE-grade agent like [Cursor](https://cursor.com/features) is good at editing a real codebase you intend to keep. [GitHub](https://docs.github.com/en/copilot/get-started/features) is the version-control safety net that prevents either of those tools from quietly destroying your project. A content management system is what turns a website into a publication. And the deployment platform — Vercel, Cloudflare Pages, or Netlify — is the part that takes everything from your repo to a real URL with HTTPS and a CDN.
+
+This guide walks through that stack the way an operator actually uses it. You will not get hype. You will get a map of which tool fits which stage, what each one is bad at, and how to assemble them into a workflow that ships fast without locking you into a single vendor.
+
+<DisclosureBox />
+
+## Quick Verdict
+
+Treat AI website tools as a chain, not a single product. Use Lovable when you need a working visual prototype in an evening. Use Cursor when you need precise edits across a real repo. Use GitHub as the audit log and rollback layer for both. Pair the codebase with a Git-based CMS like [Decap](https://decapcms.org/docs) for editors who do not touch code, or a headless platform like [Sanity](https://www.sanity.io/docs) when content scales. Ship through Cloudflare Pages, Vercel, or Netlify depending on whether you want pure static, full-stack Next.js, or a balance. The stack you choose matters less than knowing where each tool stops and the next one starts.
+
+<KeyTakeaways>
+- There is no single best AI website builder. There is a stack of tools, one per stage.
+- Lovable is best for fast visual prototypes from natural language; Cursor is best for working inside a real repo.
+- GitHub is the non-optional safety layer. Without it, every AI session is one bad prompt from a destroyed project.
+- A CMS only matters if non-developers need to publish. Pick a Git-based CMS for static sites; pick headless when content volume scales.
+- Deployment is a static-site problem on Cloudflare Pages, a full-stack problem on Vercel, and a balance on Netlify.
+- ChatGPT, Claude, Copilot, and Codex are not replacements for any of the above. They are research, review, and CLI layers around them.
+</KeyTakeaways>
+
+## Why There Is No Single Best AI Website Builder
+
+The "best AI website builder" framing assumes the work is monolithic. It is not. Building a website is a chain of distinct jobs: shaping an idea, sketching a layout, writing the code, version-controlling it, editing the content, deploying, and iterating after launch. Each job has different constraints. A tool optimized for the first stage is almost always wrong for the last one.
+
+Lovable is a useful illustration. Its own documentation describes it as a way to "build, iterate on, and deploy production-grade web applications using natural language, with real code." [Lovable](https://docs.lovable.dev/introduction) generates a working stack in minutes from a prompt. That speed comes from defaults: a fixed frontend framework, a generated database schema, and an opinionated component library. Those defaults make it brilliant for stage one and frustrating by stage five.
+
+Cursor sits on the opposite end. It is an IDE that expects an existing codebase. Its agent can [run terminal commands, edit files, and complete coding tasks independently](https://cursor.com/docs/agent/overview), but it does not produce a starting point out of thin air. If you point Cursor at an empty folder and tell it to "build a SaaS marketing site," you will get something — but you will not get the same speed-to-prototype that Lovable gives you.
+
+The mistake is treating these as competitors. They are not. They are different layers of the same pipeline. The faster you accept that, the faster you stop wasting evenings trying to bend one tool into doing the job of another.
+
+## The Real AI Website Workflow
+
+The chain looks like this:
+
+**Idea → Prototype → Codebase → Version control → CMS → Deployment → Analytics → Iteration.**
+
+Each link has a tool that fits and a set of tools that do not. The risk of using the wrong tool at a given stage is not just slower work — it is silently shipping bad architecture you have to undo later.
+
+| Stage | Best tool | Why it fits | Risk if used wrong |
+| --- | --- | --- | --- |
+| Idea | ChatGPT / Claude | Open-ended brainstorming, audience and scope shaping, copy drafts | Letting the chatbot define your tech stack from vibes |
+| Visual prototype | Lovable | Generates a working frontend from a prompt with editable code | Treating the prototype as production-ready without review |
+| Codebase work | Cursor | Repo-aware edits, refactors, tests, and agent runs in a real IDE | Letting the agent rewrite files you did not ask it to touch |
+| Version control | GitHub | Branches, PRs, history, rollback, deployment hooks | Skipping commits and losing a day's work to a bad refactor |
+| Content updates | Decap / Sanity / direct MDX | Lets editors update copy without touching code | Building a CMS layer before you actually need one |
+| Deployment | Cloudflare Pages / Vercel / Netlify | Continuous deploys, previews, CDN, HTTPS | Choosing a runtime that does not match your framework |
+| Iteration | Cursor + GitHub + Analytics | Repo-aware edits backed by branch protection and real data | Iterating on opinions instead of measured behavior |
+
+**Table 1.** Each stage of an AI website project and the tool that fits it best. Notice that no single product covers more than two stages well. That is the whole point.
+
+## Lovable: Best for Fast Visual Prototypes
+
+Lovable's pitch is straightforward: describe what you want in natural language, get a working web app with frontend, backend, database, authentication, and integrations. The [official documentation](https://docs.lovable.dev/introduction) is honest about who it is for — individual builders, design teams, agencies, and enterprises wanting to move from idea to working software without starting from a blank codebase.
+
+Where Lovable shines:
+
+- **Time-to-first-screen.** If you have a clear idea and need a clickable prototype in an evening, Lovable will get you further faster than any IDE.
+- **Non-technical collaboration.** A founder, designer, or marketer can produce something a developer can actually inspect, instead of describing a vague idea in a Notion doc.
+- **Editable code.** The output is real code, not a no-code black box. Lovable's own docs emphasize that you keep full ownership and can [connect your project to a GitHub repository with two-way sync](https://docs.lovable.dev/integrations/github), so the codebase is portable.
+
+Where Lovable struggles:
+
+- **Long-term codebase health.** The prompt-driven generation pattern that makes the first version fast also makes the tenth iteration messy. The same defaults that helped at step one start fighting you when you need to integrate a niche dependency or restructure routing.
+- **Editorial control.** Lovable is a generalist. It does not know your design system, your typography rules, or the fact that you ship Astro static sites with MDX. You can teach it some of that, but it is not the right surface for the last 20% of polish on a publication-grade site.
+- **Vendor surface area.** Two-way GitHub sync helps, but the longer you keep editing inside Lovable, the more your habits get tied to its UI. Move to a real IDE before that lock-in compounds.
+
+The right use of Lovable is as a sketchpad. You generate the first working version, you pull it into GitHub, and then the real work moves into your codebase.
+
+## Cursor: Best for Real Codebase Control
+
+Cursor is what Lovable is not: an IDE that expects you to already have a project. It is a fork of VS Code with an agent layered on top. According to the [official Cursor documentation](https://cursor.com/docs/agent/overview), the agent can complete complex coding tasks, run terminal commands, edit code, and work autonomously while you review.
+
+The reason Cursor matters for AI website work is that it respects the structure you already have. The features that earn it a place in the stack are not the headline ones — they are the boring ones:
+
+- **Codebase indexing.** Cursor reads your repo as context. When you ask it to add a route or refactor a component, it has a chance of doing it the way the rest of the codebase already does.
+- **Multiple models per task.** The documentation lists [support for OpenAI, Anthropic, Gemini, xAI, and Cursor's own Composer models](https://cursor.com/features). You can pick a fast model for autocomplete and a stronger one for plans.
+- **Agent with checkpoints.** Cursor maintains snapshots during agent sessions so you can roll back if a multi-file edit goes sideways.
+- **Real terminal integration.** The agent can run `pnpm build`, read errors, and fix them, which closes the loop on iterative debugging.
+
+Cursor's weakness is the inverse of its strength. It assumes you understand the codebase well enough to tell it what to change. Hand it a fresh empty repo with no design tokens and no taxonomy and you will get the same generic SaaS-landing-page output everyone else gets.
+
+The pattern that works in our experience: use Lovable or a template to bootstrap a project, immediately push it to GitHub, then do all serious edits in Cursor with [explicit rules](https://cursor.com/docs) that constrain its behavior — package manager, framework version, file patterns it must not touch.
+
+<Callout variant="warning" title="Stop the agent before it rewrites your config">
+The single most common Cursor mistake is letting the agent "improve" your `package.json`, your framework config, or your CI workflow without permission. Pin a rule that the agent cannot modify these files without an explicit instruction. Future you will be grateful.
+</Callout>
+
+## GitHub: The Safety Layer Beginners Ignore
+
+The least exciting tool in this stack is also the one that prevents disasters. GitHub is not an AI tool. It is a version-control system with collaboration features bolted on. But the moment you start letting an AI agent edit your repo, GitHub stops being optional and becomes the only thing standing between you and a permanently broken project.
+
+The core jobs GitHub does in an AI workflow:
+
+- **Branches for risky edits.** Before you let an agent do a big refactor, you branch. If it goes well, you merge. If it does not, you delete the branch.
+- **Pull request review.** [GitHub's documentation](https://docs.github.com/en/copilot/get-started/features) describes Copilot's PR-summary and review features, but even without Copilot, the diff in a PR is the single best place to catch agent overreach.
+- **History as audit log.** Every change is timestamped, attributable, and revertable. When something on production breaks at 11 PM, the commit log tells you what changed.
+- **Deployment hooks.** Vercel, Cloudflare Pages, and Netlify all read from a Git provider. Without GitHub (or an equivalent), continuous deployment is glued together with FTP and prayers.
+
+If you are using AI to generate code, the rule is simple: commit early, commit often, push frequently. Treat every agent session like a long-running experiment. If it produces something good, commit and merge. If it produces something bad, reset and start over. The cost of being disciplined here is small. The cost of being sloppy is catastrophic.
+
+A practical pattern that holds up:
+
+1. New feature → new branch.
+2. Agent edits → small, descriptive commits.
+3. Build passes locally → push.
+4. Open a PR even if you are the only developer → read the diff.
+5. Merge to `main` only when the diff is clean.
+
+That sequence is boring. It is also the reason your site does not silently break next Tuesday.
+
+## CMS: What Makes the Site Maintainable
+
+A CMS is what stops a website from becoming an engineering bottleneck. The question is not whether you need one — it is whether you need one *yet*.
+
+For a solo developer running a static blog, you do not need a CMS at all. Your MDX files in `src/content/` are the CMS. You edit them in your IDE, commit, and deploy. That is exactly how this publication operates, and it is documented in our piece on the [Astro, MDX, and Cloudflare blog stack](/post/low-maintenance-blog-stack/).
+
+A CMS layer becomes useful when one of these is true:
+
+- A non-developer needs to publish.
+- The publishing volume outgrows what one editor can manage in raw MDX.
+- You need workflows like draft review, scheduled publishing, or multi-author roles.
+- You need to model structured content beyond posts — products, case studies, events.
+
+When that point arrives, there are two main shapes the CMS layer can take.
+
+**Git-based CMS (Decap).** [Decap CMS](https://decapcms.org/docs), formerly Netlify CMS, is an open-source content manager that wraps Git workflows in a friendly web UI. Content stays in your repository as Markdown or JSON files. The CMS commits to GitHub on the editor's behalf. The advantages are obvious: no external database, content versioned in Git, free, and compatible with most static site generators including Astro. The trade-off is that real-time collaboration and advanced workflows are limited.
+
+**Headless CMS (Sanity).** [Sanity](https://www.sanity.io/docs) takes the opposite approach. Content lives in their hosted Content Lake. The Sanity Studio is a customizable React app for editors. The frontend fetches content over HTTP, GraphQL, or GROQ. The advantages are real-time multiplayer editing, structured content modeling, and a rich API surface. The trade-off is a runtime dependency on a third party and a learning curve before the schema feels productive.
+
+| Tool | Best for | Weakness | Beginner difficulty | QuBrite verdict |
+| --- | --- | --- | --- | --- |
+| Lovable | Going from idea to working prototype in an evening | Long-term codebase hygiene; opinionated defaults | Low | Best sketchpad in the stack |
+| Cursor | Repo-aware edits, refactors, agent runs in real codebases | Empty repos and missing rules produce generic output | Medium | The workshop where the real build happens |
+| GitHub | Branching, PR review, deployment hooks, audit trail | Nothing fun until it saves you from disaster | Medium | The safety net you cannot skip |
+| CMS (Decap / Sanity) | Letting non-developers publish without touching code | Wrong choice locks you into either a thin or heavy stack | Medium | Decap for static, Sanity when content scales |
+
+**Table 2.** The four roles in an AI website stack and what each one is honestly good at. The right way to use this table is as a reminder that none of them does the job of another.
+
+## Deployment: Vercel, Cloudflare Pages, or Netlify
+
+Deployment is where opinions get expensive. Pick the wrong runtime and you spend the next year fighting your platform instead of using it. The good news is that for static-first sites, all three of the popular options work. The differences only matter at the edges.
+
+**Cloudflare Pages.** The official [Cloudflare Pages documentation](https://developers.cloudflare.com/pages/) lists Git integration with GitHub or GitLab, Pages Functions for dynamic logic, instant rollbacks, redirects, and preview deployments per pull request. The free plan, [per Cloudflare's own limits page](https://developers.cloudflare.com/pages/platform/limits/), includes 500 builds per month, 20,000 files per site, unlimited bandwidth, unlimited requests, and unlimited team seats. For a pure static publication, this is hard to beat.
+
+**Vercel.** The platform was built by the team that maintains Next.js. The [Vercel documentation](https://vercel.com/docs/frameworks/full-stack/nextjs) advertises zero-config Next.js deployment, Incremental Static Regeneration, Server-Side Rendering through Functions, and streaming. If your project is Next.js or you need full-stack rendering with serverless functions, this is the path of least friction.
+
+**Netlify.** The [Netlify deployment docs](https://docs.netlify.com/site-deploys/overview/) describe atomic deploys, deploy previews on every pull request, skew protection for supported frameworks, and rollback to any previous version. Netlify supports Git integration, a CLI, drag-and-drop, and API deployments. It is the platform that started the "JAMstack" approach and remains a strong generalist for static and hybrid sites.
+
+How to choose without overthinking it:
+
+- **Pure static publication or marketing site.** Cloudflare Pages. Unlimited bandwidth and the lightest mental overhead.
+- **Next.js project that will use ISR, SSR, or Vercel-specific features.** Vercel. Stop trying to make Next.js work elsewhere; it does, but you pay in friction.
+- **Existing Netlify setup or a multi-framework agency workflow.** Netlify. Their atomic deploy model and deploy previews are excellent.
+
+The unifying truth: all three connect to GitHub, all three give you preview URLs on pull requests, and all three rebuild on every push. Pick one, commit to it for a year, and stop researching alternatives. Time spent comparing deployment platforms is almost always time you could have spent on the actual product.
+
+## Where ChatGPT, Claude, Copilot, and Codex Fit
+
+The general-purpose AI tools are not website builders. They are intelligence layers around the stack. Each fits a slightly different role.
+
+**ChatGPT.** Best as a research and copywriting partner. Outline a section, ask for SEO angle alternatives, get a first draft of a marketing page. It is also useful for generating boilerplate JSON, schema, or config snippets you can paste into Cursor.
+
+**Claude.** Strong for long-context reading. Useful when you need to feed it a long file or a multi-document brief and ask it to extract structure. [Anthropic also ships Claude Code](https://docs.anthropic.com/en/docs/claude-code), an agentic CLI tool that reads codebases, edits files, and runs commands. Claude Code overlaps with Cursor in capability but lives in the terminal rather than a full IDE.
+
+**GitHub Copilot.** Lives inside your editor or the GitHub website. The [Copilot documentation](https://docs.github.com/en/copilot/get-started/features) describes assistive features like inline suggestions and chat, plus agentic features like the cloud agent that can research a repository, create implementation plans, and open pull requests. It also includes code review and PR-summary features that fit naturally into a GitHub-centric workflow.
+
+**OpenAI Codex CLI.** The [official Codex CLI documentation](https://developers.openai.com/codex/cli) describes it as an open-source coding agent built in Rust that runs locally in the terminal. It can read, change, and run code in a selected directory, supports image inputs, code review by a second agent, web search, and approval modes. It is a fit if you prefer the CLI over an IDE-integrated agent.
+
+How to think about which to use:
+
+- Use **ChatGPT or Claude** for ideation, planning, and copy.
+- Use **Cursor's agent** for editing the codebase as a primary workflow.
+- Use **Claude Code or Codex CLI** when you want an agent in the terminal instead of an IDE — useful on servers or in CI.
+- Use **GitHub Copilot** for PR reviews and inline suggestions, especially if your team already lives in GitHub.
+
+None of these replaces the others. They overlap. That is fine.
+
+If you want to keep more of this workflow off third-party APIs — say for a privacy-sensitive client or because you are building on a mini PC you control end-to-end — local model setups change the trade-offs significantly, and the cost calculus too. {/* TODO: INTERNAL LINK: Local AI for Beginners */} {/* TODO: INTERNAL LINK: Best Mini PCs for Self-Hosting AI and Automation */}
+
+<Newsletter />
+
+## Recommended Stacks by Use Case
+
+The "right" stack depends entirely on who is building, who is editing, and what the site needs to do. Below are six scenarios and the stack we would recommend for each.
+
+| Use case | Recommended stack | Why it works | What to avoid |
+| --- | --- | --- | --- |
+| Beginner non-coder, first website | Lovable → GitHub two-way sync → Vercel or Netlify | Visual prototyping with code escape hatch; deploy without thinking | Adding Cursor before you can read the codebase Lovable generated |
+| Solo founder landing page | Lovable for first draft → Cursor for polish → Cloudflare Pages | Fast start, real edits, free static hosting at production scale | Spinning up a CMS for a five-page site |
+| Technical blog or publication | Astro + MDX → Cursor → GitHub → Cloudflare Pages → (Decap later) | Static, fast, low maintenance, content lives in repo | Headless CMS on day one when MDX is enough |
+| Client website workflow | Cursor in a starter template → GitHub PR review → Decap CMS for client → Netlify or Vercel | Client edits content without touching code; you keep the codebase | Handing the client direct access to Lovable |
+| Ecommerce demo or prototype | Lovable for store UI → Cursor to integrate payments → Vercel | Visual frontend speed plus serverless functions for checkout | Pure Cloudflare Pages if you need heavy server logic |
+| Developer improving an existing codebase | Cursor agent + rules → GitHub branches → existing deployment | Rules constrain the agent to your conventions; PRs catch overreach | Letting the agent edit `main` directly |
+
+**Table 3.** Recommended stacks by use case. The pattern is consistent: visual builder for first sketch when needed, IDE for serious work, GitHub for safety, deployment that matches the framework.
+
+## Real-World Examples
+
+These are practical scenarios that play out the same way regardless of the specific business. Label them however you want; the lesson is in the workflow shape.
+
+**Practical scenario: the founder who shipped a landing page in one afternoon.** A non-technical founder describes a SaaS landing page in Lovable. Within an hour they have a working prototype with a hero, features grid, pricing, and a waitlist form. They connect Lovable's two-way sync to GitHub, deploy from `main` to Vercel, and have a public URL by evening. The site is not perfect, but it is real. They can ship and start iterating instead of describing the site for another six weeks.
+
+**Practical scenario: the developer rebuilding an old blog.** A developer has a five-year-old WordPress blog with 80 posts. They want static, fast, low-maintenance. They scaffold an Astro project, paste a content collection schema into Cursor, and let the agent migrate posts to MDX in batches. Each batch goes through a pull request. They deploy to Cloudflare Pages from `main`. Total elapsed time: a long weekend instead of a month-long rebuild project. {/* TODO: INTERNAL LINK: How to Build an AI Publishing Workflow Without Turning Your Blog Into Spam */}
+
+**Practical scenario: the agency that wanted client edits without giving them the keys.** An agency builds a marketing site for a client in Astro using Cursor. They install [Decap CMS](https://decapcms.org/docs) so the client can edit posts and team bios at `/admin/`. Every edit becomes a commit to a Git branch the agency reviews before merging to `main`. The client never opens the codebase. The agency never opens the client's draft.
+
+**Practical scenario: the indie hacker who validated three ideas in one week.** An indie hacker uses Lovable to spin up three different SaaS landing pages, each pointed at a separate domain via Vercel. They ship traffic to each, watch which one gets the highest signup rate, and kill the other two. Because each project is real code in GitHub, the winning one can be moved into Cursor and grown into a real product without rebuilding from scratch.
+
+**Practical scenario: the technical writer running a publication solo.** A writer ships a static Astro publication, edits MDX files directly in Cursor, commits through GitHub, deploys via Cloudflare Pages, and uses [RSS](/post/why-rss-matters-automated-publications/) to syndicate articles to readers and automation pipelines. They never install a CMS because there is no one else to publish. When traffic grows enough that they hire a part-time editor, that is when they add Decap on top — not before.
+
+## Static Site vs Visual Builder vs CMS-Based Website
+
+A frequent point of confusion is what kind of site you are actually building. The three common shapes have very different trade-offs.
+
+**Static site.** Pages are pre-rendered at build time. Output is HTML, CSS, and a small amount of JavaScript. Fast, cheap, search-engine-friendly. Content updates require a rebuild. Best for blogs, marketing sites, documentation, and most small business sites. Astro, Hugo, and Eleventy are common generators.
+
+**Visual builder.** Tools like Lovable, Webflow, Framer, or Wix produce a working site directly from a visual editor (or, in Lovable's case, from natural language). The "code" exists, but it is often more abstract — a database of components rather than files you would hand-edit happily. Fast to start, easier for non-developers, harder to migrate away from.
+
+**CMS-based website.** A separate database holds content. The site renders pages from that content at request time or at build time. WordPress is the classic example; modern equivalents include Sanity, Strapi, or Payload. Best when content is the product — large publications, ecommerce catalogs, knowledge bases. The cost is more moving parts, more attack surface, and more maintenance.
+
+A useful rule: start static, add a CMS only when a non-developer needs to publish, and choose a visual builder only when speed of first iteration matters more than long-term editorial control. Most of the AI-built websites that age badly are projects where someone picked a visual builder for a job that wanted a static site, or a heavy CMS for a job that needed twenty pages of content total.
+
+## What Beginners Get Wrong
+
+A short list of patterns that quietly destroy AI website projects.
+
+**1. Treating Lovable's first output as production.** Lovable is excellent at the first version. It is not a substitute for actual product thinking. The hero section it generated is a starting point, not a final design.
+
+**2. Letting Cursor edit without rules.** Cursor's agent will happily install React in your Astro project, add Tailwind v4 to a Tailwind v3 codebase, or replace your package manager. Write [rules](https://cursor.com/docs) that pin the framework, the package manager, the deployment target, and any files the agent must not touch.
+
+**3. Skipping commits.** Every long agent session without a commit is one keystroke away from a destroyed codebase. Commit before risky changes. Commit after working ones. Push to GitHub the same day.
+
+**4. Installing a CMS too early.** A blog with three articles does not need a CMS. Editing MDX directly is faster. Add the CMS when there is an actual editor who needs it.
+
+**5. Mixing deployment platforms.** Picking Vercel for one project, Netlify for another, and Cloudflare for a third is fine — but doing it inside the same project, or migrating between them every six months, is a tax on your time. Pick one and stop researching. The same discipline applies to your automation layer — debating n8n versus Make versus Zapier for months while shipping nothing is the same anti-pattern. {/* TODO: INTERNAL LINK: n8n vs Make vs Zapier */}
+
+**6. Trusting AI for facts without verification.** AI tools will confidently cite documentation that does not exist, package versions that do not exist, and APIs that do not exist. For anything load-bearing, check the official docs. This applies to AI website builders as much as to AI writing tools — see our piece on the [difference between AI slop and useful AI-assisted publishing](/post/difference-between-ai-slop-useful-publishing/) for the editorial version of the same lesson.
+
+**7. Ignoring [Google's helpful content guidance](https://developers.google.com/search/docs/fundamentals/creating-helpful-content).** Google does not ban AI-generated content. It does penalize low-effort, scaled, people-last content regardless of how it was produced. Use AI to draft, not to publish.
+
+## QuBrite Field Notes
+
+Here is the framing we use internally when explaining this stack to people who keep asking which single tool to pick.
+
+> Treat the tools as specialized workers, not interchangeable products.
+
+- **Lovable is the sketchpad.** You scribble an idea, you see a shape, you decide whether it has legs.
+- **Cursor is the workshop.** You bring the sketch in, you measure twice, you cut once, and you build something that actually holds together.
+- **GitHub is the safety net.** It is the part of the shop you do not notice until you almost fall off the scaffolding.
+- **The CMS is the publishing desk.** It is where someone who does not own the workshop can still get an article into the queue.
+- **Deployment is the delivery pipeline.** You hand the finished piece to the courier, the courier puts it on every doorstep, and you stop thinking about it.
+
+The mistake most beginners make is asking the sketchpad to be the workshop, or the workshop to also be the delivery pipeline. Each tool gets sharper when you stop asking it to do another tool's job.
+
+<Callout variant="tip" title="Field Note">
+If a single AI tool is starting to feel like it does "everything," that is the moment to suspect it. The good ones are honest about what they are bad at. Lovable's own docs recommend connecting GitHub. Cursor's own docs recommend agent rules. The product surface that pretends to need no boundaries is usually the one about to lose your work.
+</Callout>
+
+## FAQ
+
+### What is the best AI website builder?
+
+There is no single best AI website builder. The right answer is a stack: a visual builder like Lovable for the first prototype, an IDE-grade agent like Cursor for real codebase work, GitHub for version control, a CMS only if you need one, and a deployment platform that matches your framework. Anyone selling a one-tool answer is leaving out the other 80% of the workflow.
+
+### Should I use Lovable or Cursor?
+
+Use both, but at different stages. [Lovable](https://docs.lovable.dev/introduction) is best for going from idea to working prototype with no codebase. [Cursor](https://cursor.com/features) is best for editing a codebase you intend to keep. The healthy pattern is Lovable for the first sketch, then push to GitHub, then move all serious work into Cursor.
+
+### Is Lovable better than Webflow?
+
+They solve different problems. Lovable generates a real codebase you can take elsewhere; Webflow keeps you inside its visual editor and hosting. If you want speed and portability, Lovable's [GitHub two-way sync](https://docs.lovable.dev/integrations/github) is the more durable choice. If you want a polished visual editor and never plan to leave the platform, Webflow can still make sense.
+
+### Do I need to know how to code to use Cursor?
+
+It helps. Cursor is an IDE. The agent can complete many tasks autonomously, but you still need to read diffs, understand what changed, and recognize when the agent is about to make a bad decision. If you are starting from zero, begin with Lovable to get a working project, then learn to read its code inside Cursor before asking the agent to make big changes.
+
+### Can ChatGPT replace a website builder?
+
+No. ChatGPT can draft copy, suggest structure, write code snippets, and help you plan. It cannot host the site, deploy it, version-control it, or maintain it. Treat ChatGPT as a research and copywriting partner that sits beside the actual builder tools — never as a replacement for them.
+
+### What is the easiest way to deploy a website built with AI?
+
+Connect a GitHub repository to [Cloudflare Pages](https://developers.cloudflare.com/pages/), [Vercel](https://vercel.com/docs/deployments), or [Netlify](https://docs.netlify.com/site-deploys/overview/). All three will rebuild on every push, generate preview URLs for pull requests, and serve traffic from a CDN with HTTPS. For a pure static site, Cloudflare Pages is the simplest and cheapest at the free tier.
+
+### Do I need GitHub if I use Lovable?
+
+Yes, in any project you care about keeping. Lovable supports [two-way GitHub sync](https://docs.lovable.dev/integrations/github) precisely because the code needs to live somewhere outside the platform. GitHub gives you history, rollback, pull request review, and a deployment hook for your hosting platform. Skipping it is the single most common way AI website projects lose work.
+
+### Which CMS works best with an AI-built site?
+
+If your site is static and lives in a Git repository, [Decap CMS](https://decapcms.org/docs) is the natural fit because it commits changes back to GitHub. If your content modeling is complex, your team is distributed, or you need real-time multiplayer editing, [Sanity](https://www.sanity.io/docs) is a stronger choice at the cost of an external runtime dependency.
+
+### Can I migrate a Lovable project into Cursor later?
+
+Yes. Because Lovable produces real code and supports [two-way GitHub sync](https://docs.lovable.dev/integrations/github), you can clone the repository, open it in Cursor, and continue work in a normal IDE workflow. The earlier you make that move, the cleaner the codebase will be later.
+
+### Will Google penalize AI-generated websites?
+
+Not for being AI-generated. [Google's official guidance](https://developers.google.com/search/blog/2023/02/google-search-and-ai-content) is that quality matters more than production method. What Google does penalize is scaled, low-effort, people-last content regardless of who or what produced it. Use AI to accelerate honest work, not to mass-produce filler. The same principle applies to AI website projects: shipping a generic Lovable output untouched is a search and brand risk; shipping a thoughtfully edited version is not.
+
+### Can AI website builders make production-ready websites?
+
+Not on their own. They can produce something that looks production-ready in a browser within an hour. Production-ready in any honest sense means version-controlled, deployed reliably, monitored, backed up, accessible, indexable, performant, and maintainable by humans. That state requires a real codebase in [GitHub](https://docs.github.com/en/get-started/using-git/about-git), a deployment platform like [Cloudflare Pages](https://developers.cloudflare.com/pages/) or [Vercel](https://vercel.com/docs/getting-started-with-vercel), and a developer who has read the diff. AI builders move you to the front of the line. They do not skip the line.
+
+### Is no-code enough for a serious website?
+
+For a serious website that you need to own, edit, and host for years, no-code on its own is usually not enough. The risk is not the visual editor — it is what happens when you outgrow it. The visual builders that ship real exportable code (Lovable's [GitHub two-way sync](https://docs.lovable.dev/integrations/github) is a good example) hedge against that risk. Pure proprietary builders that lock content into a hosted database make migration painful when you eventually need a CMS, a custom feature, or a new deployment target. If "serious" means "I will run this for five years," start with a stack that includes a real codebase and version control, even if the first draft comes out of a visual builder.
+
+### What is the best AI website stack for a blog?
+
+For a single-author technical blog: Astro plus MDX as the content layer, Cursor as the editor, GitHub as the version control, and Cloudflare Pages as the deployment target. The [Astro documentation describes itself](https://docs.astro.build/en/concepts/why-astro/) as a content-first framework designed for blogs, marketing sites, and publications, with content collections that give you type-safe Markdown. You do not need a CMS until a second person needs to publish. We document the exact pattern in our piece on the [Astro, MDX, and Cloudflare blog stack](/post/low-maintenance-blog-stack/).
+
+### What is the best AI website stack for client work?
+
+For client work the priority is portability and a clean handoff. The combination that holds up across agencies: build inside a starter template you control, do the agent work in Cursor with rules pinned to the client's framework choice, push to a GitHub organization the client either owns or can be transferred to, install [Decap CMS](https://decapcms.org/docs) so the client can edit content without touching code, and deploy from `main` to whichever platform matches the framework. The client gets a site they can maintain or hand to another agency without rebuilding. You get a clean exit when the engagement ends.
+
+### How do I avoid AI-generated website mess?
+
+Six rules that filter most of the chaos out.
+
+1. Never let an AI agent edit a project that is not committed to Git.
+2. Pin a rules file that names the framework, the package manager, and any files the agent must not touch.
+3. Use a new Git branch for any risky change. Merge only when the diff makes sense.
+4. Read every diff. The job of the human in the loop is to catch overreach.
+5. Add a CMS only when an actual non-developer needs to publish. Not before.
+6. Pick one deployment platform and stop researching alternatives.
+
+The pattern is consistent: AI tools amplify whatever discipline you already have. With version control and rules, they multiply your output. Without them, they multiply your problems.
+
+<VerdictBox title="Final Verdict" rating="Workflow over winner">
+There is no single best AI website builder, and looking for one is the first mistake. Lovable is the sketchpad. Cursor is the workshop. GitHub is the safety net. A CMS is the publishing desk if and when you need it. Deployment is the delivery pipeline. The operators who ship good sites with AI in 2026 are not the ones who picked the right product — they are the ones who built the right chain and stopped asking each tool to do another tool's job. Pick a stack from the tables above, commit to it for at least a year, and put your effort into the work that does not have a "magic button" version yet.
+</VerdictBox>
+
+## Sources / Further Reading
+
+- [Cursor — Features overview](https://cursor.com/features) (Cursor)
+- [Cursor — Agent overview](https://cursor.com/docs/agent/overview) (Cursor Docs)
+- [Cursor — Documentation home](https://cursor.com/docs) (Cursor Docs)
+- [Lovable — Welcome / Introduction](https://docs.lovable.dev/introduction) (Lovable Docs)
+- [Lovable — Connect to GitHub](https://docs.lovable.dev/integrations/github) (Lovable Docs)
+- [GitHub Copilot — Features](https://docs.github.com/en/copilot/get-started/features) (GitHub Docs)
+- [Claude Code — Overview](https://docs.anthropic.com/en/docs/claude-code) (Anthropic Docs)
+- [OpenAI Codex CLI — Overview](https://developers.openai.com/codex/cli) (OpenAI Developers)
+- [Decap CMS — Overview](https://decapcms.org/docs) (Decap CMS)
+- [Sanity — Documentation home](https://www.sanity.io/docs) (Sanity)
+- [Astro — Content Collections](https://docs.astro.build/en/guides/content-collections/) (Astro Docs)
+- [Cloudflare Pages — Overview](https://developers.cloudflare.com/pages/) (Cloudflare Docs)
+- [Cloudflare Pages — Limits](https://developers.cloudflare.com/pages/platform/limits/) (Cloudflare Docs)
+- [Vercel — Next.js on Vercel](https://vercel.com/docs/frameworks/full-stack/nextjs) (Vercel Docs)
+- [Vercel — Deployments overview](https://vercel.com/docs/deployments) (Vercel Docs)
+- [Netlify — Deploy overview](https://docs.netlify.com/site-deploys/overview/) (Netlify Docs)
+- [Google Search Central — Creating Helpful Content](https://developers.google.com/search/docs/fundamentals/creating-helpful-content) (Google for Developers)
+- [Google Search Central — AI-Generated Content Guidance](https://developers.google.com/search/blog/2023/02/google-search-and-ai-content) (Google for Developers)
