@@ -45,12 +45,15 @@ const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID
 		<ProviderAnimations />
 		<script is:inline>
 			// Relative date upgrade (single global pass, no per-component scripts).
+			// Never renders future-tense (e.g. "in 5 hours") — clamps anything in the
+			// future to "just now" so scheduled posts don't show as upcoming.
 			;(function () {
 				function format(iso, fallback) {
 					try {
 						var d = new Date(iso)
 						if (isNaN(d.getTime())) return fallback
 						var diff = d.getTime() - Date.now()
+						if (diff >= 0) return 'just now'
 						if (diff / 86400000 < -7) {
 							return d.toLocaleDateString('en-US', {
 								year: 'numeric',
