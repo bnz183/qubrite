@@ -1,0 +1,57 @@
+# Legacy tag URL redirects.
+# The old tag taxonomy used percent-encoded spaces and generic, AI-flavored
+# tag names. The current taxonomy uses curated, hyphenated, named-entity
+# slugs. Each old URL below 301s to the closest editorial match.
+#
+# Cloudflare Pages applies these rules at the edge before serving static
+# assets. Source paths use percent-encoded form so they match the URLs
+# search engines actually crawled. Trailing-slash variants are included
+# so we never return a bare 404 to an indexed link.
+
+# --- Multi-word legacy tags (percent-encoded space form) ---
+/tags/ai%20agents/             /tags/generative-ai/       301
+/tags/ai%20agents              /tags/generative-ai/       301
+/tags/ai%20automation/         /tags/automation/          301
+/tags/ai%20automation          /tags/automation/          301
+/tags/beginner%20guides/       /tags/grapheneos/          301
+/tags/beginner%20guides        /tags/grapheneos/          301
+/tags/content%20automation/    /tags/automation/          301
+/tags/content%20automation     /tags/automation/          301
+/tags/digital%20privacy/       /tags/cybersecurity/       301
+/tags/digital%20privacy        /tags/cybersecurity/       301
+/tags/google%20pixel/          /tags/pixel/               301
+/tags/google%20pixel           /tags/pixel/               301
+/tags/no-code%20tools/         /tags/n8n/                 301
+/tags/no-code%20tools          /tags/n8n/                 301
+/tags/privacy%20tech/          /category/privacy-tech/1/  301
+/tags/privacy%20tech           /category/privacy-tech/1/  301
+/tags/web%20development/       /tags/web-development/     301
+/tags/web%20development        /tags/web-development/     301
+/tags/workflow%20automation/   /tags/automation/          301
+/tags/workflow%20automation    /tags/automation/          301
+
+# --- Single-word legacy tags ---
+/tags/ai/                      /tags/generative-ai/       301
+/tags/ai                       /tags/generative-ai/       301
+/tags/architecture/            /tags/static-sites/        301
+/tags/architecture             /tags/static-sites/        301
+/tags/business/                /tags/indie-hacking/       301
+/tags/business                 /tags/indie-hacking/       301
+/tags/content/                 /tags/publishing/          301
+/tags/content                  /tags/publishing/          301
+/tags/development/             /tags/web-development/     301
+/tags/development              /tags/web-development/     301
+/tags/editorial/               /tags/publishing/          301
+/tags/editorial                /tags/publishing/          301
+/tags/infrastructure/          /tags/automation/          301
+/tags/infrastructure           /tags/automation/          301
+/tags/labs/                    /tags/cybersecurity/       301
+/tags/labs                     /tags/cybersecurity/       301
+/tags/revenue/                 /tags/indie-hacking/       301
+/tags/revenue                  /tags/indie-hacking/       301
+/tags/security/                /tags/cybersecurity/       301
+/tags/security                 /tags/cybersecurity/       301
+/tags/systems/                 /tags/automation/          301
+/tags/systems                  /tags/automation/          301
+/tags/workstation/             /tags/hardware/            301
+/tags/workstation              /tags/hardware/            301

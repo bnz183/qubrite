@@ -54,6 +54,42 @@ export const getPostByTag = async (slug: string) => {
 		.filter((post) => post.data.tags.some((t) => sluglify(t) === target))
 }
 
+/**
+ * Topic co-occurrence: returns the tags that most frequently appear alongside
+ * the given tag across the corpus, sorted by frequency. Used to fill out
+ * thin tag pages with a "Related topics" cluster so they're never just one
+ * isolated link.
+ */
+export const getRelatedTags = async (
+	slug: string,
+	max = 8,
+): Promise<Array<{ slug: string; label: string; count: number }>> => {
+	const target = slug.toLowerCase()
+	const posts = await getPosts()
+	const counts = new Map<string, { label: string; count: number }>()
+
+	for (const post of posts) {
+		if (post.data.draft) continue
+		const hasTarget = post.data.tags.some((t) => sluglify(t) === target)
+		if (!hasTarget) continue
+		for (const tag of post.data.tags) {
+			const s = sluglify(tag)
+			if (s === target) continue
+			const existing = counts.get(s)
+			if (existing) {
+				existing.count += 1
+			} else {
+				counts.set(s, { label: tag, count: 1 })
+			}
+		}
+	}
+
+	return Array.from(counts.entries())
+		.map(([slug, v]) => ({ slug, label: v.label, count: v.count }))
+		.sort((a, b) => b.count - a.count || a.label.localeCompare(b.label))
+		.slice(0, max)
+}
+
 export const filterPostsByCategory = async (category: string) => {
 	const posts = await getPosts()
 	return posts

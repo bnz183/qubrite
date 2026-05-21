@@ -5,6 +5,7 @@ export {
 	getPosts,
 	getTags,
 	getPostByTag,
+	getRelatedTags,
 	filterPostsByCategory,
 	getPostSlug
 } from './post'
