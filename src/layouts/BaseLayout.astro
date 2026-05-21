@@ -5,7 +5,7 @@ import Footer from '@/components/Footer'
 import ProviderTheme from '@/components/ProviderTheme'
 import ProviderAnimations from '@/components/ProviderAnimations'
 import ConsentBanner from '@/components/ConsentBanner'
-const { title, description, image, articleDate } = Astro.props
+const { title, description, image, articleDate, canonical } = Astro.props
 
 const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID
 ---
@@ -40,7 +40,13 @@ const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID
 				</>
 			)
 		}
-		<BaseHead title={title} description={description} ogImage={image} articleDate={articleDate} />
+		<BaseHead
+			title={title}
+			description={description}
+			ogImage={image}
+			articleDate={articleDate}
+			canonical={canonical}
+		/>
 		<ProviderTheme />
 		<ProviderAnimations />
 		<script is:inline>

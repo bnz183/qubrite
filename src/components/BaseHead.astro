@@ -7,16 +7,43 @@ export interface Props {
 	description?: string
 	ogImage?: string | undefined
 	articleDate?: string | undefined
+	/**
+	 * Optional explicit canonical path or absolute URL.
+	 * When omitted, canonicalizes to the current pathname with a trailing slash,
+	 * dropping any query string or fragment. This URL is also used verbatim for
+	 * og:url and twitter:url so social shares match what search engines see.
+	 */
+	canonical?: string
 }
 
-const { title, description = siteConfig.description, ogImage, articleDate } = Astro.props
-const canonicalURL = new URL(Astro.url.pathname, Astro.site)
-const socialImageURL = new URL(ogImage ? ogImage : '/open-graph.png', Astro.url).href
+const {
+	title,
+	description = siteConfig.description,
+	ogImage,
+	articleDate,
+	canonical,
+} = Astro.props
+
+/**
+ * Build a single source-of-truth canonical URL.
+ * - Strips query string and hash (static pages don't differ by them).
+ * - Forces a trailing slash on non-root paths so the canonical always
+ *   matches Astro's directory-style output and never 301-chains.
+ * - Accepts a `canonical` prop override (path-relative or absolute).
+ */
+function buildCanonical(): URL {
+	if (canonical) return new URL(canonical, siteConfig.site)
+	let path = Astro.url.pathname || '/'
+	if (path !== '/' && !path.endsWith('/')) path = `${path}/`
+	return new URL(path, siteConfig.site)
+}
+
+const canonicalURL = buildCanonical()
+const socialImageURL = new URL(ogImage ? ogImage : '/open-graph.png', canonicalURL).href
 
 const titleSeparator = '•'
 
 const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`
-
 ---
 
 <!-- Global Metadata -->
@@ -42,10 +69,12 @@ const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`
 
 <!-- Open Graph / Facebook -->
 <meta property='og:type' content={articleDate ? 'article' : 'website'} />
-<meta property='og:url' content={Astro.url} />
+<meta property='og:url' content={canonicalURL.href} />
 <meta property='og:title' content={title} />
 <meta property='og:description' content={description} />
 <meta property='og:image' content={socialImageURL} />
+<meta property='og:site_name' content={siteConfig.title} />
+<meta property='og:locale' content={siteConfig.ogLocale} />
 {
 	articleDate && (
 		<>
@@ -57,7 +86,7 @@ const siteTitle = `${title} ${titleSeparator} ${siteConfig.title}`
 
 <!-- Twitter -->
 <meta property='twitter:card' content='summary_large_image' />
-<meta property='twitter:url' content={Astro.url} />
+<meta property='twitter:url' content={canonicalURL.href} />
 <meta property='twitter:title' content={title} />
 <meta property='twitter:description' content={description} />
 <meta property='twitter:image' content={socialImageURL} />

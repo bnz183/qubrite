@@ -18,7 +18,7 @@ const posts = await getPostByTag(slug)
 const description = `${posts.length} article${posts.length === 1 ? '' : 's'} on ${label} from QuBrite — independent technical coverage and field notes.`
 ---
 
-<BaseLayout title={`${label} — QuBrite`} description={description}>
+<BaseLayout title={label} description={description}>
 	<section class='mt-6 mb-10 pb-8 border-b border-stone-200 dark:border-stone-800'>
 		<nav
 			aria-label='Breadcrumb'
