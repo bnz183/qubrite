@@ -5,9 +5,13 @@ import Footer from '@/components/Footer'
 import ProviderTheme from '@/components/ProviderTheme'
 import ProviderAnimations from '@/components/ProviderAnimations'
 import ConsentBanner from '@/components/ConsentBanner'
+import { siteConfig } from '@/site-config'
+
 const { title, description, image, articleDate, canonical } = Astro.props
 
-const gaId = import.meta.env.PUBLIC_GA_MEASUREMENT_ID
+/** Every HTML page uses BaseLayout — GA loads here for all current and future routes. */
+const gaId =
+	import.meta.env.PUBLIC_GA_MEASUREMENT_ID || siteConfig.gaMeasurementId
 ---
 
 <html lang='en' class='scroll-smooth'>

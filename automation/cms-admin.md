@@ -33,6 +33,18 @@ Official reference: [Decap — Using GitHub with an OAuth Proxy](https://decapcm
 
 ---
 
+## Environment variables
+
+See [env-sync.md](./env-sync.md) for the full GA + Cloudflare + GitHub checklist.
+
+| Variable | Where | Purpose |
+|----------|--------|---------|
+| `PUBLIC_GA_MEASUREMENT_ID` | Local `.env` + Cloudflare Pages | GA4 (`G-XX3Z7TZP3Y`); defaults in `src/data/site.config.ts` if unset |
+| `GITHUB_CLIENT_ID` | Cloudflare Pages only | Decap CMS OAuth |
+| `GITHUB_CLIENT_SECRET` | Cloudflare Pages only (encrypt) | Decap CMS OAuth |
+
+---
+
 ## Production setup (one-time)
 
 ### 1. GitHub OAuth App

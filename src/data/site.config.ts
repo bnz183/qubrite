@@ -7,10 +7,13 @@ interface SiteConfig {
 	ogLocale: string
 	shareMessage: string
 	paginationSize: number
+	/** GA4 measurement ID — injected on every page via BaseLayout. */
+	gaMeasurementId: string
 }
 
 export const siteConfig: SiteConfig = {
 	site: 'https://qubrite.com/',
+	gaMeasurementId: 'G-XX3Z7TZP3Y',
 	author: 'QuBrite Editorial',
 	title: 'QuBrite',
 	description:

@@ -7,7 +7,7 @@
 	"license": "GPL-3.0-only",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/qubrite/qubrite"
+		"url": "https://github.com/bnz183/qubrite"
 	},
 	"keywords": [
 		"astro",
@@ -17,7 +17,7 @@
 		"astro-b"
 	],
 	"bugs": {
-		"url": "https://github.com/qubrite/qubrite/issues"
+		"url": "https://github.com/bnz183/qubrite/issues"
 	},
 	"scripts": {
 		"dev": "astro dev",
