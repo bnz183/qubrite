@@ -101,7 +101,47 @@
 				</label>
 			</div>
 
-			<div class='flex flex-col sm:flex-row gap-2 sm:gap-3 sm:items-center sm:justify-between pt-1'>
+			<div
+				id='qb-consent-confirm'
+				class='hidden flex flex-col gap-3 pt-3 border-t border-gray-200 dark:border-gray-800'
+				role='group'
+				aria-labelledby='qb-consent-confirm-title'
+			>
+				<p
+					id='qb-consent-confirm-title'
+					class='text-[13px] font-semibold text-stone-900 dark:text-white'
+				>
+					Are you sure you want to block optional cookies?
+				</p>
+				<p class='text-[12px] leading-relaxed text-stone-600 dark:text-stone-400'>
+					Without analytics, we cannot measure which articles help readers. You can
+					change this later from
+					<span class='font-semibold text-stone-800 dark:text-stone-200'
+						>Cookie preferences</span
+					> in the footer.
+				</p>
+				<div class='flex flex-col sm:flex-row gap-2 sm:justify-end'>
+					<button
+						type='button'
+						id='qb-consent-confirm-reject'
+						class='qb-btn-primary inline-flex items-center justify-center px-4 h-10 text-[12px] font-semibold uppercase tracking-wider rounded-sm bg-stone-900 dark:bg-white text-white dark:text-stone-950 hover:bg-stone-800 dark:hover:bg-stone-100 transition-colors'
+					>
+						Yes, block all optional
+					</button>
+					<button
+						type='button'
+						id='qb-consent-confirm-back'
+						class='qb-btn-secondary inline-flex items-center justify-center px-4 h-10 text-[12px] font-semibold uppercase tracking-wider rounded-sm border border-gray-200 dark:border-gray-800 text-stone-700 dark:text-stone-300 bg-white dark:bg-[#0a0910] hover:border-stone-400 dark:hover:border-stone-600 hover:text-stone-950 dark:hover:text-white transition-colors'
+					>
+						Keep optional cookies
+					</button>
+				</div>
+			</div>
+
+			<div
+				id='qb-consent-actions'
+				class='flex flex-col sm:flex-row gap-2 sm:gap-3 sm:items-center sm:justify-between pt-1'
+			>
 				<button
 					type='button'
 					id='qb-consent-customize'
@@ -167,6 +207,10 @@
 		if (!dialog) return
 
 		var prefs = document.getElementById('qb-consent-prefs')
+		var actions = document.getElementById('qb-consent-actions')
+		var confirm = document.getElementById('qb-consent-confirm')
+		var confirmBackBtn = document.getElementById('qb-consent-confirm-back')
+		var confirmRejectBtn = document.getElementById('qb-consent-confirm-reject')
 		var customizeBtn = document.getElementById('qb-consent-customize')
 		var saveBtn = document.getElementById('qb-consent-save')
 		var acceptBtn = document.getElementById('qb-consent-accept')
@@ -214,11 +258,42 @@
 		}
 
 		function showPrefs() {
+			hideConfirm()
 			if (!prefs) return
 			prefs.classList.remove('hidden')
 			prefs.classList.add('flex')
 			if (saveBtn) saveBtn.classList.remove('hidden')
 			if (customizeBtn) customizeBtn.style.visibility = 'hidden'
+		}
+
+		function hideConfirm() {
+			if (confirm) {
+				confirm.classList.add('hidden')
+				confirm.classList.remove('flex')
+			}
+			if (actions) actions.classList.remove('hidden')
+		}
+
+		function showConfirm() {
+			if (confirm) {
+				confirm.classList.remove('hidden')
+				confirm.classList.add('flex')
+			}
+			if (actions) actions.classList.add('hidden')
+		}
+
+		function blocksOptionalCookies() {
+			var analyticsOff = analyticsCb && !analyticsCb.checked
+			var adsOff = !adsCb || !adsCb.checked
+			return analyticsOff && adsOff
+		}
+
+		function commitReject() {
+			var c = { analytics: false, ads: false }
+			applyConsent(c)
+			persist(c)
+			hideConfirm()
+			closeDialog()
 		}
 
 		var stored = readStored()
@@ -237,10 +312,15 @@
 			})
 		if (rejectBtn)
 			rejectBtn.addEventListener('click', function () {
-				var c = { analytics: false, ads: false }
-				applyConsent(c)
-				persist(c)
-				closeDialog()
+				showConfirm()
+			})
+		if (confirmBackBtn)
+			confirmBackBtn.addEventListener('click', function () {
+				hideConfirm()
+			})
+		if (confirmRejectBtn)
+			confirmRejectBtn.addEventListener('click', function () {
+				commitReject()
 			})
 		if (customizeBtn)
 			customizeBtn.addEventListener('click', function () {
@@ -255,6 +335,10 @@
 			})
 		if (saveBtn)
 			saveBtn.addEventListener('click', function () {
+				if (blocksOptionalCookies()) {
+					showConfirm()
+					return
+				}
 				var c = {
 					analytics: !!(analyticsCb && analyticsCb.checked),
 					ads: !!(adsCb && adsCb.checked),
@@ -267,6 +351,7 @@
 		// Public hook: footer link can call window.qbOpenConsent() to reopen.
 		window.qbOpenConsent = function () {
 			var current = readStored()
+			hideConfirm()
 			if (analyticsCb) analyticsCb.checked = current ? !!current.analytics : true
 			if (adsCb) adsCb.checked = current ? !!current.ads : false
 			showPrefs()
