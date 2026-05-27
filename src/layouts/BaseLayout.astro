@@ -1,5 +1,7 @@
 ---
 import BaseHead from '@/components/BaseHead'
+import Fonts from '@/components/Fonts'
+import SeoJsonLd from '@/components/SeoJsonLd'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import ProviderTheme from '@/components/ProviderTheme'
@@ -7,14 +9,23 @@ import ProviderAnimations from '@/components/ProviderAnimations'
 import ConsentBanner from '@/components/ConsentBanner'
 import { siteConfig } from '@/site-config'
 
-const { title, description, image, articleDate, canonical } = Astro.props
+const {
+	title,
+	metaTitle,
+	description,
+	image,
+	articleDate,
+	articleModifiedDate,
+	canonical,
+	robots,
+} = Astro.props
 
 /** Every HTML page uses BaseLayout — GA loads here for all current and future routes. */
 const gaId =
 	import.meta.env.PUBLIC_GA_MEASUREMENT_ID || siteConfig.gaMeasurementId
 ---
 
-<html lang='en' class='scroll-smooth'>
+<html lang={siteConfig.lang} class='scroll-smooth'>
 	<head>
 		{
 			gaId && (
@@ -44,13 +55,18 @@ const gaId =
 				</>
 			)
 		}
+		<Fonts />
 		<BaseHead
 			title={title}
+			metaTitle={metaTitle}
 			description={description}
 			ogImage={image}
 			articleDate={articleDate}
+			articleModifiedDate={articleModifiedDate}
 			canonical={canonical}
+			robots={robots}
 		/>
+		<SeoJsonLd />
 		<ProviderTheme />
 		<ProviderAnimations />
 		<script is:inline>

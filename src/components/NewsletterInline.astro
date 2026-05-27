@@ -1,4 +1,6 @@
 ---
+import { siteConfig } from '@/site-config'
+
 type Props = {
 	title?: string
 	body?: string
@@ -8,6 +10,11 @@ const {
 	title = 'QuBrite Dispatch',
 	body = 'Operator-focused playbooks, system teardowns, and tech reviews. One email, weekly.',
 } = Astro.props
+
+const username = siteConfig.buttondownUsername
+const action = username
+	? `https://buttondown.com/api/emails/embed-subscribe/${username}`
+	: undefined
 ---
 
 <section
@@ -21,36 +28,59 @@ const {
 					class='inline-flex h-1.5 w-1.5 rounded-full bg-sky-500 dark:bg-sky-400'
 					aria-hidden='true'></span>
 				<span
-					class='text-[11px] font-bold uppercase tracking-[0.18em] text-stone-700 dark:text-stone-300'
-					style='font-family: "Space Grotesk", "Inter", sans-serif;'
+					class='text-[11px] font-bold uppercase tracking-[0.18em] text-stone-700 dark:text-stone-300 font-display'
 				>
 					Subscribe
 				</span>
 			</div>
-			<h3
-				class='text-xl sm:text-2xl font-bold text-stone-900 dark:text-white leading-tight'
-				style='font-family: "Space Grotesk", "Inter", sans-serif; letter-spacing: -0.02em;'
-			>
+			<h3 class='text-xl sm:text-2xl font-bold text-stone-900 dark:text-white leading-tight font-display tracking-tight'>
 				{title}
 			</h3>
 			<p class='text-[14px] text-stone-600 dark:text-stone-400 leading-relaxed'>{body}</p>
 		</div>
-		<form
-			class='flex flex-col sm:flex-row gap-2 sm:items-center sm:shrink-0'
-			onsubmit='event.preventDefault();'
-		>
-			<input
-				type='email'
-				required
-				placeholder='you@domain.com'
-				class='h-10 px-3 text-sm bg-white dark:bg-[#0a0910] border border-stone-300 dark:border-stone-700 rounded-sm focus:outline-none focus:border-stone-500 dark:focus:border-stone-400 text-stone-900 dark:text-white placeholder:text-stone-400 w-full sm:w-64'
-			/>
-			<button
-				type='submit'
-				class='inline-flex items-center justify-center h-10 px-4 text-[12px] font-semibold uppercase tracking-wider rounded-sm bg-stone-900 dark:bg-white text-white dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-stone-100 transition-colors'
-			>
-				Subscribe
-			</button>
-		</form>
+		{
+			action ? (
+				<form
+					method='post'
+					action={action}
+					target='popupwindow'
+					onsubmit="window.open(this.action, 'popupwindow', 'scrollbars=yes,width=800,height=600'); return true;"
+					class='flex flex-col sm:flex-row gap-2 sm:items-center sm:shrink-0'
+				>
+					<input type='hidden' name='embed' value='1' />
+					<div class='hidden' aria-hidden='true'>
+						<label for='bd-hp'>Leave blank</label>
+						<input type='text' name='hp' id='bd-hp' tabindex='-1' autocomplete='off' />
+					</div>
+					<input
+						type='email'
+						name='email'
+						id='bd-email'
+						required
+						placeholder='you@domain.com'
+						class='h-10 px-3 text-sm bg-white dark:bg-[#0a0910] border border-stone-300 dark:border-stone-700 rounded-sm focus:outline-none focus:border-stone-500 dark:focus:border-stone-400 text-stone-900 dark:text-white placeholder:text-stone-400 w-full sm:w-64'
+					/>
+					<button
+						type='submit'
+						class='inline-flex items-center justify-center h-10 px-4 text-[12px] font-semibold uppercase tracking-wider rounded-sm bg-stone-900 dark:bg-white text-white dark:text-stone-900 hover:bg-stone-800 dark:hover:bg-stone-100 transition-colors'
+					>
+						Subscribe
+					</button>
+				</form>
+			) : (
+				<div class='flex flex-col gap-2 sm:shrink-0'>
+					<p class='text-[13px] text-stone-600 dark:text-stone-400'>
+						Newsletter launching soon. Subscribe via{' '}
+						<a
+							href='/rss.xml'
+							class='font-semibold text-stone-900 dark:text-white underline underline-offset-2'
+						>
+							RSS
+						</a>{' '}
+						in the meantime.
+					</p>
+				</div>
+			)
+		}
 	</div>
 </section>

@@ -10,3 +10,4 @@ export {
 	getPostSlug
 } from './post'
 export { remarkReadingTime } from './readTime'
+export { THIN_TAG_MIN_POSTS, getThinTagSlugs, isThinTag } from './seo'

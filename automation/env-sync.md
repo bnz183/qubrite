@@ -14,6 +14,8 @@ Set on the **Pages project** that serves `qubrite.com` → **Settings** → **En
 | Variable | Type | Environments |
 |----------|------|--------------|
 | `PUBLIC_GA_MEASUREMENT_ID` | Plain text (`G-XX3Z7TZP3Y`) | Production (+ Preview optional) |
+| `PUBLIC_BUTTONDOWN_USERNAME` | Plain text | Production (+ Preview optional) |
+| `INDEXNOW_KEY` | Encrypt (recommended) | Production |
 | `GITHUB_CLIENT_ID` | Plain text | Production + Preview |
 | `GITHUB_CLIENT_SECRET` | Encrypt | Production + Preview |
 
@@ -37,6 +39,14 @@ https://github.com/settings/developers → **OAuth Apps** → **New OAuth App**
 Copy Client ID and secret into Cloudflare as `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET`.
 
 Repo for CMS commits: `bnz183/qubrite` (see `public/admin/config.yml`).
+
+## Newsletter (Buttondown)
+
+See [newsletter-buttondown.md](./newsletter-buttondown.md). Set `PUBLIC_BUTTONDOWN_USERNAME` after creating a Buttondown account.
+
+## IndexNow
+
+See [seo-maintenance.md](./seo-maintenance.md). Set `INDEXNOW_KEY` or replace `public/indexnow-key.txt` before expecting postbuild pings.
 
 ## Verify
 

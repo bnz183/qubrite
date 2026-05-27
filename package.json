@@ -26,7 +26,7 @@
 		"sync": "astro sync",
 		"preview": "astro preview",
 		"cms:local": "npx decap-server",
-		"postbuild": "pagefind --site dist",
+		"postbuild": "pagefind --site dist && node scripts/indexnow.mjs",
 		"format:check": "prettier --check .",
 		"format": "prettier --write .",
 		"lint": "eslint ."

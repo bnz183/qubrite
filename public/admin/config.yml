@@ -46,6 +46,15 @@ collections:
         time_format: false
         picker_utc: true
         hint: ISO timestamp in UTC, e.g. 2026-05-20T10:00:00Z
+      - label: Updated Date
+        name: updatedDate
+        widget: datetime
+        required: false
+        format: YYYY-MM-DDTHH:mm:ss[Z]
+        date_format: false
+        time_format: false
+        picker_utc: true
+        hint: Optional. Set when materially revising a live post (schema dateModified).
       - label: Hero Image
         name: heroImage
         widget: string
@@ -76,7 +85,7 @@ collections:
         name: draft
         widget: boolean
         default: true
-        hint: Keep true while editing; set false to publish on the live site
+        hint: Keep true while editing; set false to publish. See automation/publish-checklist.md in the repo.
       - label: Body
         name: body
         widget: markdown

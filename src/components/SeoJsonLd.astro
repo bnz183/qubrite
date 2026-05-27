@@ -1,0 +1,32 @@
+---
+import { siteConfig } from '@/site-config'
+
+const siteUrl = new URL(siteConfig.site)
+const logoUrl = new URL('/brand/icon.svg', siteUrl).href
+
+const organization = {
+	'@context': 'https://schema.org',
+	'@type': 'Organization',
+	name: siteConfig.title,
+	url: siteUrl.href,
+	logo: logoUrl,
+}
+
+const website = {
+	'@context': 'https://schema.org',
+	'@type': 'WebSite',
+	name: siteConfig.title,
+	url: siteUrl.href,
+	potentialAction: {
+		'@type': 'SearchAction',
+		target: {
+			'@type': 'EntryPoint',
+			urlTemplate: `${siteUrl.href}?q={search_term_string}`,
+		},
+		'query-input': 'required name=search_term_string',
+	},
+}
+---
+
+<script type='application/ld+json' set:html={JSON.stringify(organization)} />
+<script type='application/ld+json' set:html={JSON.stringify(website)} />

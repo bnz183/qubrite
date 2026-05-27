@@ -1,7 +1,7 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout'
 import ListPosts from '@/components/ListPosts'
-import { getTags, getPostByTag, getRelatedTags } from '@/utils'
+import { getTags, getPostByTag, getRelatedTags, THIN_TAG_MIN_POSTS } from '@/utils'
 
 export async function getStaticPaths() {
 	const tags = await getTags()
@@ -19,10 +19,11 @@ const relatedTags = await getRelatedTags(slug, 10)
 
 const postCount = posts.length
 const description = `${postCount} article${postCount === 1 ? '' : 's'} on ${label} from QuBrite — independent technical coverage and field notes.`
-const showRelated = relatedTags.length > 0 && postCount < 3
+const showRelated = relatedTags.length > 0 && postCount < THIN_TAG_MIN_POSTS
+const robots = postCount < THIN_TAG_MIN_POSTS ? 'noindex, follow' : undefined
 ---
 
-<BaseLayout title={label} description={description}>
+<BaseLayout title={label} description={description} robots={robots}>
 	<section class='mt-6 mb-10 pb-8 border-b border-stone-200 dark:border-stone-800'>
 		<nav
 			aria-label='Breadcrumb'

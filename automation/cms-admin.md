@@ -40,6 +40,8 @@ See [env-sync.md](./env-sync.md) for the full GA + Cloudflare + GitHub checklist
 | Variable | Where | Purpose |
 |----------|--------|---------|
 | `PUBLIC_GA_MEASUREMENT_ID` | Local `.env` + Cloudflare Pages | GA4 (`G-XX3Z7TZP3Y`); defaults in `src/data/site.config.ts` if unset |
+| `PUBLIC_BUTTONDOWN_USERNAME` | Local `.env` + Cloudflare Pages | Newsletter embed forms — see [newsletter-buttondown.md](./newsletter-buttondown.md) |
+| `INDEXNOW_KEY` | Cloudflare Pages (encrypt) | IndexNow ping on deploy — see [seo-maintenance.md](./seo-maintenance.md) |
 | `GITHUB_CLIENT_ID` | Cloudflare Pages only | Decap CMS OAuth |
 | `GITHUB_CLIENT_SECRET` | Cloudflare Pages only (encrypt) | Decap CMS OAuth |
 
@@ -151,11 +153,14 @@ This repo’s **default** is Cloudflare Functions (same domain, no Netlify site 
 | Title | Max 80 characters |
 | Description | SEO / card summary |
 | Publish Date | UTC ISO, e.g. `2026-05-21T13:30:00Z` |
+| Updated Date | Optional — set when materially revising a live post |
 | Hero Image | e.g. `../../assets/images/default-cover.png` |
 | Category | One of the six enum values (see below) |
 | Tags | One tag per list entry |
 | Draft | `true` while editing; `false` to publish |
 | Body | Markdown (MDX body) |
+
+Full pre-publish QA: [`automation/publish-checklist.md`](./publish-checklist.md). MDX starter: [`automation/article-template.mdx`](./article-template.mdx).
 
 **Categories (exact strings):**
 

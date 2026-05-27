@@ -21,9 +21,11 @@ type Props = {
 const { data, readTime, headings, id } = Astro.props
 /** Portrait hero assets (e.g. phone photos) must use contain, not cover. */
 const heroImageContain = id === 'grapheneos-daily-driver-setup-pixel-guide'
-const { title, description, pubDate, heroImage, tags, category } = data
+const { title, description, pubDate, updatedDate, heroImage, tags, category } = data
 
 const articleDate = pubDate.toISOString()
+const articleModifiedDate = (updatedDate ?? pubDate).toISOString()
+const heroAlt = `Cover image: ${title}`
 const canonical = new URL(`/post/${id}/`, Astro.site).href
 const heroAbsoluteUrl = heroImage?.src
 	? new URL(heroImage.src, Astro.site).href
@@ -35,11 +37,11 @@ const blogPostingJsonLd = {
 	headline: title,
 	description,
 	datePublished: articleDate,
-	dateModified: articleDate,
+	dateModified: articleModifiedDate,
 	author: {
-		'@type': 'Organization',
-		name: siteConfig.author,
-		url: siteConfig.site,
+		'@type': 'Person',
+		name: siteConfig.authorName,
+		url: siteConfig.authorUrl,
 	},
 	publisher: {
 		'@type': 'Organization',
@@ -62,6 +64,7 @@ const blogPostingJsonLd = {
 	description={description}
 	image={heroImage?.src}
 	articleDate={articleDate}
+	articleModifiedDate={articleModifiedDate}
 >
 	<ReadingProgress />
 	<script type='application/ld+json' set:html={JSON.stringify(blogPostingJsonLd)} />
@@ -129,7 +132,7 @@ const blogPostingJsonLd = {
 									? 'w-full h-auto max-h-[min(70vh,560px)] object-contain'
 									: 'w-full object-cover max-h-[420px] md:max-h-[540px]',
 							]}
-							alt={`img of ${title}`}
+							alt={heroAlt}
 						/>
 					</span>
 				</figure>

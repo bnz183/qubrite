@@ -1,17 +1,42 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro'
+import { siteConfig } from '@/site-config'
 ---
 
-<BaseLayout title='About' description='About QuBrite.'>
-	<main class='mx-auto max-w-3xl px-6 py-16'>
-		<h1 class='text-4xl font-bold'>About QuBrite</h1>
-		<p class='mt-6'>
+<BaseLayout
+	title='About'
+	description='Who writes QuBrite, how we test tools, and how to reach the editorial desk.'
+>
+	<main class='mx-auto max-w-3xl px-6 py-16 prose prose-stone dark:prose-invert'>
+		<h1 class='text-4xl font-bold not-prose'>About QuBrite</h1>
+		<p>
 			QuBrite is a premium technical publication covering AI web building, automation systems, cyber
-			labs, privacy tech, hardware, and business systems.
+			labs, privacy tech, hardware, and business systems. We publish for operators and builders who
+			want leverage—not hype cycles or vendor talking points.
 		</p>
-		<p class='mt-4'>
-			The goal is to publish practical, useful, and commercially relevant technical content for
-			operators and builders who want leverage, not noise.
+		<p>
+			Articles are written and reviewed by <strong>{siteConfig.authorName}</strong>. We test tools in
+			real workflows—installing software, running labs, deploying static stacks, and documenting what
+			breaks before we recommend it to readers.
+		</p>
+		<h2>What we cover</h2>
+		<ul>
+			<li>AI-assisted web development and publishing workflows</li>
+			<li>Automation stacks (n8n, RSS pipelines, self-hosted tooling)</li>
+			<li>Cybersecurity labs and defensive security practice</li>
+			<li>Privacy phones, hardening, and hardware that survives production</li>
+			<li>Business systems for technical operators and indie builders</li>
+		</ul>
+		<h2>Corrections and contact</h2>
+		<p>
+			Found a factual error or broken link? Use our <a href='/contact/'>contact page</a> with the
+			article URL and what should change. We correct material mistakes promptly and note significant
+			updates in the article when the guidance changes.
+		</p>
+		<p>
+			Read how we handle AI assistance, fact-checking, and affiliate links in our{' '}
+			<a href='/editorial-policy/'>editorial policy</a> and{' '}
+			<a href='/affiliate-disclosure/'>affiliate disclosure</a>.
 		</p>
 	</main>
 </BaseLayout>

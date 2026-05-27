@@ -7,6 +7,12 @@ import { CATEGORIES } from '@/data/categories'
 import FormattedDate from '@/components/FormattedDate'
 import { Image } from 'astro:assets'
 import { EDITORS_PICKS } from '@/data/editors-picks'
+import { siteConfig } from '@/site-config'
+
+const buttondownUsername = siteConfig.buttondownUsername
+const newsletterAction = buttondownUsername
+	? `https://buttondown.com/api/emails/embed-subscribe/${buttondownUsername}`
+	: undefined
 
 const MAX_POSTS = 16 // max number of posts to show on the home page
 const HOME_HEADING = 'AI & Web Development, Automation & Tech Systems'
@@ -46,7 +52,11 @@ for (const cat of CATEGORIES) {
 const remainingPosts = posts.filter((p) => !usedPostIds.has(p.id))
 ---
 
-<BaseLayout title={HOME_HEADING}>
+<BaseLayout
+	title={HOME_HEADING}
+	metaTitle='QuBrite | AI, Automation, Privacy & Cyber Labs'
+	description={HOME_LEDE}
+>
 	<header class='pt-8 pb-10 border-t border-gray-200 dark:border-gray-800'>
 		<p
 			class='text-[11px] font-bold uppercase tracking-[0.18em] text-stone-600 dark:text-stone-400 mb-3'
@@ -199,18 +209,44 @@ const remainingPosts = posts.filter((p) => !usedPostIds.has(p.id))
 				<p class='text-sm text-gray-700 dark:text-gray-300 mb-4'>
 					Operator-focused playbooks, system teardowns, and tech reviews delivered to your inbox.
 				</p>
-				<form class='flex flex-col gap-2' onsubmit='event.preventDefault();'>
-					<input
-						type='email'
-						placeholder='Email address'
-						class='px-3 py-2 text-sm bg-white dark:bg-black border border-gray-300 dark:border-gray-700 rounded-sm focus:outline-none focus:border-gray-500 w-full'
-					/>
-					<button
-						type='submit'
-						class='bg-black dark:bg-white text-white dark:text-black px-3 py-2 text-sm font-bold w-full rounded-sm hover:opacity-90 transition-opacity'
-						>Subscribe</button
-					>
-				</form>
+				{
+					newsletterAction ? (
+						<form
+							method='post'
+							action={newsletterAction}
+							target='popupwindow'
+							onsubmit="window.open(this.action, 'popupwindow', 'scrollbars=yes,width=800,height=600'); return true;"
+							class='flex flex-col gap-2'
+						>
+							<input type='hidden' name='embed' value='1' />
+							<div class='hidden' aria-hidden='true'>
+								<label for='home-bd-hp'>Leave blank</label>
+								<input type='text' name='hp' id='home-bd-hp' tabindex='-1' autocomplete='off' />
+							</div>
+							<input
+								type='email'
+								name='email'
+								required
+								placeholder='Email address'
+								class='px-3 py-2 text-sm bg-white dark:bg-black border border-gray-300 dark:border-gray-700 rounded-sm focus:outline-none focus:border-gray-500 w-full'
+							/>
+							<button
+								type='submit'
+								class='bg-black dark:bg-white text-white dark:text-black px-3 py-2 text-sm font-bold w-full rounded-sm hover:opacity-90 transition-opacity'
+							>
+								Subscribe
+							</button>
+						</form>
+					) : (
+						<p class='text-sm text-gray-600 dark:text-gray-400'>
+							Newsletter launching soon.{' '}
+							<a href='/rss.xml' class='font-semibold underline underline-offset-2'>
+								Subscribe via RSS
+							</a>{' '}
+							for now.
+						</p>
+					)
+				}
 				<p class='text-xs text-gray-500 mt-3 text-center'>No noise. Unsubscribe anytime.</p>
 			</div>
 		</div>

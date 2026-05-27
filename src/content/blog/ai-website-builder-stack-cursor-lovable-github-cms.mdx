@@ -196,7 +196,7 @@ How to think about which to use:
 
 None of these replaces the others. They overlap. That is fine.
 
-If you want to keep more of this workflow off third-party APIs — say for a privacy-sensitive client or because you are building on a mini PC you control end-to-end — local model setups change the trade-offs significantly, and the cost calculus too. {/* TODO: INTERNAL LINK: Local AI for Beginners */} {/* TODO: INTERNAL LINK: Best Mini PCs for Self-Hosting AI and Automation */}
+If you want to keep more of this workflow off third-party APIs — say for a privacy-sensitive client or because you are building on a mini PC you control end-to-end — local model setups change the trade-offs significantly, and the cost calculus too.
 
 <Newsletter />
 
@@ -221,7 +221,7 @@ These are practical scenarios that play out the same way regardless of the speci
 
 **Practical scenario: the founder who shipped a landing page in one afternoon.** A non-technical founder describes a SaaS landing page in Lovable. Within an hour they have a working prototype with a hero, features grid, pricing, and a waitlist form. They connect Lovable's two-way sync to GitHub, deploy from `main` to Vercel, and have a public URL by evening. The site is not perfect, but it is real. They can ship and start iterating instead of describing the site for another six weeks.
 
-**Practical scenario: the developer rebuilding an old blog.** A developer has a five-year-old WordPress blog with 80 posts. They want static, fast, low-maintenance. They scaffold an Astro project, paste a content collection schema into Cursor, and let the agent migrate posts to MDX in batches. Each batch goes through a pull request. They deploy to Cloudflare Pages from `main`. Total elapsed time: a long weekend instead of a month-long rebuild project. {/* TODO: INTERNAL LINK: How to Build an AI Publishing Workflow Without Turning Your Blog Into Spam */}
+**Practical scenario: the developer rebuilding an old blog.** A developer has a five-year-old WordPress blog with 80 posts. They want static, fast, low-maintenance. They scaffold an Astro project, paste a content collection schema into Cursor, and let the agent migrate posts to MDX in batches. Each batch goes through a pull request. They deploy to Cloudflare Pages from `main`. Total elapsed time: a long weekend instead of a month-long rebuild project. See [the difference between AI slop and useful AI-assisted publishing](/post/difference-between-ai-slop-useful-publishing/) for editorial guardrails, and [building a low-maintenance blog stack](/post/low-maintenance-blog-stack/) for the static architecture we use here.
 
 **Practical scenario: the agency that wanted client edits without giving them the keys.** An agency builds a marketing site for a client in Astro using Cursor. They install [Decap CMS](https://decapcms.org/docs) so the client can edit posts and team bios at `/admin/`. Every edit becomes a commit to a Git branch the agency reviews before merging to `main`. The client never opens the codebase. The agency never opens the client's draft.
 
@@ -253,7 +253,7 @@ A short list of patterns that quietly destroy AI website projects.
 
 **4. Installing a CMS too early.** A blog with three articles does not need a CMS. Editing MDX directly is faster. Add the CMS when there is an actual editor who needs it.
 
-**5. Mixing deployment platforms.** Picking Vercel for one project, Netlify for another, and Cloudflare for a third is fine — but doing it inside the same project, or migrating between them every six months, is a tax on your time. Pick one and stop researching. The same discipline applies to your automation layer — debating n8n versus Make versus Zapier for months while shipping nothing is the same anti-pattern. {/* TODO: INTERNAL LINK: n8n vs Make vs Zapier */}
+**5. Mixing deployment platforms.** Picking Vercel for one project, Netlify for another, and Cloudflare for a third is fine — but doing it inside the same project, or migrating between them every six months, is a tax on your time. Pick one and stop researching. The same discipline applies to your automation layer — debating n8n versus Make versus Zapier for months while shipping nothing is the same anti-pattern. Start with our [n8n for beginners workflow guide](/post/n8n-for-beginners-ai-automation-workflow/) until a dedicated comparison post ships.
 
 **6. Trusting AI for facts without verification.** AI tools will confidently cite documentation that does not exist, package versions that do not exist, and APIs that do not exist. For anything load-bearing, check the official docs. This applies to AI website builders as much as to AI writing tools — see our piece on the [difference between AI slop and useful AI-assisted publishing](/post/difference-between-ai-slop-useful-publishing/) for the editorial version of the same lesson.
 

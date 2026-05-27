@@ -1,0 +1,38 @@
+---
+import { AstroFont } from 'astro-font'
+---
+
+<AstroFont
+	config={[
+		{
+			name: 'Inter',
+			googleFontsURL:
+				'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap',
+			src: [],
+			preload: true,
+			display: 'swap',
+			selector: 'body',
+			fallback: 'system-ui, sans-serif',
+		},
+		{
+			name: 'Space Grotesk',
+			googleFontsURL:
+				'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&display=swap',
+			src: [],
+			preload: true,
+			display: 'swap',
+			selector: '.font-display, h1, h2, h3, h4, h5, h6',
+			fallback: 'Inter, system-ui, sans-serif',
+		},
+		{
+			name: 'JetBrains Mono',
+			googleFontsURL:
+				'https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap',
+			src: [],
+			preload: false,
+			display: 'swap',
+			selector: '.font-mono, code, pre, kbd',
+			fallback: 'ui-monospace, monospace',
+		},
+	]}
+/>

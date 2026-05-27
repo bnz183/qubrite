@@ -1,5 +1,6 @@
 ---
 import FormattedDate from '@/components/FormattedDate'
+import { siteConfig } from '@/site-config'
 
 type Props = {
 	pubDate: Date
@@ -12,20 +13,23 @@ const { pubDate, readTime } = Astro.props
 <section
 	class='mt-12 pt-6 border-t border-gray-200 dark:border-gray-800 flex items-start gap-4 not-prose'
 >
-	<img
-		src='/brand/icon.svg'
-		alt=''
-		width='40'
-		height='40'
-		class='rounded-sm border border-gray-200 dark:border-gray-800 p-1 shrink-0'
-	/>
+	<a href='/about/' class='shrink-0' aria-label='About QuBrite Editorial'>
+		<img
+			src='/brand/icon.svg'
+			alt=''
+			width='40'
+			height='40'
+			class='rounded-sm border border-gray-200 dark:border-gray-800 p-1'
+		/>
+	</a>
 	<div class='flex flex-col gap-1'>
-		<span class='text-[13px] font-bold uppercase tracking-wider text-stone-900 dark:text-white'>
-			QuBrite Editorial
-		</span>
-		<span class='text-[13px] text-stone-600 dark:text-stone-400'>
-			Operator-focused analysis. Reviewed and edited by the QuBrite desk.
-		</span>
+		<a
+			href='/about/'
+			class='text-[13px] font-bold uppercase tracking-wider text-stone-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors w-fit'
+		>
+			{siteConfig.authorName}
+		</a>
+		<span class='text-[13px] text-stone-600 dark:text-stone-400'>{siteConfig.authorBio}</span>
 		<span class='text-[12px] text-stone-500 dark:text-stone-500'>
 			Published <FormattedDate date={pubDate} /> · {readTime}
 		</span>

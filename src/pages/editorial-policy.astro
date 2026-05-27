@@ -2,16 +2,46 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 ---
 
-<BaseLayout title='Editorial Policy' description='Editorial standards for QuBrite.'>
-	<main class='mx-auto max-w-3xl px-6 py-16'>
-		<h1 class='text-4xl font-bold'>Editorial Policy</h1>
-		<p class='mt-6'>
+<BaseLayout
+	title='Editorial Policy'
+	description='How QuBrite uses AI, verifies technical claims, and discloses commercial relationships.'
+>
+	<main class='mx-auto max-w-3xl px-6 py-16 prose prose-stone dark:prose-invert'>
+		<h1 class='text-4xl font-bold not-prose'>Editorial Policy</h1>
+		<p>
 			QuBrite focuses on practical, technical, and commercially relevant coverage of AI web
-			building, automation systems, cyber labs, privacy tech, hardware, and business systems.
+			building, automation systems, cyber labs, privacy tech, hardware, and business systems. Every
+			piece should help a reader ship, secure, or operate something—not fill a keyword quota.
 		</p>
-		<p class='mt-4'>
-			AI may assist drafting and research, but articles are rigorously reviewed to ensure
-			operator-focused, non-hype quality.
+
+		<h2>AI-assisted drafting</h2>
+		<p>
+			We use AI tools for research, outlining, and first drafts. AI does not publish on its own: a
+			human editor reviews structure, claims, links, and tone before anything goes live. We follow{' '}
+			<a href='https://developers.google.com/search/docs/fundamentals/creating-helpful-content'
+				>Google&apos;s helpful content guidance</a
+			>—people-first, experience-backed, not scaled filler.
+		</p>
+
+		<h2>Fact-checking and updates</h2>
+		<p>
+			Technical claims are checked against primary sources (official docs, vendor security advisories,
+			government guidance) where possible. Software versions, pricing, and product availability
+			change; we set <code>updatedDate</code> in frontmatter when guidance materially changes and
+			refresh internal links when related articles ship.
+		</p>
+
+		<h2>Affiliate and commercial relationships</h2>
+		<p>
+			Some hardware and software links may be affiliate links. Affiliate relationships do not
+			determine what we recommend—we document trade-offs and alternatives. See our{' '}
+			<a href='/affiliate-disclosure/'>affiliate disclosure</a> for details.
+		</p>
+
+		<h2>Who we are</h2>
+		<p>
+			Learn more about the desk on the <a href='/about/'>about page</a>. Questions or corrections:{' '}
+			<a href='/contact/'>contact us</a>.
 		</p>
 	</main>
 </BaseLayout>
